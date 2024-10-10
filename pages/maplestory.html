@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Maplestory Progression App</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Website Template by freehtml5.co" />
+	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="freehtml5.co" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="../css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="../css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="../css/bootstrap.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="../css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="../js/modernizr-2.6.2.min.js"></script>
+    
+    <style>
+        body {
+            font-family: "Cutive Mono", monospace;
+            font-weight: 1000;
+            font-size: 16px;
+            font-style: normal;
+            color: #0A0A0A;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .hero {
+            background-color: #fefefe;
+            padding: 24px 24px 24px 24px;
+            width: 30%; /* Adjust this value as per your layout */
+            position: fixed;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-right: 1px solid #666;
+        }
+        .content {
+            margin-left: 30%; /* Same as the width of the hero section */
+            width: 70%; /* Adjust based on the layout */
+            height: 100vh;
+            overflow-y: auto;
+            background-color: #fff;
+        }
+        .content-section {
+            margin-bottom: 0px;
+        }
+        .content img, .content video {
+            width: 100%;
+            height: auto;
+        }
+        .prototype-iframe {
+            border: 2px solid #ccc;
+            width: 100%;
+            height: 600px;
+        }
+        /* Background block examples */
+        .background-image-block {
+            background-image: url('../images/blog-1.jpg');
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: auto;
+        }
+        .background-video-block video {
+            width: 100%;
+            height: auto;
+            background-color: #ffffff;
+        }
+        .background-gif-block {
+            background-image: url('');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+        }
+        .tags {
+            margin-top: 8px;
+        }
+        .tag {
+            display: inline-block;
+            border: 1px solid #666; /* Material Design 2 primary color */
+            border-radius: 16px;
+            padding: 4px 12px;
+            margin-right: 8px;
+            color: #666; /* Same color as the border */
+            font-family:'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tag:hover {
+            background-color: #3A3A3A;
+            color: white;
+        }
+        .cutive-mono-regular {
+            font-family:'Roboto', sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }a {
+        text-decoration: none;
+        font-size: 16px;
+        display: inline-block;
+        padding: 8px 8px 8px 8px;
+        text-align: center;
+        }
+
+        a:hover {
+        background-color: #eee;
+        color: #0A0A0A;
+        }
+
+        .previous {
+        background-color: #fefefe;
+        font-family:'Roboto', sans-serif;
+        font-weight: 500;
+        color: #4a4a4a;
+        }
+
+        .next {
+        background-color: #fefefe;
+        font-family:'Roboto', sans-serif;
+        font-weight: 500;
+        color: #4a4a4a;
+        }
+
+        .round {
+        border-radius: 50%;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="heading" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="../index.html" class="previous">Home</a>
+            <a href="badge.html" class="next">Next Project <img src="../images/move-right.svg"/></a>
+        </div>
+        <div class="title">
+            <h2 style="font-family: Roboto, sans-serif; font-size: 40px; font-weight: 700;">Maplestory Progression App</h2>
+            <p style="color: #333; font-family: Roboto, sans-serif; font-weight: 500; font-style: normal;">This was a fun challenge I made for myself. Maplestory is my favorite game of all time and one of the main problems with the game is the amount of systems and components you need to learn in order to get better. This app is an idea on how the company behind the game could help the player base keep track of their progress in a fun and easy way.</p>
+            <div class="tags">
+                <span class="tag">UI Design</span>
+                <span class="tag">App Design</span>
+                <span class="tag">Adobe XD</span>
+            </div>
+            <div style="height: 300px;"/>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <div class="content">
+
+        <!-- Text and Image Section -->
+        <div class="image" style="background-color: #374152;">
+            <img src="../images/maple/body.jpg" style="width: 100%; height: auto;">
+        </div>
+
+    </div>
+
+</body>
+</html>
