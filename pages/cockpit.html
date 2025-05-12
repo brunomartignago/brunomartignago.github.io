@@ -1,46 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Cockpit</title>
-    <link rel="icon" type="image/x-icon" href="../images/favicon.png">
-	<meta name="description" content="Product & Concept Design, Research and Development" />
-	<meta name="keywords" content="product design, web design, ux/ui design, data visualization, research, development, front-end" />
-	<meta name="author" content="Bruno Martignago" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <title>
+        Cockpit
+    </title>
     
-    <meta property="og:title" content=""/>
-	<meta property="og:image" content=""/>
-	<meta property="og:url" content=""/>
-	<meta property="og:site_name" content=""/>
-	<meta property="og:description" content=""/>
-	<meta name="twitter:title" content="" />
-	<meta name="twitter:image" content="" />
-	<meta name="twitter:url" content="" />
-	<meta name="twitter:card" content="" />
+    <link href="../images/favicon.png" rel="icon" type="image/x-icon"/>
+    <meta content="Product &amp; Concept Design, Research and Development" name="description">
+    <meta content="product design, web design, ux/ui design, data visualization, research, development, front-end" name="keywords">
+    <meta content="Bruno Martignago" name="author"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-        
-	<!-- Animate.css -->
-	<link rel="stylesheet" href="../css/animate.css">
-	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="../css/icomoon.css">
-	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="../css/bootstrap.css">
-
-	<!-- Theme style  -->
-	<link rel="stylesheet" href="../css/style.css">
-
-	<!-- Modernizr JS -->
-	<script src="../js/modernizr-2.6.2.min.js"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet"/>
+    
+    <!-- Animate.css -->
+    <link href="../css/animate.css" rel="stylesheet"/>
+    <!-- Bootstrap  -->
+    <link href="../css/bootstrap.css" rel="stylesheet"/>
+    <!-- Theme style  -->
+    <link href="../css/style.css" rel="stylesheet"/>
+    <!-- Modernizr JS -->
+    <script src="../js/modernizr-2.6.2.min.js">
+    </script>
     
     <style>
+          .title-heading {
+          font-family: Roboto, sans-serif;
+          font-size: 32px;
+          font-weight: 700;
+          margin-top: 32px;
+        }
+        .paragraph-secondary {
+          color: #333;
+          font-family: Roboto, sans-serif;
+          font-weight: 500;
+          font-style: normal;
+        }
+        .section-heading {
+          font-family: Roboto, sans-serif;
+          font-size: 24px;
+          font-weight: 800;
+        }
+        .toc-link {
+          font-family: Roboto, sans-serif;
+          color: #FF9000;
+          font-size: 14px;
+          font-weight: 500;
+        }
+        .toc-container {
+          margin-top: 48px;
+          margin-bottom: 80px;
+          margin-left: 24px;
+        }
+        .icon-small {
+          height: 32px;
+          width: auto;
+        }
+        .full-width-media {
+          width: 100%;
+          height: auto;
+        }
+
         body {
             font-family: "Cutive Mono", monospace;
             font-weight: 1000;
@@ -52,18 +76,21 @@
             box-sizing: border-box;
         }
         .hero {
+            transition: transform 0.3s ease;
+            z-index: 999;
             background-color: #fefefe;
-            padding: 24px 24px 24px 24px;
+            padding: 80px 24px 24px 24px;
             width: 30%; /* Adjust this value as per your layout */
             position: fixed;
             height: 100%;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: top;
             border-right: 1px solid #666;
         }
         .content {
+            transition: margin-left 0.3s ease, width 0.3s ease;
             margin-left: 30%; /* Same as the width of the hero section */
             width: 70%; /* Adjust based on the layout */
             height: 100vh;
@@ -71,6 +98,11 @@
             background-color: #fff;
         }
 
+        .content.expanded {
+            margin-left: 0;
+            width: 100%;
+        }
+        /* Single-column layout for mobile */
         @media(max-width: 1400px) {
             .hero {
                 width: 100%;
@@ -96,14 +128,6 @@
             width: 100%;
             height: 600px;
         }
-        /* Background block examples */
-        .background-image-block {
-            background-image: url('../images/blog-1.jpg');
-            background-size: cover;
-            background-position: center;
-            width: 100%;
-            height: auto;
-        }
         .background-video-block video {
             width: 100%;
             height: auto;
@@ -115,38 +139,17 @@
             background-position: center;
             height: 400px;
         }
-        .tags {
-            margin-top: 8px;
-        }
-        .tag {
-            display: inline-block;
-            border: 1px solid #666; /* Material Design 2 primary color */
-            border-radius: 16px;
-            padding: 4px 12px;
-            margin-right: 8px;
-            color: #666; /* Same color as the border */
-            font-size: 14px;
-            font-family:'Roboto', sans-serif;
-            font-weight: 500;
-            line-height: 1.5;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background-color: transparent;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .tag:hover {
-            background-color: #3A3A3A;
-            color: white;
-        }
+        
+        
         .cutive-mono-regular {
-            font-family: "Roboto, sans-serif";
+            font-family:'Roboto', sans-serif;
             font-weight: 400;
             font-style: normal;
         }a {
         text-decoration: none;
         font-size: 16px;
         display: inline-block;
-        padding: 8px 16px;
+        padding: 8px 8px 8px 8px;
         text-align: center;
         }
 
@@ -159,140 +162,233 @@
         background-color: #fefefe;
         font-family:'Roboto', sans-serif;
         font-weight: 500;
-        color: #4a4a4a;
+        color: #F6941C;
         }
 
         .next {
         background-color: #fefefe;
         font-family:'Roboto', sans-serif;
         font-weight: 500;
-        color: #4a4a4a;
+        color: #F6941C;
         }
 
         .round {
         border-radius: 50%;
-}
+        }
 
+            
+        .drawer-toggle {
+          position: fixed;
+          top: 20px;
+          left: 20px;
+          z-index: 1000;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          background: none;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+        }
+
+        .drawer-toggle span {
+          height: 4px;
+          width: 100%;
+          background-color: #0A0A0A;
+          border-radius: 2px;
+          transition: all 0.3s ease-in-out;
+        }
+
+        .drawer-toggle.open span:nth-child(1) {
+          transform: rotate(45deg) translateY(10px);
+          width: 80%;
+        }
+
+        .drawer-toggle.open span:nth-child(2) {
+          opacity: 0;
+        }
+
+        .drawer-toggle.open span:nth-child(3) {
+          transform: rotate(-45deg) translateY(-10px);
+          width: 80%;
+        }
+
+
+        .hero.collapsed {
+            transform: translateX(-100%);
+        }
+        .content.expanded {
+            margin-left: 0;
+        }
+
+        @media (max-width: 1400px) {
+          .drawer-toggle {
+            display: none;
+          }
+        }
     </style>
-</head>
-<body>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="heading" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="../index.html" class="previous">Home</a>
-            <a href="maplestory.html" class="next">Next Project <img src="../images/move-right.svg"/></a>
-        </div>
-        <div class="title">
-            <h2 style="font-family: Roboto, sans-serif; font-size: 40px; font-weight: 700;">Cockpit</h2>
-            <p style="color: #333; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;"><img src="../images/cockpit/dell icon.png" style="height: 32px; width: auto;"/> Dell Technologies</p>
-            <p style="color: #333; font-family: Roboto, sans-serif; font-weight: 500; font-style: normal;">Cockpit is a solo project I took in 2023 where the main challenge was to build a platform where you could build, manage, share, and operate with KPIs. This platform should be a single source of truth for all business units within the company and should help stakeholders make better decisions.</p>
-            <div class="tags">
-                <span class="tag">UX/UI Design</span>
-                <span class="tag">Data Visualization</span>
-                <span class="tag">Figma</span>
+
+    </meta>
+    </meta>
+    </meta>
+    </head>
+    
+    <body>
+
+        <button class="drawer-toggle" id="drawer-toggle">
+            <span>
+            </span>
+            <span>
+            </span>
+            <span>
+            </span>
+        </button>
+
+      <!-- Hero Section -->
+        <section class="hero">
+            <div class="heading" style="display: flex; justify-content: space-between; align-items: center;">
+                <a class="previous" href="../index.html">Home</a>
+                <a class="next" href="task.html">Next Project</a>
             </div>
-            <div class="anchors" style="margin-top: 48px; margin-bottom: 80px; margin-left: 24px;">
-                <h3 style="font-family: Roboto, sans-serif; font-size: 24px; font-weight: 800;">Contents:</h3>
-                <ul>
-                    <li style="font-family: Roboto, sans-serif; color: #FF9000; font-size: 14px; font-weight: 500"><a href="#anatomy">The anatomy of a KPI card</a></li>
-                    <li style="font-family: Roboto, sans-serif; color: #FF9000; font-size: 14px; font-weight: 500"><a href="#vizmodes">Visualization modes</a></li>
-                    <li style="font-family: Roboto, sans-serif; color: #FF9000; font-size: 14px; font-weight: 500"><a href="#features">Feature Highlight</a></li>
-                    <li style="font-family: Roboto, sans-serif; color: #FF9000; font-size: 14px; font-weight: 500"><a href="#sourcing">Creating and sourcing KPI cards</a></li>
+            <div class="title">
+                <h2 class="title-heading">Cockpit</h2>
+                <p style="color: #333; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;"><img src="../images/cockpit/dell icon.png" style="height: 32px; width: auto;"/> Dell Technologies</p>
+                <p class="paragraph-secondary">
+                    Cockpit is a solo project I took in 2023 where the main challenge was to build a platform where you could build, manage, share, and operate with KPIs. This platform should be a single source of truth for all business units within the company and should help stakeholders make better decisions.
+                </p>
+            <div class="themes" style="margin-top: 32px; margin-left: 24px;">
+                <h4 style="font-family: Roboto, sans-serif; font-size: 16px; font-weight: 600; color: #333;">Key Themes</h4>
+                <ul class="paragraph-secondary">
+                    <li>Data Visualization</li>
+                    <li>Analytics</li>
+                    <li>Data structure and archtecture</li>
+                    <li>UX/UI Design</li>
                 </ul>
             </div>
+           </div>
+        </section>
+
+
+        <!-- Content Section -->
+        <div class="content">
+
+            <!-- Background Video Block -->
+            <div class="video" style=" background-color: #FAEDCE;">
+                <video autoplay muted loop>
+                    <source src="../videos/cockpit/cockpittitle.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- Text and Image Section -->
+            <div class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/intro.jpg" style="width: 100%; height: auto;">
+            </div>
+
+            <!-- Background Video Block -->
+            <div id="anatomy" class="video" style=" background-color: #FEFEFE;">
+                <video autoplay muted loop>
+                    <source src="../videos/cockpit/anatomykpi.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- Text and Image Section -->
+            <div class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/cardanatomy.png" style="width: 100%; height: auto;">
+            </div>
+
+             <!-- Text and Image Section -->
+             <div class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/users1.png" style="width: 100%; height: auto;">
+            </div>
+
+            <!-- Text and Image Section -->
+            <div id="vizmodes" class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/vizmodes.png" style="width: 100%; height: auto;">
+            </div>
+
+            <div class="prototype" style= "background-color: #D1E9F6;">
+                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="100%" height="900" src="https://embed.figma.com/proto/t4KUCUuUxZ812Gr3FMkAlj/cockpit?node-id=187-48135&node-type=frame&scaling=scale-down-width&content-scaling=fixed&page-id=184%3A45713&starting-point-node-id=187%3A48135&embed-host=share" allowfullscreen></iframe>
+            </div>
+
+            <!-- Text and Image Section -->
+            <div id="features" class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/pin1.png" style="width: 100%; height: auto;">
+            </div>
+
+            <div class="video" style=" background-color: #EBEFF2; padding-left: 24px; padding-right: 24px;">
+                <video autoplay muted loop>
+                    <source src="../videos/cockpit/pins.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- Text and Image Section -->
+            <div class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/pin2.png" style="width: 100%; height: auto;">
+            </div>
+
+            <div class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/alert.png" style="width: 100%; height: auto;">
+            </div>
+
+            <div class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/event.png" style="width: 100%; height: auto;">
+            </div>
+
+            <div id="sourcing" class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/cardcreation.png" style="width: 100%; height: auto;">
+            </div>
+
+            <div class="video" style=" background-color: #EBEFF2; padding-left: 24px; padding-right: 24px;">
+                <video autoplay muted loop>
+                    <source src="../videos/cockpit/card.mp4" type="video/mp4">
+                </video>
+            </div>
+            
+            <div class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/sourcing.png" style="width: 100%; height: auto;">
+            </div>
+
+            <div class="video" style=" background-color: #EBEFF2; padding-left: 24px; padding-right: 24px;">
+                <video autoplay muted loop>
+                    <source src="../videos/cockpit/element.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="image" style="background-color: #FAEDCE;">
+                <img src="../images/cockpit/thankyou.png" style="width: 100%; height: auto;">
+            </div>
+
         </div>
-    </section>
 
-    <!-- Content Section -->
-    <div class="content">
+        <script>
+          const toggleBtn = document.getElementById('drawer-toggle');
+          const hero = document.querySelector('.hero');
+          const content = document.querySelector('.content');
 
-        <!-- Background Video Block -->
-        <div class="video" style=" background-color: #FAEDCE;">
-            <video autoplay muted loop>
-                <source src="../videos/cockpit/cockpittitle.mp4" type="video/mp4">
-            </video>
-        </div>
+          function isLargeScreen() {
+            return window.innerWidth > 1400;
+          }
 
-        <!-- Text and Image Section -->
-        <div class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/intro.jpg" style="width: 100%; height: auto;">
-        </div>
+          toggleBtn.addEventListener('click', () => {
+            if (!isLargeScreen()) return; // 🚫 Disable toggle on smaller screens
 
-        <!-- Background Video Block -->
-        <div id="anatomy" class="video" style=" background-color: #FEFEFE;">
-            <video autoplay muted loop>
-                <source src="../videos/cockpit/anatomykpi.mp4" type="video/mp4">
-            </video>
-        </div>
+            hero.classList.toggle('collapsed');
+            content.classList.toggle('expanded');
+            toggleBtn.classList.toggle('open');
+          });
 
-        <!-- Text and Image Section -->
-        <div class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/cardanatomy.png" style="width: 100%; height: auto;">
-        </div>
+          // Optional: automatically reset state when resizing back to large screen
+          window.addEventListener('resize', () => {
+            if (!isLargeScreen()) {
+              hero.classList.remove('collapsed');
+              content.classList.remove('expanded');
+              toggleBtn.classList.remove('open');
+            }
+          });
+        </script>
 
-         <!-- Text and Image Section -->
-         <div class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/users1.png" style="width: 100%; height: auto;">
-        </div>
+    </body>
 
-        <!-- Text and Image Section -->
-        <div id="vizmodes" class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/vizmodes.png" style="width: 100%; height: auto;">
-        </div>
-
-        <div class="prototype" style= "background-color: #D1E9F6;">
-            <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="100%" height="900" src="https://embed.figma.com/proto/t4KUCUuUxZ812Gr3FMkAlj/cockpit?node-id=187-48135&node-type=frame&scaling=scale-down-width&content-scaling=fixed&page-id=184%3A45713&starting-point-node-id=187%3A48135&embed-host=share" allowfullscreen></iframe>
-        </div>
-
-        <!-- Text and Image Section -->
-        <div id="features" class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/pin1.png" style="width: 100%; height: auto;">
-        </div>
-
-        <div class="video" style=" background-color: #EBEFF2; padding-left: 24px; padding-right: 24px;">
-            <video autoplay muted loop>
-                <source src="../videos/cockpit/pins.mp4" type="video/mp4">
-            </video>
-        </div>
-
-        <!-- Text and Image Section -->
-        <div class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/pin2.png" style="width: 100%; height: auto;">
-        </div>
-
-        <div class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/alert.png" style="width: 100%; height: auto;">
-        </div>
-
-        <div class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/event.png" style="width: 100%; height: auto;">
-        </div>
-
-        <div id="sourcing" class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/cardcreation.png" style="width: 100%; height: auto;">
-        </div>
-
-        <div class="video" style=" background-color: #EBEFF2; padding-left: 24px; padding-right: 24px;">
-            <video autoplay muted loop>
-                <source src="../videos/cockpit/card.mp4" type="video/mp4">
-            </video>
-        </div>
-        
-        <div class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/sourcing.png" style="width: 100%; height: auto;">
-        </div>
-
-        <div class="video" style=" background-color: #EBEFF2; padding-left: 24px; padding-right: 24px;">
-            <video autoplay muted loop>
-                <source src="../videos/cockpit/element.mp4" type="video/mp4">
-            </video>
-        </div>
-
-        <div class="image" style="background-color: #FAEDCE;">
-            <img src="../images/cockpit/thankyou.png" style="width: 100%; height: auto;">
-        </div>
-
-    </div>
-
-</body>
 </html>
