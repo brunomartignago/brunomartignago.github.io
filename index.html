@@ -1,238 +1,324 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Bruno Martignago Product Designer</title>
-	<link rel="icon" type="image/x-icon" href="images/favicon.png">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Product & Concept Design, Research and Development" />
-	<meta name="keywords" content="product design, web design, ux/ui design, data visualization, research, development, front-end" />
-	<meta name="author" content="Bruno Martignago" />
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Bruno Martignago Product Designer</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Product & Concept Design, Research and Development" />
+  <meta name="keywords" content="product design, web design, ux/ui design, data visualization, research, development, front-end" />
+  <meta name="author" content="Bruno Martignago" />
 
-  	<!-- Facebook and Twitter integration -->
-	<meta property="og:title" content=""/>
-	<meta property="og:image" content=""/>
-	<meta property="og:url" content=""/>
-	<meta property="og:site_name" content=""/>
-	<meta property="og:description" content=""/>
-	<meta name="twitter:title" content="" />
-	<meta name="twitter:image" content="" />
-	<meta name="twitter:url" content="" />
-	<meta name="twitter:card" content="" />
+  <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
 
-	<link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
-	
-	<!-- Animate.css -->
-	<link rel="stylesheet" href="css/animate.css">
-	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="css/icomoon.css">
-	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="css/bootstrap.css">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="css/animate.css">
+  <!-- Icomoon Icon Fonts -->
+  <link rel="stylesheet" href="css/icomoon.css">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Modernizr JS -->
+  <script src="js/modernizr-2.6.2.min.js"></script>
+</head>
 
-	<!-- Theme style  -->
-	<link rel="stylesheet" href="css/style.css">
+<style>
+  body {
+    font-family: 'Space Mono', monospace;
+    color: #333;
+    background-color: #fff;
+  }
 
-	<!-- Modernizr JS -->
-	<script src="js/modernizr-2.6.2.min.js"></script>
+  #fh5co-about .container {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 16px;
+    max-width: 1200px;
+    margin: auto;
+    gap: 32px;
+  }
+
+  #fh5co-about .info,
+  #fh5co-about .bio-text {
+    width: 100%;
+  }
+
+  #fh5co-about .info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #fh5co-about .info li {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 16px;
+  }
+
+  #fh5co-about .info li .first-block {
+    font-weight: 600;
+    color: #444;
+  }
+
+  #fh5co-about .bio-text h2 {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  #fh5co-about .bio-text p {
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    color: #333;
+  }
+
+  .fh5co-social-icons {
+    display: flex;
+    gap: 16px;
+    padding-top: 12px;
+  }
+
+  .fh5co-social-icons li {
+    display: inline-block;
+  }
+
+  .fh5co-social-icons a {
+    font-size: 24px;
+    color: #333;
+    transition: color 0.3s;
+  }
+
+  .fh5co-social-icons a:hover {
+    color: #007bff;
+  }
+
+  /* Portfolio styling improvement */
+  #fh5co-work .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 16px;
+  }
+
+  .work-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .work-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+  }
+
+  .work-item:hover {
+    transform: translateY(-4px);
+  }
+
+  .work-item .work {
+    display: block;
+    width: 100%;
+    height: 280px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .work-item .desc {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    backdrop-filter: blur(6px);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    transition: background 0.3s ease;
+    text-align: center;
+  }
+
+  .work-item .desc h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .work-item .desc span {
+    font-size: 16px;
+    opacity: 0.95;
+    display: block;
+  }
+
+  /* CTA styling update */
+  #fh5co-started {
+    background: linear-gradient(to right, #1f2937, #374151);
+    padding: 64px 16px;
+    text-align: center;
+    color: #fff;
+  }
+
+  #fh5co-started h2 {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  #fh5co-started p {
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+
+  #fh5co-started .cta-btn {
+    background-color: #f9fafb;
+    color: #1f2937;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  #fh5co-started .cta-btn:hover {
+    background-color: #d1d5db;
+    color: #111827;
+  }
+
+  @media (min-width: 1024px) {
+    #fh5co-about .container {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    #fh5co-about .info {
+      width: 40%;
+      order: 2;
+    }
+
+    #fh5co-about .bio-text {
+      width: 58%;
+      order: 1;
+    }
+    #hello-animated::after {
+	  content: "|";
+	  animation: blink 1s step-start infinite;
+	}
+
+	@keyframes blink {
+	  50% { opacity: 0; }
+	}
+
+  }
+</style>
 
 
-	</head>
+<body>
+  <div class="fh5co-loader"></div>
+  <div id="page">
+    <header id="fh5co-header" class="fh5co-cover js-fullheight" role="banner" style="background-image:url(images/cover_bg_3.jpg);" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2 text-center">
+            <div class="display-t js-fullheight">
+              <div class="display-tc js-fullheight animate-box" data-animate-effect="fadeIn">
+                <div class="profile-thumb" style="background: url(images/profilepic.jpg);"></div>
+                <h1><span>Bruno Martignago</span></h1>
+                <h3><span>Product Designer / Concept Designer / Researcher</span></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-	<style>
-				/* Mobile-First Approach (Single Column) */
-		#fh5co-about .container {
-			display: flex;
-			flex-direction: column;
-			padding: 24px;
-		}
+    <div id="fh5co-about" class="animate-box">
+      <div class="container">
+        <div class="row">
+          <div class="info col-md-4">
+            <ul>
+              <li><h2>About me</h2></li>
+              <li><span class="first-block">Name:</span><span class="second-block">Bruno Martignago</span></li>
+              <li><span class="first-block">Phone:</span><span class="second-block"><a href="https://wa.me/5519993941531" target="_blank">+55 19 993941531</a></span></li>
+              <li><span class="first-block">Email:</span><span class="second-block">bruno_martignago@hotmail.com</span></li>
+              <li><span class="first-block">Address:</span><span class="second-block">Americana, SP, Brazil</span></li>
+            </ul>
+          </div>
 
-		#fh5co-about .info,
-		#fh5co-about .bio-text {
-			width: 100%;
-			margin-bottom: 20px;
-		}
+          <div class="bio-text col-md-8">
+            <h2><span id="hello-animated"></span></h2>
+            <p>My name is Bruno. I'm a senior product designer based in Brazil with 6+ years of experience leading innovative projects across multiple industries.
+            <p>I didn’t take the typical path into product design — I started with a Mathematics degree, then sharpened my technical skills as a front-end developer. Working closely with engineers gave me a deep respect for how products are built, but it was discovering UX and UI that truly clicked for me. I realized that great products don’t just function well — they connect with people. Since then, I’ve combined my analytical mindset, coding background, and user-first approach to design solutions that are intuitive, purposeful, and grounded in real human needs. Curiosity drives me, collaboration inspires me, and research is always at the core of what I build. I love being hands-on, turning ideas into real, usable products that make a difference.
+            <p>Skilled in UX/UI design, generative AI, and front-end development, I focus on crafting user-centric, high-impact digital experiences.</p>
+            <ul class="fh5co-social-icons">
+              <li><a href="https://www.behance.net/brunomartignago"><i class="icon-behance2"></i></a></li>
+              <li><a href="https://www.linkedin.com/in/bruno-martignago/"><i class="icon-linkedin2"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
 
-		#fh5co-about .info ul {
-			list-style: none;
-			padding: 0;
-		}
-
-		#fh5co-about .info li {
-			display: flex;
-			justify-content: space-between;
-			margin-bottom: 10px;
-		}
-
-		#fh5co-about .info li .first-block {
-			font-weight: bold;
-		}
-
-		#fh5co-about .fh5co-social-icons {
-			margin-top: 20px;
-		}
-
-		/* Two-Column Layout for Larger Screens */
-		@media (min-width: 1024px) {
-			#fh5co-about .container {
-				flex-direction: row;
-				justify-content: space-between;
-			}
-
-			#fh5co-about .info {
-				width: 40%;
-				order: 2; /* Contact info comes second on desktop */
-			}
-
-			#fh5co-about .bio-text {
-				width: 60%;
-				order: 1; /* Bio text comes first */
-			}
-		}
-	</style>
-
-	<body>
-		
-	<div class="fh5co-loader"></div>
-	
-	<div id="page">	
-	<header id="fh5co-header" class="fh5co-cover js-fullheight" role="banner" style="background-image:url(images/cover_bg_3.jpg);" data-stellar-background-ratio="0.5">
-		<div class="overlay"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<div class="display-t js-fullheight">
-						<div class="display-tc js-fullheight animate-box" data-animate-effect="fadeIn">
-							<div class="profile-thumb" style="background: url(images/profilepic.jpg);"></div>
-							<h1><span>Bruno Martignago</span></h1>
-							<h3><span>Product Designer / Concept Designer / Researcher</span></h3>
-							<p>
-								<ul class="fh5co-social-icons">
-									<li><a href="https://www.behance.net/brunomartignago"><i class="icon-behance2"></i></a></li>
-									<li><a href="https://www.linkedin.com/in/bruno-martignago/"><i class="icon-linkedin2"></i></a></li>
-								</ul>
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
-
-	<div id="fh5co-about" class="animate-box">
-		<div class="container">
-			<div class="row">
-				<!-- Contact Info -->
-				<div class="info col-md-4">
-					<ul>
-						<li><h2>About me</h2></li>
-						<li><span class="first-block">Name:</span><span class="second-block">Bruno Martignago</span></li>
-						<li><span class="first-block">Phone:</span><span class="second-block"><a href="https://wa.me/5519993941531" target="_blank">+55 19 993941531</a></span></li>
-						<li><span class="first-block">Email:</span><span class="second-block">bruno_martignago@hotmail.com</span></li>
-						<li><span class="first-block">Address:</span><span class="second-block">Americana, SP, Brazil</span></li>
-					</ul>
-				</div>
-				
-				<!-- Bio Text -->
-				<div class="bio-text col-md-8">
-					<h2>Hello There!</h2>
-					<p>My name is Bruno. I'm a senior product designer based in Brazil with 6+ years of experience leading innovative projects across multiple industries. My expertise includes designing generative AI solutions, data visualization tools, and B2B procurement platforms. </p>
-					<p>At Dell Technologies, I developed AI-driven chatbot experiences, designed concepts for digital twin technology and worked with sales agents on improving their tools and experiences. Previously, at Mercado Eletrônico, I streamlined B2B commerce using UX methodologies. I have also led design for online teaching platforms and developed mobile/web apps with React native. </p>
-					<p>Skilled in UX/UI design, generative AI, and front-end development, I focus on crafting user-centric, high-impact digital experiences.</p>
-					<ul class="fh5co-social-icons">
-						<li><a href="https://www.behance.net/brunomartignago"><i class="icon-behance2"></i></a></li>
-						<li><a href="https://www.linkedin.com/in/bruno-martignago/"><i class="icon-linkedin2"></i></a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-
-	<div id="fh5co-work" class="fh5co-bg-dark">
-		<div class="container" style="display: flex; flex-direction: column; gap: 20px;">
-			<div class="row animate-box">
-				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-					<h2>Work</h2>
-				</div>
-			</div>
-	
-			<!-- Flex container for the portfolio items -->
-			<div class="work-gallery">
-				<div class="work-item">
-					<a href="pages/aiint.html" class="work" style="background-image: url(images/aiint/thumb.png);">
-						<div class="desc">
-							<h3>AI Orchestration - Digital Twin</h3>
-							<span>Concept Design</span>
-						</div>
-					</a>
-				</div>
-				<div class="work-item">
-					<a href="pages/cockpit.html" class="work" style="background-image: url(images/cockpit/cockpitcover2.png);">
-						<div class="desc">
-							<h3>Cockpit - KPI dashboard platform</h3>
-							<span>Product Design</span>
-						</div>
-					</a>
-				</div>
-				<div class="work-item">
-					<a href="pages/maplestory.html" class="work" style="background-image: url(images/maple/thumb.png);">
-						<div class="desc">
-							<h3>Maplestory Progression App</h3>
-							<span>App Design</span>
-						</div>
-					</a>
-				</div>
-				<div class="work-item">
-					<a href="pages/badge.html" class="work" style="background-image: url(images/badge/thumb.jpg);">
-						<div class="desc">
-							<h3>Automated Badge System</h3>
-							<span>Product Design</span>
-						</div>
-					</a>
-				</div>
-			</div>
-
-			<!-- Flex container for the portfolio items -->
-			<!--
-			<div class="work-gallery">
-				<div class="work-item">
-					<a href="pages/portfoliopiece.html" class="work" style="background-image: url(images/portfolio-1.jpg);">
-						<div class="desc">
-							<h3>Project Name</h3>
-							<span>Illustration</span>
-						</div>
-					</a>
-				</div>
-				<div class="work-item">
-					<a href="#" class="work" style="background-image: url(images/portfolio-2.jpg);">
-						<div class="desc">
-							<h3>Project Name</h3>
-							<span>Branding</span>
-						</div>
-					</a>
-				</div>
-				<div class="work-item">
-					<a href="#" class="work" style="background-image: url(images/portfolio-3.jpg);">
-						<div class="desc">
-							<h3>Project Name</h3>
-							<span>Branding</span>
-						</div>
-					</a>
-				</div>
-				<div class="work-item">
-					<a href="#" class="work" style="background-image: url(images/portfolio-4.jpg);">
-						<div class="desc">
-							<h3>Project Name</h3>
-							<span>Branding</span>
-						</div>
-					</a>
-				</div>
-			</div>
-			-->
-		</div>
-	</div>
+    <div id="fh5co-work" class="fh5co-bg-dark">
+      <div class="container">
+        <div class="row animate-box">
+          <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+            <h2>Work</h2>
+          </div>
+        </div>
+        <div class="work-gallery">
+          <div class="work-item">
+            <a href="pages/aiint.html" class="work" style="background-image: url(images/aiint/thumb.png);">
+              <div class="desc">
+                <h3>AI Orchestration - Digital Twin</h3>
+                <span>Concept Design</span>
+              </div>
+            </a>
+          </div>
+          <div class="work-item">
+            <a href="pages/cockpit.html" class="work" style="background-image: url(images/cockpit/cockpitcover2.png);">
+              <div class="desc">
+                <h3>Cockpit - KPI dashboard platform</h3>
+                <span>Product Design</span>
+              </div>
+            </a>
+          </div>
+          <div class="work-item">
+            <a href="pages/task.html" class="work" style="background-image: url(images/taskmgmt/capa.jpg);">
+              <div class="desc">
+                <h3>Family Task Manager</h3>
+                <span>App Design</span>
+              </div>
+            </a>
+          </div>
+          <div class="work-item">
+            <a href="pages/badge.html" class="work" style="background-image: url(images/badge/thumb.jpg);">
+              <div class="desc">
+                <h3>Automated Badge System</h3>
+                <span>Product Design</span>
+              </div>
+            </a>
+          </div>
+          <div class="work-item">
+            <a href="pages/maplestory.html" class="work" style="background-image: url(images/maple/thumb.png);">
+              <div class="desc">
+                <h3>Maplestory Progression App</h3>
+                <span>App Design</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
 
 	
 	
@@ -419,41 +505,71 @@
 		</div>
 	</div>
 	
-	<div id="fh5co-started" class="fh5co-bg-dark" style="background: #2F3C4F;">
-		<div class="overlay"></div>
-		<div class="container">
-			<div class="row animate-box">
-				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-					<h2>Hire Me!</h2>
-					<p>Let's discuss your project and how I can help you. You can reach me at bruno_martignago@hotmail.com or on the phone +55 (19) 993941531.</p>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="gototop js-top">
-		<a href="#" class="js-gotop"><i class="icon-arrow-up22"></i></a>
-	</div>
-	
-	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
-	<!-- jQuery Easing -->
-	<script src="js/jquery.easing.1.3.js"></script>
-	<!-- Bootstrap -->
-	<script src="js/bootstrap.min.js"></script>
-	<!-- Waypoints -->
-	<script src="js/jquery.waypoints.min.js"></script>
-	<!-- Stellar Parallax -->
-	<script src="js/jquery.stellar.min.js"></script>
-	<!-- Easy PieChart -->
-	<script src="js/jquery.easypiechart.min.js"></script>
-	<!-- Google Map -->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCefOgb1ZWqYtj7raVSmN4PL2WkTrc-KyA&sensor=false"></script>
-	<script src="js/google_map.js"></script>
-	
-	<!-- Main -->
-	<script src="js/main.js"></script>
+	<div id="fh5co-started">
+      <div class="container">
+        <h2 style= "color:#fff">Let’s Work Together</h2>
+        <p>Looking for a designer who blends AI, UX, and strategic thinking? Reach out and let’s bring your ideas to life.</p>
+        <a href="mailto:bruno_martignago@hotmail.com" class="cta-btn">Get in Touch</a>
+      </div>
+    </div>
+  </div>
 
-	</body>
+  <div class="gototop js-top">
+    <a href="#" class="js-gotop"><i class="icon-arrow-up22"></i></a>
+  </div>
+	
+	<!-- Essential JS -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+<script>
+  const messages = [
+    "Hello there!",
+    "Olá!",
+    "¡Hola!",
+    "Salut !",
+    "Hallo!",
+    "Ciao!",
+    "こんにちは！",
+    "안녕하세요!",
+    "你好！",
+    "Привет!"
+  ];
+
+  const el = document.getElementById("hello-animated");
+  let messageIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+
+  function typeEffect() {
+    const current = messages[messageIndex];
+    if (isDeleting) {
+      charIndex--;
+    } else {
+      charIndex++;
+    }
+
+    el.textContent = current.substring(0, charIndex);
+
+    let delay = isDeleting ? 50 : 100;
+
+    if (!isDeleting && charIndex === current.length) {
+      delay = 1500;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      messageIndex = (messageIndex + 1) % messages.length;
+      delay = 400;
+    }
+
+    setTimeout(typeEffect, delay);
+  }
+
+  document.addEventListener("DOMContentLoaded", typeEffect);
+</script>
+
 </html>
-
