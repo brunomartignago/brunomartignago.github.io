@@ -1,0 +1,54 @@
+:root {
+  /* Colors */
+  --bg-main: #FAF5F2;
+  --bg-accent: #FFFFFF;
+  --bg-footer: #D7763D;
+  --text-primary: #0A0A0A;
+  --text-secondary: #333333;
+  --text-dark-primary:#FFFFFF;
+  --text-dark-secondary:#599ED7;
+  --text-tertiary: #666666;
+  --border-default: #0A0A0A;
+
+  /* Typography */
+  --font-body: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Black Han Sans', system-ui, sans-serif;
+
+  /* Font weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+
+  /* Spacing scale */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 64px;
+
+  /* Radius */
+  --radius-sm: 15px;
+  --radius-lg: 30px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.brand-icon {
+  width: 69px;
+  height: 77px;
+}
+
+.brand-name {
+  font-size: 16px;
+  font-weight: var(--weight-medium);
+}
+
+
+

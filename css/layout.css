@@ -1,0 +1,279 @@
+html {
+  font-family: var(--font-body);
+  font-weight: var(--weight-regular);
+  color: var(--text-primary);
+  background-color: var(--bg-main);
+}
+
+body {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.heading-display {
+  font-family: var(--font-display);
+}
+
+.heading-body {
+  font-family: var(--font-body);
+}
+
+.brand-location {
+  margin-left: 4px;
+  color: var(--text-tertiary);
+  font-weight: var(--weight-regular);
+  margin-bottom: var(--space-sm);
+}
+
+.site-header {
+  width: 100%;
+  background-color: var(--bg-main);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-lg);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero {
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.hero-actions {
+  margin-top: 48px;
+  align-items: margin-left;
+  display: flex;
+  gap: var(--space-sm)
+}
+
+.services {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-xl);
+  text-align: center;
+  background-color: var(--bg-accent);
+}
+
+.body-heading {
+  font-family: var(--font-body);
+  size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.services-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+
+.featured-projects {
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.featured-projects-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.project {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+.project.reverse {
+  grid-template-columns: 1fr 1fr;
+}
+
+.project.reverse .project-image {
+  order: 2;
+}
+
+.project.reverse .project-content {
+  order: 1;
+}
+
+@media (max-width: 900px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .project {
+    grid-template-columns: 1fr;
+  }
+
+  .project.reverse .project-image,
+  .project.reverse .project-content {
+    order: initial;
+  }
+}
+
+.other-projects {
+  padding: var(--space-xl) var(--space-lg);
+  background-color: var(--bg-accent);
+}
+
+.other-projects-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+@media (max-width: 1000px) {
+  .other-projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .other-projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.about {
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.about-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-cta {
+  padding: var(--space-xl) var(--space-lg);
+  background-color: #D7763D;
+}
+
+.footer-cta-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: var(--space-sm);
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  section {
+    padding-left: var(--space-sm);
+    padding-right: var(--space-sm);
+  }
+
+  
+  .header {
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .header-name {
+    font-size: 14px;
+  }
+
+  .brand-icon {
+    width: 32px;
+    height: 36px;
+  }
+
+  .header-location {
+    display: none;
+  }
+
+  .hero,
+  .hero-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-image {
+    margin-top: var(--space-md);
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+  }
+
+  .services-grid,
+  .other-projects-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .card,
+  .project-tile {
+    width: 100%;
+  }
+
+  .project,
+  .project.reverse {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .project-image img {
+    width: 100%;
+    height: auto;
+  }
+
+  .other-projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-cta-actions {
+    width: 100%;
+  }
+
+  .footer-cta-actions .btn,
+  .footer-cta-actions .header-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+}
+
+
