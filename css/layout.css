@@ -59,21 +59,22 @@ body {
 
 .hero-actions {
   margin-top: 48px;
-  align-items: margin-left;
   display: flex;
-  gap: var(--space-sm)
+  flex-wrap: wrap;
+  gap: var(--space-sm);
 }
 
 .services {
-  padding-top: var(--space-lg);
-  padding-bottom: var(--space-xl);
+  padding: var(--space-lg) var(--space-lg) var(--space-xl);
   text-align: center;
   background-color: var(--bg-accent);
+  /* ensure box-shadows on cards aren't clipped */
+  overflow: visible;
 }
 
 .body-heading {
   font-family: var(--font-body);
-  size: 24px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--text-primary);
   text-align: center;
@@ -85,7 +86,7 @@ body {
   margin: 0 auto;
 
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--space-lg);
 }
 
@@ -123,11 +124,8 @@ body {
 }
 
 @media (max-width: 900px) {
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .project {
+  .project,
+  .project.reverse {
     grid-template-columns: 1fr;
   }
 
@@ -147,21 +145,11 @@ body {
   margin: 0 auto;
 
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--space-lg);
 }
 
-@media (max-width: 1000px) {
-  .other-projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 
-@media (max-width: 600px) {
-  .other-projects-grid {
-    grid-template-columns: 1fr;
-  }
-}
 
 .about {
   padding: var(--space-xl) var(--space-lg);
@@ -218,9 +206,15 @@ body {
 
   .hero,
   .hero-inner {
+    grid-template-columns: 1fr;
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+
+  .hero-title {
+    font-size: 36px;
+    line-height: 44px;
   }
 
   .hero-image {
@@ -240,13 +234,15 @@ body {
 
   .services-grid,
   .other-projects-grid {
-    grid-template-columns: 1fr;
     gap: var(--space-md);
+    /* padding-right gives the 6px box-shadow space to breathe */
+    padding-right: 8px;
   }
 
   .card,
   .project-tile {
     width: 100%;
+    box-sizing: border-box;
   }
 
   .project,
@@ -258,10 +254,6 @@ body {
   .project-image img {
     width: 100%;
     height: auto;
-  }
-
-  .other-projects-grid {
-    grid-template-columns: 1fr;
   }
 
   .footer-cta-actions {
