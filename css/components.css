@@ -256,7 +256,8 @@
 }
 
 .project-image img {
-  width: 520px;
+  width: 100%;
+  max-width: 520px;
   height: auto;
   display: block;
   border-radius: var(--radius-sm);
@@ -399,8 +400,10 @@
 
 .footer-cta-actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: var(--space-md);
 }
 
