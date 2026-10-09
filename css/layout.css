@@ -106,6 +106,9 @@ body {
 
 .featured-projects {
   padding: var(--space-xl) var(--space-lg);
+  /* The project images slide in from the side; never let that widen the page */
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .featured-projects-inner {

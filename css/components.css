@@ -500,6 +500,9 @@
   background-color: var(--tag-bg, transparent);
   box-shadow:
     4px 4px 0 0 var(--tag-shadow, var(--text-primary));
+
+  /* Sticker tilt, randomized once per page load by js/motion.js */
+  transform: rotate(var(--rot, 0deg));
 }
 
 .tag-yellow {
@@ -537,12 +540,34 @@
   margin-bottom: var(--space-lg);
 }
 
-.project-image img {
+.project-image img,
+.diagram {
   width: 100%;
   max-width: 520px;
   height: auto;
   display: block;
   border-radius: var(--radius-sm);
+}
+
+/* Research diagram (featured project 1) */
+.diagram {
+  cursor: pointer;
+}
+
+.d-block {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+
+/* Slide-in comes from the side the image sits on */
+.project-slide {
+  --slide-x: -60px;
+  --slide-rot: -3deg;
+}
+
+.project.reverse .project-slide {
+  --slide-x: 60px;
+  --slide-rot: 3deg;
 }
 
 .project-tile {

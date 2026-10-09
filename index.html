@@ -216,16 +216,48 @@
   <h2 class="body-heading">Featured Projects</h2>
   <div class="featured-projects-inner">
 
-    <div class="project reverse">
-      <div class="project-image">
-        <img src="assets/images/research_1.png" alt=" Visual patterns in web page generation">
+    <div class="project reverse" data-reveal="project">
+      <div class="project-image project-slide">
+        <!-- Animated version of assets/images/research_1.png; draws in on view, replays on hover/click -->
+        <svg class="diagram" id="diagram" viewBox="0 0 796 600" role="img" aria-label="Diagram: a web page wireframe is classified into two color-coded layout templates">
+          <rect width="796" height="600" rx="16" fill="#EFDFC9"/>
+          <rect class="d-fill" x="100" y="179" width="231" height="241" fill="#666666" style="--d:500ms"/>
+          <g fill="none" stroke="#A8A8A8" stroke-width="1.5">
+            <rect class="d-stroke" pathLength="1" x="100" y="179" width="231" height="241" style="--d:0ms"/>
+            <path class="d-stroke" pathLength="1" d="M100 197H331M100 209H331M100 302H331M100 397H331" style="--d:150ms"/>
+            <path class="d-stroke" pathLength="1" d="M216 209V302M274 209V302" style="--d:300ms"/>
+            <path class="d-stroke" pathLength="1" d="M274 218H331M274 228H331M274 238H331M274 248H331M274 258H331M274 268H331M274 278H331M274 288H331" stroke-width="1" style="--d:420ms" opacity=".6"/>
+          </g>
+          <g fill="none" stroke="#5A5A5A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path class="d-stroke" pathLength="1" d="M348 295 446 197" style="--d:850ms"/>
+            <path class="d-stroke" pathLength="1" d="M348 295 446 392" style="--d:850ms"/>
+            <path class="d-stroke" pathLength="1" d="M432 197H446V211" style="--d:1150ms"/>
+            <path class="d-stroke" pathLength="1" d="M432 392H446V378" style="--d:1150ms"/>
+          </g>
+          <g>
+            <rect class="d-block" x="464" y="41" width="231" height="17" fill="#9A9A9A" style="--d:1250ms"/>
+            <rect class="d-block" x="464" y="58" width="231" height="12" fill="#5C2A7A" style="--d:1330ms"/>
+            <rect class="d-block" x="464" y="70" width="174" height="94" fill="#BB6720" style="--d:1410ms"/>
+            <rect class="d-block" x="638" y="70" width="57" height="94" fill="#1C3397" style="--d:1490ms"/>
+            <rect class="d-block" x="464" y="164" width="231" height="94" fill="#BA2121" style="--d:1570ms"/>
+            <rect class="d-block" x="464" y="258" width="231" height="23" fill="#1E0A28" style="--d:1650ms"/>
+          </g>
+          <g>
+            <rect class="d-block" x="464" y="319" width="231" height="17" fill="#9A9A9A" style="--d:1350ms"/>
+            <rect class="d-block" x="464" y="336" width="231" height="12" fill="#5C2A7A" style="--d:1430ms"/>
+            <rect class="d-block" x="464" y="348" width="116" height="94" fill="#BB6720" style="--d:1510ms"/>
+            <rect class="d-block" x="580" y="348" width="115" height="94" fill="#BBA027" style="--d:1590ms"/>
+            <rect class="d-block" x="464" y="442" width="231" height="94" fill="#BA2121" style="--d:1670ms"/>
+            <rect class="d-block" x="464" y="536" width="231" height="23" fill="#1E0A28" style="--d:1750ms"/>
+          </g>
+        </svg>
       </div>
 
 	      <div class="project-content">
 
 	      	 <div class="project-tags">
-		          <span class="tag tag-yellow">Research</span>
-		          <span class="tag tag-green">User Interface</span>
+		          <span class="tag tag-yellow" style="--i:0">Research</span>
+		          <span class="tag tag-green" style="--i:1">User Interface</span>
 		      </div>
 	        <h3 class="project-title">
 	          Visual patterns in web page generation
@@ -241,16 +273,16 @@
       	  </div>
     </div>
 
-    <div class="project">
-      <div class="project-image">
+    <div class="project" data-reveal="project">
+      <div class="project-image project-slide">
         <img src="assets/images/research_2.png" alt="Cognitive Load influence on page navigation">
       </div>
 
       <div class="project-content">
 
       	 <div class="project-tags">
-	          <span class="tag tag-yellow">Research</span>
-	          <span class="tag tag-pink">User Experience</span>
+	          <span class="tag tag-yellow" style="--i:0">Research</span>
+	          <span class="tag tag-pink" style="--i:1">User Experience</span>
 	      </div>
         <h3 class="project-title">
           Cognitive Load influence on page navigation

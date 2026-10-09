@@ -30,6 +30,33 @@
   60% { opacity: 1; }
 }
 
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(var(--slide-x, 60px)) rotate(var(--slide-rot, 3deg)); }
+}
+
+/* Tags settle at their own --rot */
+@keyframes slap {
+  from {
+    opacity: 0;
+    transform: scale(1.35) rotate(0deg);
+    box-shadow: 0 0 0 0 var(--tag-shadow, var(--text-primary));
+  }
+}
+
+/* The dasharray only exists while drawing, so the resting SVG never depends on pathLength support */
+@keyframes draw {
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
+}
+
+@keyframes fillIn {
+  from { opacity: 0; }
+}
+
+@keyframes grow {
+  from { transform: scaleY(0); }
+}
+
 /* ---------- Hero intro (on load, done in ~1.35s) ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
@@ -50,6 +77,39 @@
 
   html.js .hero-stage .viz {
     animation: stamp 650ms var(--ease-land) 200ms backwards;
+  }
+}
+
+/* ---------- Featured projects: slide-in, tag slap, diagram draw ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js .project:not(.is-in) .project-slide,
+  html.js .project:not(.is-in) .tag {
+    opacity: 0;
+  }
+
+  .project.is-in .project-slide {
+    animation: slideIn 800ms var(--ease-out) backwards;
+  }
+
+  .project.is-in .tag {
+    animation: slap 520ms var(--ease-land) backwards;
+    animation-delay: calc(350ms + var(--i, 0) * 120ms);
+  }
+
+  html.js .diagram.draw .d-stroke {
+    animation: draw 900ms var(--ease-out) backwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  html.js .diagram.draw .d-fill {
+    animation: fillIn 400ms ease backwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  html.js .diagram.draw .d-block {
+    animation: grow 420ms var(--ease-land) backwards;
+    animation-delay: var(--d, 0ms);
   }
 }
 

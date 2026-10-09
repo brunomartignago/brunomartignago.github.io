@@ -37,7 +37,33 @@
   window.Motion = Motion;
 
   /* ---------- Reveal ---------- */
+  // Adds .is-in once and fires "motion:in" so other effects can start with it
   document.querySelectorAll("[data-reveal]").forEach(el => {
-    Motion.onEnter(el, target => target.classList.add("is-in"));
+    Motion.onEnter(el, target => {
+      target.classList.add("is-in");
+      target.dispatchEvent(new CustomEvent("motion:in"));
+    });
   });
+
+  /* ---------- Tags: each sticker settles at its own small tilt ---------- */
+  document.querySelectorAll(".tag").forEach(tag => {
+    tag.style.setProperty("--rot", (Math.random() * 6 - 3).toFixed(1) + "deg");
+  });
+
+  /* ---------- Research diagram: draw on view, replay on hover/click ---------- */
+  const diagram = document.getElementById("diagram");
+  const diagramProject = diagram && diagram.closest(".project");
+  if (diagram && diagramProject) {
+    const draw = () => {
+      if (Motion.reduced()) return;
+      diagram.classList.remove("draw");
+      void diagram.getBoundingClientRect(); // restart the CSS animations
+      diagram.classList.add("draw");
+    };
+    diagramProject.addEventListener("motion:in", draw);
+    diagram.addEventListener("mouseenter", () => {
+      if (diagramProject.classList.contains("is-in")) draw();
+    });
+    diagram.addEventListener("click", draw);
+  }
 })();
