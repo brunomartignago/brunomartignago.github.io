@@ -1,0 +1,764 @@
+<title>Cognitive Load Case Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: the approved case-journal system (Journal level + sticky notes + taped cover figure), Day edition.
+   Part 2 accent = cyan. Contents column | 660px reading column | 230px marginalia. Figures use real study data. */
+:root {
+  color-scheme: light;
+  --paper: #FAF5F2; --card: #FFFFFF; --ink: #0A0A0A;
+  --text: #1F1F1F; --text-2: #4A4A4A; --text-3: #6E6A66;
+  --rule: rgba(10,10,10,.08); --line: #D8D0C9; --wire: #ECE6E1;
+  --accent: #60E7FF; --accent-d: #348796;
+  --yellow: #FFF260; --yellow-d: #A9A03E;
+  --blue: #60C2FF; --blue-d: #2157A9;
+  --green: #60FFA2; --green-d: #318D57;
+  --pink: #FD93E2; --pink-d: #8B487A;
+  --peach: #FFB37A; --peach-d: #9A4F1C;
+  --orange: #D7763D; --cm: #E0352B;
+  --tape: rgba(96, 231, 255, .5);
+  --font-body: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Black Han Sans', 'Arial Black', Impact, system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --radius: 15px;
+  --ease-out: cubic-bezier(.22,1,.36,1);
+  --ease-land: cubic-bezier(.34,1.56,.64,1);
+}
+html { overflow-x: clip; }
+body {
+  margin: 0; background: var(--paper); color: var(--text); font: 400 17px/1.7 var(--font-body); overflow-x: clip;
+  background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 28px 28px; background-position: -1px -1px;
+}
+a { color: inherit; }
+img { display: block; max-width: 100%; height: auto; }
+button { font: inherit; }
+
+/* Header */
+.site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: var(--paper); border-bottom: 3px solid var(--ink); }
+.header-inner { max-width: 1280px; margin: 0 auto; padding: 10px clamp(16px, 3vw, 32px); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
+.brand img { width: 34px; height: 38px; }
+.crumb { font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.crumb span { color: var(--text-3); font-weight: 400; }
+.header-meta { font: 500 12px/1 var(--font-mono); color: var(--text-3); white-space: nowrap; }
+.progress { position: absolute; left: 0; right: 0; bottom: -3px; height: 3px; background: var(--orange); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
+
+/* Cover */
+.cover { max-width: 1280px; margin: 0 auto; padding: 56px clamp(16px, 3vw, 32px) 16px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 48px; align-items: start; }
+.eyebrow { font: 500 12px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin: 0 0 18px; }
+.eyebrow b { color: var(--text); font-weight: 500; }
+.case-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(38px, 5.4vw, 72px); line-height: 1.05; margin: 0 0 22px; text-wrap: balance; }
+.case-title mark { background: none; color: inherit; position: relative; z-index: 0; padding: 0 .08em; }
+.case-title mark::before { content: ""; position: absolute; inset: .12em -.02em .02em; background: var(--accent); z-index: -1; border-radius: 6px; }
+.lede { font-size: clamp(18px, 1.7vw, 21px); line-height: 1.6; color: var(--text-2); max-width: 60ch; margin: 0; }
+.index-card { background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 6px 6px 0 0 var(--ink); padding: 20px 22px; font-size: 15px; }
+.index-card h2 { font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; margin: 0 0 14px; padding-bottom: 12px; border-bottom: 2px dashed var(--line); color: var(--text-3); }
+.index-card dl { margin: 0; display: grid; grid-template-columns: 92px 1fr; gap: 10px 12px; }
+.index-card dt { font: 500 12px/1.6 var(--font-mono); color: var(--text-3); text-transform: uppercase; letter-spacing: .04em; }
+.index-card dd { margin: 0; line-height: 1.5; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { display: inline-flex; padding: 3px 9px; font-size: 13px; font-weight: 500; color: #0A0A0A; border: 2px solid var(--ink); border-radius: 10px; background: var(--tb); box-shadow: 3px 3px 0 0 var(--ts); }
+.cover-fig { grid-column: 1 / -1; max-width: 760px; }
+
+/* Journal grid */
+.journal { max-width: 1280px; margin: 0 auto; padding: 24px clamp(16px, 3vw, 32px) 80px; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 48px; }
+.toc { position: sticky; top: 92px; align-self: start; font-size: 14px; }
+.toc h2 { font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin: 0 0 14px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.toc a { display: grid; grid-template-columns: 30px 1fr; gap: 4px; padding: 6px 10px; border-radius: 10px; text-decoration: none; color: var(--text-2); border: 2px solid transparent; transition: background 200ms, border-color 200ms, box-shadow 200ms var(--ease-land), transform 200ms var(--ease-land); }
+.toc a span { font: 500 12px/1.7 var(--font-mono); color: var(--text-3); }
+.toc a:hover { background: var(--card); color: var(--text); }
+.toc a.active { color: #0A0A0A; background: var(--accent); border-color: var(--ink); box-shadow: 3px 3px 0 0 var(--accent-d); transform: translate(-1px,-1px); }
+.toc a.active span { color: #0A0A0A; }
+.entries { min-width: 0; }
+.row { display: grid; grid-template-columns: minmax(0, 660px) 230px; gap: 0 48px; align-items: start; }
+.row > .main { min-width: 0; }
+.row > .wide { grid-column: 1 / -1; min-width: 0; }
+.entry { padding-block: 40px 20px; scroll-margin-top: 80px; }
+.entry + .entry { border-top: 2px dashed var(--line); }
+.entry-head { display: flex; align-items: flex-end; gap: 18px; margin: 0 0 22px; }
+.entry-num { font-family: var(--font-display); font-size: 64px; line-height: .8; color: var(--paper); -webkit-text-stroke: 2px var(--ink); text-shadow: 4px 4px 0 var(--accent); }
+.entry-head small { display: block; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 8px; }
+.entry-head h2 { margin: 0; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.15; font-weight: 600; }
+.main p { margin: 0 0 18px; max-width: 66ch; }
+.main ol { margin: 0 0 18px; padding-left: 22px; }
+.main li { margin-bottom: 6px; }
+.hl { background-color: transparent; background-image: linear-gradient(transparent 58%, var(--accent) 58%, var(--accent) 92%, transparent 92%); background-repeat: no-repeat; background-size: 100% 100%; padding: 0 2px; color: inherit; }
+
+/* Sticky notes */
+.mnote { background: #FFF7B8; color: #2A2A2A; border: 2px solid #0A0A0A; border-radius: 4px 4px 14px 4px; padding: 14px 14px 12px; box-shadow: 4px 4px 0 0 #A9A03E; transform: rotate(var(--r, 1.2deg)); font-size: 14px; line-height: 1.55; }
+.mnote .k { display: block; font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: #6A6416; margin-bottom: 6px; }
+.mnote.pink { background: #FFD8F4; box-shadow: 4px 4px 0 0 #8B487A; } .mnote.pink .k { color: #7A3A69; }
+.mnote.blue { background: #D6EEFF; box-shadow: 4px 4px 0 0 #2157A9; } .mnote.blue .k { color: #1D4A8A; }
+.mnote.cyan { background: #D2FAFF; box-shadow: 4px 4px 0 0 #348796; } .mnote.cyan .k { color: #1F6875; }
+
+/* Figures */
+.fig { margin: 8px 0 32px; }
+.frame { position: relative; display: block; background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 6px 6px 0 0 var(--ink); overflow: hidden; }
+.frame.pad { padding: 14px; }
+.frame.taped { overflow: visible; }
+.frame.taped::before, .frame.taped::after { content: ""; position: absolute; width: 96px; height: 26px; background: var(--tape); top: -14px; z-index: 2; border-left: 1px dashed rgba(0,0,0,.12); border-right: 1px dashed rgba(0,0,0,.12); }
+.frame.taped::before { left: 18px; transform: rotate(-5deg); } .frame.taped::after { right: 18px; transform: rotate(4deg); }
+.frame.taped img { border-radius: 10px; }
+.zoomable { all: unset; display: block; cursor: zoom-in; width: 100%; }
+.zoomable:focus-visible { outline: 3px solid var(--blue-d); outline-offset: 4px; border-radius: var(--radius); }
+.zoomable:hover .frame { transform: translate(-2px,-2px); box-shadow: 9px 9px 0 0 var(--ink); }
+.zoomable .frame { transition: transform 300ms var(--ease-land), box-shadow 300ms var(--ease-land); }
+figcaption { display: flex; gap: 10px; margin-top: 14px; font-size: 14px; line-height: 1.5; color: var(--text-2); }
+figcaption b { font: 500 12px/1.75 var(--font-mono); color: var(--text); white-space: nowrap; text-transform: uppercase; letter-spacing: .04em; }
+.frame-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 14px; border-bottom: 3px solid var(--ink); background: var(--paper); }
+.frame-bar .lbl { font: 500 12px/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; }
+.ctrls { display: flex; gap: 6px; flex-wrap: wrap; }
+.ctrl { font: 500 12.5px/1 var(--font-body); color: var(--ink); cursor: pointer; padding: 8px 11px; border: 2px solid var(--ink); border-radius: 10px; background: var(--card); box-shadow: 3px 3px 0 0 var(--ink); transition: transform 150ms, box-shadow 150ms, background 150ms; }
+.ctrl:hover { transform: translate(1px,1px); box-shadow: 2px 2px 0 0 var(--ink); }
+.ctrl[aria-pressed="true"], .ctrl:active { transform: translate(3px,3px); box-shadow: 0 0 0 0 var(--ink); background: var(--accent); }
+.ctrl:focus-visible { outline: 3px solid var(--blue-d); outline-offset: 2px; }
+.illus { font: 400 12px/1.4 var(--font-mono); color: var(--text-3); padding: 8px 14px 12px; margin: 0; }
+.fig-stage { position: relative; }
+
+/* Specimen + stats + formula */
+.specimen { background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); overflow: hidden; margin: 6px 0 28px; box-shadow: 6px 6px 0 0 var(--accent-d); }
+.specimen header { background: var(--accent); color: #0A0A0A; padding: 12px 18px; border-bottom: 3px solid var(--ink); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.specimen header h3 { margin: 0; font-size: 18px; font-weight: 600; }
+.specimen header span { font: 500 12px/1 var(--font-mono); }
+.specimen ol { margin: 0; padding: 6px 18px 12px 40px; background-image: linear-gradient(transparent 33px, var(--line) 33px, var(--line) 34px, transparent 34px); background-size: 100% 34px; background-position: 0 6px; }
+.specimen li { line-height: 34px; font-size: 15px; margin: 0; }
+.formula { background: var(--card); border: 2px dashed var(--ink); border-radius: 10px; padding: 14px 16px; margin: 0 0 20px; font: 400 16px/1.6 var(--font-mono); overflow-x: auto; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 28px; }
+.formula .frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 4px; }
+.formula .frac span:first-child { border-bottom: 2px solid var(--ink); padding: 0 4px 2px; }
+.formula .frac span:last-child { padding: 2px 4px 0; }
+.pull { margin: 10px 0 28px; padding: 6px 0 6px 22px; border-left: 6px solid var(--ink); }
+.pull p { font-family: var(--font-display); font-size: clamp(28px, 3.4vw, 42px); line-height: 1.12; margin: 0; max-width: none; }
+.next { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; margin-top: 32px; padding: 22px 24px; text-decoration: none; background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 6px 6px 0 0 var(--ink); transition: transform 300ms var(--ease-land), box-shadow 300ms var(--ease-land); }
+.next:hover { transform: translate(-2px,-2px); box-shadow: 9px 9px 0 0 var(--ink); }
+.next small { display: block; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 8px; }
+.next strong { font-size: 22px; font-weight: 600; }
+.next .arrow { font-family: var(--font-display); font-size: 40px; }
+
+/* Fig 02 · terrain */
+.terrain-stage { position: relative; aspect-ratio: 5 / 4; background: #FFFFFF; }
+.terrain-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.step-cap { position: absolute; left: 14px; bottom: 12px; max-width: 300px; font-size: 13.5px; line-height: 1.45; color: var(--text-2); background: rgba(255,255,255,.92); border: 2px solid var(--ink); border-radius: 10px; padding: 8px 10px; box-shadow: 3px 3px 0 0 var(--ink); }
+.step-cap b { display: block; font: 500 11px/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink); }
+
+/* Fig 03 · live CM grid */
+.cmlab { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 0; }
+.cmgrid { position: relative; display: grid; grid-template-columns: repeat(10, 1fr); gap: 0; margin: 16px; border: 2px solid var(--ink); background: #FFFFFF; aspect-ratio: 10 / 6; touch-action: manipulation; }
+.cell { all: unset; position: relative; box-sizing: border-box; border-right: 1px solid var(--wire); border-bottom: 1px solid var(--wire); cursor: pointer; background: var(--cbg, transparent); transition: background 200ms; }
+.cell:focus-visible { outline: 3px solid var(--blue-d); outline-offset: -3px; z-index: 2; }
+.cell[data-m="1"] { --cbg: #C9F6FF; } .cell[data-m="2"] { --cbg: #60E7FF; } .cell[data-m="3"] { --cbg: #348796; }
+.cmdot { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--cm); border: 3px solid var(--ink); box-shadow: 2px 2px 0 0 var(--ink); pointer-events: none; transition: left 450ms var(--ease-land), top 450ms var(--ease-land); z-index: 3; }
+.cross { position: absolute; pointer-events: none; z-index: 2; transition: left 450ms var(--ease-land), top 450ms var(--ease-land); }
+.cross.v { top: 0; bottom: 0; width: 0; border-left: 2px dashed var(--cm); }
+.cross.h { left: 0; right: 0; height: 0; border-top: 2px dashed var(--cm); }
+.cmread { border-left: 3px solid var(--ink); padding: 16px; font: 400 13px/1.6 var(--font-mono); display: flex; flex-direction: column; gap: 12px; background: var(--paper); }
+.cmread strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.1; color: var(--ink); }
+.cmread .k { font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); }
+.legend-m { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font: 400 11px/1 var(--font-mono); color: var(--text-3); }
+.legend-m i { width: 14px; height: 14px; border: 1.5px solid var(--ink); display: inline-block; }
+
+/* Fig 04 · pages to scale */
+.scale-stage { display: flex; align-items: flex-start; justify-content: space-around; gap: 10px; padding: 20px 16px 10px; overflow-x: auto; }
+.pcol { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 56px; }
+.pbar { position: relative; width: 46px; background: #FFFFFF; border: 2px solid var(--ink); border-radius: 4px; background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--scr) - 1px), var(--line) calc(var(--scr) - 1px), var(--line) var(--scr)); }
+.pdot { position: absolute; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: var(--cm); border: 1.5px solid var(--ink); }
+.pcol b { font: 500 11px/1.2 var(--font-mono); text-align: center; }
+.pcol span { font: 400 10.5px/1.2 var(--font-mono); color: var(--text-3); text-align: center; }
+
+/* Fig 05 · gravity */
+.overlay-stage { position: relative; }
+.overlay-stage img { width: 100%; }
+.overlay-stage .layer { position: absolute; inset: 0; transition: opacity 500ms; }
+.overlay-stage svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; transition: opacity 400ms; }
+
+/* Fig 06 · movement */
+.move { display: grid; grid-template-columns: 260px minmax(0, 1fr); }
+.strip-wrap { position: relative; height: 520px; overflow: hidden; border-right: 3px solid var(--ink); background: #FFFFFF; }
+.strip { position: absolute; left: 0; top: 0; width: 100%; transition: transform 700ms var(--ease-out); }
+.strip img { width: 100%; }
+.strip svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.viewport { position: absolute; left: 0; right: 0; border: 3px solid var(--ink); box-shadow: 0 0 0 9999px rgba(250,245,242,.55); pointer-events: none; transition: top 700ms var(--ease-out), height 300ms; }
+.move-read { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.move-read .big { font-family: var(--font-display); font-size: 44px; line-height: 1; }
+.move-read .k { font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); }
+.move-read input[type=range] { width: 100%; accent-color: var(--accent-d); }
+.mini-list { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+.mini-list span { font: 500 10px/1 var(--font-mono); text-align: center; padding: 5px 0; border: 1.5px solid var(--ink); border-radius: 5px; background: #FFFFFF; transition: background 200ms; }
+.mini-list span.on { background: var(--accent); }
+.mini-list span.past { background: #D2FAFF; }
+
+/* Fig 07 · assimilation span */
+.span-stage { position: relative; }
+.span-stage img { width: 100%; }
+.span-stage .late { position: absolute; inset: 0; opacity: 0; }
+.timeline { padding: 14px 16px 16px; border-top: 3px solid var(--ink); display: grid; gap: 10px; background: var(--paper); }
+.phases { display: grid; grid-template-columns: 15fr 20fr 25fr; border: 2px solid var(--ink); border-radius: 8px; overflow: hidden; }
+.phases div { padding: 8px 10px; font-size: 13px; line-height: 1.3; border-right: 2px solid var(--ink); opacity: .45; transition: opacity 300ms, background 300ms; }
+.phases div:last-child { border-right: 0; }
+.phases div b { display: block; font: 500 11px/1.3 var(--font-mono); letter-spacing: .02em; }
+.phases div.on { opacity: 1; }
+.ph1 { background: #FFF7B8; } .ph2 { background: #FFD8F4; } .ph3 { background: #D2FAFF; }
+.tl-row { display: flex; gap: 12px; align-items: center; }
+.tl-row input { flex: 1; accent-color: var(--accent-d); }
+.tl-row output { font: 500 14px/1 var(--font-mono); min-width: 52px; text-align: right; }
+
+/* Fig 08 · attractor */
+.well-stage { position: relative; aspect-ratio: 16 / 7; background: #FFFFFF; touch-action: none; }
+.well-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; }
+.well-ctrls { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; padding: 12px 16px; border-top: 3px solid var(--ink); background: var(--paper); font: 500 12px/1.3 var(--font-mono); }
+.well-ctrls label { display: flex; gap: 10px; align-items: center; }
+.well-ctrls input { accent-color: var(--accent-d); }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* Lightbox */
+.lightbox[hidden] { display: none !important; }
+.lightbox { position: fixed; inset: 0; z-index: 60; background: rgba(10,10,10,.85); display: grid; place-items: center; padding: 24px; cursor: zoom-out; }
+.lightbox figure { margin: 0; display: grid; gap: 12px; max-width: min(1300px, 100%); }
+.lightbox img { max-height: calc(100vh - 110px); width: auto; margin: 0 auto; border: 3px solid #0A0A0A; border-radius: 10px; background: #FFFFFF; }
+.lightbox figcaption { color: #FAF5F2; justify-content: center; } .lightbox figcaption b { color: var(--accent); }
+
+/* Reveal motion */
+@media (prefers-reduced-motion: no-preference) {
+  .js .rv:not(.in) { opacity: 0; transform: translateY(18px); }
+  .js .rv { transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
+  .js .hl:not(.in) { background-size: 0% 100%; }
+  .js .hl { transition: background-size 900ms var(--ease-out) 200ms; }
+  .js .case-title mark::before { animation: wipe 700ms var(--ease-out) 450ms backwards; transform-origin: 0 50%; }
+}
+@keyframes wipe { from { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) { .strip, .viewport, .cmdot, .cross { transition: none !important; } }
+
+/* Responsive */
+@media (max-width: 1180px) { .row { grid-template-columns: minmax(0, 1fr); } .row > .mnote { margin: -4px 8px 22px; max-width: 520px; } }
+@media (max-width: 900px) {
+  .journal { grid-template-columns: 1fr; gap: 0; }
+  .toc { position: static; margin-bottom: 8px; }
+  .toc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cover { grid-template-columns: 1fr; gap: 32px; }
+  .header-meta { display: none; }
+}
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .cmlab, .move { grid-template-columns: 1fr; }
+  .cmread { border-left: 0; border-top: 3px solid var(--ink); }
+  .strip-wrap { height: 380px; border-right: 0; border-bottom: 3px solid var(--ink); }
+  .pair { grid-template-columns: 1fr; }
+  .phases div { font-size: 11.5px; padding: 6px; }
+  .entry-num { font-size: 48px; }
+  .toc ol { grid-template-columns: 1fr; }
+  .well-stage { aspect-ratio: 4 / 3; }
+  .terrain-stage { aspect-ratio: 1 / 1; }
+  .step-cap { position: static; max-width: none; margin: 0; border-width: 0; border-top: 3px solid var(--ink); border-radius: 0; box-shadow: none; }
+}
+</style>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="https://brunomartignago.github.io/" target="_blank" rel="noopener"><img src="../assets/images/logo.png" alt="Bruno Martignago logo" width="69" height="77"><span class="crumb">Bruno Martignago <span>/ Cognitive load influence on page navigation</span></span></a>
+    <span class="header-meta" id="readLeft"></span>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<section class="cover">
+  <div>
+    <p class="eyebrow"><b>Case file 02</b> · Research · Part 2 of 2</p>
+    <h1 class="case-title">A web page has weight, and our eyes <mark>feel its gravity.</mark></h1>
+    <p class="lede">The third study of my research on web page structure. We turned pages into physical objects, calculated their center of mass, and used an eye tracker to see whether people's attention follows it.</p>
+  </div>
+  <aside class="index-card" aria-label="Project facts">
+    <h2>Index card</h2>
+    <dl>
+      <dt>Role</dt><dd>Researcher &amp; designer</dd>
+      <dt>Study</dt><dd>Third round of tests, 2024</dd>
+      <dt>Sample</dt><dd>6 pages · 14 participants · 60 s per page · 51 local centers of mass</dd>
+      <dt>Partner</dt><dd>Annamarie Huttunen, behavioral scientist</dd>
+      <dt>Tools</dt><dd>iMotions, density mapping</dd>
+      <dt>Methods</dt><dd><span class="tags"><span class="tag" style="--tb:#60E7FF;--ts:#348796">Eye tracking</span><span class="tag" style="--tb:#FFF260;--ts:#A9A03E">Density mapping</span><span class="tag" style="--tb:#FD93E2;--ts:#8B487A">Physics models</span></span></dd>
+    </dl>
+  </aside>
+  <figure class="fig cover-fig">
+    <button class="zoomable" type="button" data-zoom><span class="frame pad taped"><img src="../assets/images/cases/research2/lenovo_heat_0-20.jpg" alt="Eye-tracking heatmap of the Lenovo cart page for the first 20 seconds, with two purple circles marking the centers of mass of each screen" width="900" height="922"></span></button>
+    <figcaption><b>Fig. 01</b><span>Lenovo cart page, 0–20 s, 14 participants. The circles mark each screen's center of mass.</span></figcaption>
+  </figure>
+</section>
+
+<div class="journal">
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol id="toc">
+      <li><a href="#e1"><span>01</span>Context</a></li>
+      <li><a href="#e2"><span>02</span>A page has weight</a></li>
+      <li><a href="#e3"><span>03</span>Center of mass 101</a></li>
+      <li><a href="#e4"><span>04</span>The eye-tracking study</a></li>
+      <li><a href="#e5"><span>05</span>Gravity</a></li>
+      <li><a href="#e6"><span>06</span>Movement</a></li>
+      <li><a href="#e7"><span>07</span>Assimilation span</a></li>
+      <li><a href="#e8"><span>08</span>Attractors</a></li>
+      <li><a href="#e9"><span>09</span>What's next</a></li>
+    </ol>
+  </nav>
+
+  <div class="entries">
+    <!-- 01 -->
+    <section class="entry" id="e1">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">01</span><div><small>Entry 01</small><h2>Context</h2></div></div>
+        <p class="rv">This is the second part of a research project I've been working on since 2022. The first part focused on what a page is made of. This one focuses on how people move through it.</p>
+        <p class="rv">Let's go back to our axiom. We defined a web page as the combination of two pillars: visuals and content, and demographics and culture. From the first two studies, we can already understand the first pillar. The second is still too hard to put into metrics.</p>
+        <p class="rv">We already know that the information on screen plays a big role in guiding us through the "flow" of navigation. <mark class="hl">But how, exactly?</mark></p>
+      </div>
+      <aside class="mnote rv pink" style="--r:1.4deg"><span class="k">Part 1</span>“Visual patterns in web page generation” covers studies 1 and 2: the Form, Function, Component method and template summarization.</aside></div>
+    </section>
+
+    <!-- 02 -->
+    <section class="entry" id="e2">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">02</span><div><small>Entry 02 · Hypothesis</small><h2>A page has weight</h2></div></div>
+        <p class="rv">My hypothesis: people perceive a web page the way they perceive a physical object. <mark class="hl">Dense areas weigh more, and weight pulls attention.</mark></p>
+        <p class="rv">To test it, a flat page needed a third dimension. The information density mapping algorithm detects feature points on a screenshot, counts them in a grid of 50 × 50 px cells, and uses that count as the Z axis. The page becomes a terrain.</p>
+      </div>
+      <aside class="mnote rv" style="--r:-1.2deg"><span class="k">Cognitive Load Index</span>The same algorithm scores a page from 0 to 100, from cluster distance, cluster count and whitespace ratio (15% optimal). Lenovo's cart scored 59.2.</aside></div>
+      <div class="row"><figure class="fig wide rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 02 — Lenovo cart, 37 × 36 cells</span>
+            <div class="ctrls" role="group" aria-label="Steps">
+              <button class="ctrl" type="button" data-tstep="0" aria-pressed="true">1 · Page</button>
+              <button class="ctrl" type="button" data-tstep="1" aria-pressed="false">2 · Density</button>
+              <button class="ctrl" type="button" data-tstep="2" aria-pressed="false">3 · Terrain</button>
+              <button class="ctrl" type="button" data-tstep="3" aria-pressed="false">4 · Center of mass</button>
+            </div></div>
+          <div class="terrain-stage" id="terrain" role="img" aria-label="The Lenovo cart page becomes a grid of information density, then a 3D terrain with peaks where information piles up, with its center of mass marked near the middle of the page.">
+            <canvas id="tcv"></canvas>
+          </div>
+          <div class="step-cap" id="tcap"></div>
+        </div>
+        <figcaption><b>Fig. 02</b><span>From screenshot to terrain. Real density data from the study: 5,520 feature points in 1,332 cells.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <!-- 03 -->
+    <section class="entry" id="e3">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">03</span><div><small>Entry 03</small><h2>Center of mass 101</h2></div></div>
+        <p class="rv">This is an excuse for a mathematician to talk about math. In a continuous system, the center of mass is every position weighted by its density, divided by the total mass. Our pages are a grid of cells, so the integrals become sums:</p>
+        <div class="formula rv"><span>CM<sub>x</sub> = <span class="frac"><span>Σ m<sub>i</sub> · x<sub>i</sub></span><span>Σ m<sub>i</sub></span></span></span><span>CM<sub>y</sub> = <span class="frac"><span>Σ m<sub>i</sub> · y<sub>i</sub></span><span>Σ m<sub>i</sub></span></span></span></div>
+        <p class="rv">In plain words: it's the point where the page would balance on a fingertip if it were printed on a sheet of uneven thickness. Try it below.</p>
+      </div>
+      <aside class="mnote rv blue" style="--r:1deg"><span class="k">Local vs global</span>We calculated it for the whole page and for each 1920 × 1080 screen, because a visitor only ever sees one screen at a time.</aside></div>
+      <div class="row"><figure class="fig main rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 03 — Balance a page</span>
+            <div class="ctrls"><button class="ctrl" type="button" data-preset="layout">Page layout</button><button class="ctrl" type="button" data-preset="two">Two clusters</button><button class="ctrl" type="button" data-preset="clear">Clear</button></div></div>
+          <div class="cmlab">
+            <div style="position:relative"><div class="cmgrid" id="cmgrid" aria-label="Grid of 60 cells. Activate a cell to add mass; the red dot shows the center of mass."></div></div>
+            <div class="cmread" aria-live="polite">
+              <div><span class="k">Total mass</span><strong id="cmM">0</strong></div>
+              <div><span class="k">Center of mass</span><strong id="cmXY">—</strong></div>
+              <div id="cmCalc"></div>
+              <div class="legend-m"><i style="background:#C9F6FF"></i>1 <i style="background:#60E7FF"></i>2 <i style="background:#348796"></i>3 · click to add</div>
+            </div>
+          </div>
+        </div>
+        <figcaption><b>Fig. 03</b><span>Click cells to add mass (1 → 2 → 3 → empty). “Two clusters” shows the case behind Entry 08: the balance point lands where nothing is.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <!-- 04 -->
+    <section class="entry" id="e4">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">04</span><div><small>Entry 04 · Method</small><h2>The eye-tracking study</h2></div></div>
+        <div class="specimen rv"><header><h3>Third round of tests</h3><span>2024 · iMotions · 14 participants via UserTesting.com</span></header>
+          <ol><li>Select 6 random pages from the second round: 2 item detail, 2 item list and 2 cart pages, 3 long and 3 short.</li><li>Calculate every local center of mass for each 1920 × 1080 screen.</li><li>Run an eye-tracking test with no pre-determined tasks: 60 seconds per page.</li><li>Compare the centers of mass with the results.</li></ol></div>
+        <p class="rv">No task was on purpose. A task tells people where to look. We wanted to see where the page itself takes them.</p>
+        <p class="rv">We ran the test in iMotions with my research partner, behavioral scientist Annamarie Huttunen, who developed the density mapping and analysis, operated the software and collaborated on the findings. <mark class="hl">I had the theory; she had the tools.</mark></p>
+      </div>
+      <aside class="mnote rv cyan" style="--r:-1.4deg"><span class="k">Why these pages</span>They come from study 2's sample, so each one already had its Form, Function, Component classification.</aside></div>
+      <div class="row"><figure class="fig wide rv">
+        <div class="frame"><div class="frame-bar"><span class="lbl">Fig. 04 — The six pages, to scale</span></div>
+          <div class="scale-stage" id="scale" role="img" aria-label="Six pages drawn to scale, from HP at 17,053 pixels to PlayStation at 1,709 pixels, each divided into screens with a red dot for every local center of mass."></div>
+        </div>
+        <figcaption><b>Fig. 04</b><span>Each band is one 1920 × 1080 screen; each dot is that screen's center of mass. 51 in total.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <!-- 05 -->
+    <section class="entry" id="e5">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">05</span><div><small>Entry 05 · Finding</small><h2>Gravity</h2></div></div>
+        <p class="rv">The first and most important finding: <mark class="hl">people are drawn towards the center of mass</mark>, especially in longer and more complicated pages. The hottest areas of attention cluster around the circle drawn at each screen's center, and the per-area look counts and timelines show the gaze fixating and looping around it.</p>
+      </div></div>
+      <div class="row"><figure class="fig main rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 05 — Lenovo cart</span>
+            <div class="ctrls"><button class="ctrl" type="button" id="gPage" aria-pressed="false">Page</button><button class="ctrl" type="button" id="gHeat" aria-pressed="true">Heatmap</button><button class="ctrl" type="button" id="gCM" aria-pressed="true">Centers of mass</button></div></div>
+          <div class="overlay-stage" id="gStage">
+            <img src="../assets/images/cases/research2/lenovo_page.jpg" alt="Screenshot of the Lenovo cart page" width="900" height="912">
+            <img class="layer" id="gHeatImg" src="../assets/images/cases/research2/lenovo_heat_14p.jpg" alt="Eye-tracking heatmap of 14 participants on the Lenovo cart page" width="900" height="929" style="width:100%;height:100%;object-fit:cover;object-position:top">
+            <svg id="gSvg" viewBox="0 0 1788 1812" preserveAspectRatio="none" aria-hidden="true"></svg>
+          </div>
+        </div>
+        <figcaption><b>Fig. 05</b><span>14 participants. Circles: the local centers of mass of screens 1 and 2.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <!-- 06 -->
+    <section class="entry" id="e6">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">06</span><div><small>Entry 06 · Finding</small><h2>Movement</h2></div></div>
+        <p class="rv">On long pages, the gaze doesn't scan evenly from top to bottom. It travels. Each screen has its own center of mass, and <mark class="hl">attention moves from one to the next, like stepping stones</mark> down the page.</p>
+      </div></div>
+      <div class="row"><figure class="fig wide rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 06 — Amazon, 16,123 px</span><div class="ctrls"><button class="ctrl" type="button" id="mPlay">Play ▶</button></div></div>
+          <div class="move">
+            <div class="strip-wrap" id="stripWrap" role="img" aria-label="The long Amazon page with the 14-participant heatmap; a path connects the center of mass of each of its 16 screens.">
+              <div class="strip" id="strip"><img src="../assets/images/cases/research2/amazon_heat_14p.jpg" alt="" width="360" height="3246"><svg id="mSvg" viewBox="0 0 1788 16123" preserveAspectRatio="none"></svg></div>
+              <div class="viewport" id="mView"></div>
+            </div>
+            <div class="move-read">
+              <div><span class="k">Screen</span><div class="big" id="mNo">01 / 16</div></div>
+              <div><span class="k">Center of mass on this screen</span><div id="mXY" style="font:500 15px/1.4 var(--font-mono)"></div></div>
+              <label class="k" for="mRange">Scroll the page</label>
+              <input type="range" id="mRange" min="1" max="16" value="1">
+              <div class="mini-list" id="mList" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+        <figcaption><b>Fig. 06</b><span>Amazon heatmap (14 participants) with the path through its 16 local centers of mass.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <!-- 07 -->
+    <section class="entry" id="e7">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">07</span><div><small>Entry 07 · Finding</small><h2>Assimilation span</h2></div></div>
+        <p class="rv">Short pages behave differently. People start paying attention to the content only after realizing there isn't more of the page to explore. <mark class="hl">The time between their first observation and the read-through is the assimilation span.</mark></p>
+        <p class="rv">On a long page the pattern never completes: people observe the top for 15 seconds, then the gaze only dissipates.</p>
+      </div>
+      <aside class="mnote rv pink" style="--r:1.2deg"><span class="k">Same page, same people</span>The Lenovo maps for 0–20 s and 40–60 s look like two different studies.</aside></div>
+      <div class="row"><figure class="fig main rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 07 — Lenovo cart over 60 s</span><div class="ctrls"><button class="ctrl" type="button" id="sPlay">Play ▶</button></div></div>
+          <div class="span-stage" id="spanStage" role="img" aria-label="Lenovo heatmaps: in the first 20 seconds attention sits on the top half; between 40 and 60 seconds it concentrates on reading the cart details.">
+            <img src="../assets/images/cases/research2/lenovo_heat_0-20.jpg" alt="" width="900" height="922">
+            <img class="late" id="sLate" src="../assets/images/cases/research2/lenovo_heat_40-60.jpg" alt="" width="900" height="922">
+          </div>
+          <div class="timeline">
+            <div class="phases" id="phases">
+              <div class="ph1"><b>0–15 s · Scan</b>top half, 2 focal groups</div>
+              <div class="ph2"><b>15–35 s · Dissipation</b>observing the bottom half</div>
+              <div class="ph3"><b>35–60 s · Assimilation</b>focal groups reading</div>
+            </div>
+            <div class="tl-row"><input type="range" id="sRange" min="0" max="60" value="0" aria-label="Time in seconds"><output id="sOut">0 s</output></div>
+          </div>
+          <p class="illus">Heatmaps exist for 0–20 s and 40–60 s; the middle phase blends the two.</p>
+        </div>
+        <figcaption><b>Fig. 07</b><span>Scrub the minute: scan, dissipation, then assimilation.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <!-- 08 -->
+    <section class="entry" id="e8">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">08</span><div><small>Entry 08 · Finding</small><h2>Attractors</h2></div></div>
+        <p class="rv">Gravity explained where people look, not how they move between those places. We divided each page into a grid of 36 areas of interest (columns A–F, rows 0–5). Mapping the first 18 by hit time showed three things: clockwise motion around the center of mass, dissipation when the gaze sits between two centers of mass, and focal groups around each center.</p>
+        <p class="rv">Revisits told the same story: the gaze cycles, and <mark class="hl">revisits and dwell time are directly proportional</mark>. One outlier: E1 has around 50% fewer revisits than B1, but the same dwell time.</p>
+        <p class="rv">This looks a lot like an attractor model: a ball rolling over a surface with two wells. It orbits, crosses between them, and eventually settles.</p>
+      </div>
+      <aside class="mnote rv blue" style="--r:-1deg"><span class="k">Lorenz attractor</span>A set of chaotic solutions where tiny changes in the starting point evolve into completely different paths. Our gaze paths share that shape.</aside></div>
+      <div class="row"><figure class="fig main rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 08 — Two centers of mass</span><div class="ctrls"><button class="ctrl" type="button" id="wDrop">Drop a ball</button></div></div>
+          <div class="well-stage" id="well" role="img" aria-label="A curve with two wells labeled center of mass A and B. A ball dropped on the curve rolls, crosses the hump between the wells, and settles in one of them."><canvas id="wcv"></canvas></div>
+          <div class="well-ctrls"><label for="wTilt">Heavier center <input type="range" id="wTilt" min="-10" max="10" value="0"></label><span id="wOut">A and B balanced</span></div>
+        </div>
+        <figcaption><b>Fig. 08</b><span>Drag the ball and let go. Where it settles depends on where it starts, and on which center is heavier.</span></figcaption>
+      </figure></div>
+      <div class="row"><div class="pair wide rv">
+        <figure class="fig"><button class="zoomable" type="button" data-zoom><span class="frame pad"><img src="../assets/images/cases/research2/aoi_hit_times.jpg" alt="Lenovo page divided into a grid of areas of interest, with the order of the first 18 hits connected by lines" width="1000" height="1044"></span></button><figcaption><b>Fig. 09</b><span>First 18 AOI hit times (ms).</span></figcaption></figure>
+        <figure class="fig"><button class="zoomable" type="button" data-zoom><span class="frame pad"><img src="../assets/images/cases/research2/aoi_revisits.jpg" alt="Lenovo page grid showing the top 10 areas of interest by revisits and dwell time" width="1000" height="1044"></span></button><figcaption><b>Fig. 10</b><span>Top 10 AOIs by revisits and dwell time.</span></figcaption></figure>
+      </div></div>
+    </section>
+
+    <!-- 09 -->
+    <section class="entry" id="e9">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">09</span><div><small>Entry 09</small><h2>What's next</h2></div></div>
+        <p class="rv">In all honesty, this is a beginning, not a conclusion. Six pages and 14 people are enough to see a pattern, not to prove a law. But the data is promising, and we are ready for bigger experiments.</p>
+        <blockquote class="pull rv"><p>If attention behaves like gravity, a layout isn't only arranged. It's balanced.</p></blockquote>
+        <p class="rv">Our main objective is to capture enough data to create an AI that can generate great page and flow design: one that knows not only what goes on a page, but where people's eyes will go.</p>
+        <a class="next rv" href="https://brunomartignago.github.io/pages/research1.html" target="_blank" rel="noopener"><span><small>Back to part 1</small><strong>Visual patterns in web page generation</strong></span><span class="arrow" aria-hidden="true">←</span></a>
+      </div>
+      <aside class="mnote rv cyan" style="--r:1.3deg"><span class="k">Get involved</span>If this got you interested, reach out. There are lots of opportunities to help in this research.</aside></div>
+    </section>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Zoomed figure"><figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure></div>
+
+<script>
+(() => {
+  const root = document.documentElement; root.classList.add('js');
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+  const onView = (el, fn, t = 0.4) => { const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { fn(); io.disconnect(); } }, { threshold: t }); io.observe(el); };
+
+  /* Reveal */
+  const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; e.target.classList.add('in'); e.target.querySelectorAll('.hl').forEach(h => h.classList.add('in')); io.unobserve(e.target); }), { threshold: .12 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  /* Progress, read time, scrollspy */
+  const words = document.querySelector('.entries').innerText.split(/\s+/).length + 120;
+  const TOTAL = Math.max(1, Math.round(words / 220));
+  const links = [...document.querySelectorAll('#toc a')], targets = links.map(a => document.querySelector(a.getAttribute('href')));
+  function onScroll() {
+    const max = document.documentElement.scrollHeight - innerHeight, p = max > 0 ? Math.min(1, scrollY / max) : 0;
+    $('progress').style.setProperty('--p', p.toFixed(4));
+    $('readLeft').textContent = p > .97 ? 'Finished · thanks for reading' : `${Math.max(1, Math.round(TOTAL * (1 - p)))} min left`;
+    let idx = 0; targets.forEach((t, i) => { if (t.getBoundingClientRect().top < innerHeight * .35) idx = i; });
+    links.forEach((a, i) => a.classList.toggle('active', i === idx));
+  }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  links.forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth' }); }));
+
+  /* Lightbox */
+  const lb = $('lightbox'); let lastFocus = null;
+  document.querySelectorAll('[data-zoom]').forEach(b => b.addEventListener('click', () => {
+    const img = b.querySelector('img'), cap = b.closest('figure').querySelector('figcaption');
+    $('lbImg').src = img.src; $('lbImg').alt = img.alt; $('lbCap').innerHTML = cap ? cap.innerHTML : '';
+    lastFocus = b; lb.hidden = false; lb.tabIndex = -1; lb.focus();
+  }));
+  const closeLb = () => { lb.hidden = true; lastFocus && lastFocus.focus(); };
+  lb.addEventListener('click', closeLb); addEventListener('keydown', e => { if (e.key === 'Escape' && !lb.hidden) closeLb(); });
+
+  /* ========= Fig 02 · terrain from the real Lenovo density matrix ========= */
+  const M = [[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,17,17,12,5,4,12,15],[4,15,10,0,0,0,0,7,7,9,8,8,12,3,0,0,0,0,0,0,4,8,0,0,0,0,0,0,0,0,7,8,13,4,8,8],[11,16,20,6,7,10,3,18,9,10,1,2,1,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,2,15,5,17,7,13],[2,2,3,1,2,3,1,4,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,5,0,3],[0,0,0,0,0,0,10,22,24,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,8,15,20,20,15,2,0,0,0,0,0,0,0,0,0,10,4,2,7,4,6,6,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,12,24,14,20,15,2,0,0,0,0,0,0,0,1,11,15,10,19,29,26,23,23,16,4,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,3,1,5,22,24,23,15,10,0,0,0,3,33,41,16,11,10,0,0,0,13,9,0,0,0,0,0,0],[0,0,0,0,0,0,0,9,15,8,0,13,13,17,12,9,0,0,0,0,0,0,0,16,43,14,0,0,18,16,0,0,0,0,0,0],[0,0,0,0,0,0,5,6,12,6,6,20,23,0,0,0,0,0,0,0,0,0,0,19,25,13,6,9,2,10,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,10,17,15,2,0,17,8,0,0,0,0,0,0],[0,0,0,0,0,0,0,3,2,2,6,0,0,0,0,0,0,0,0,6,6,8,3,10,23,12,1,0,3,6,0,0,0,0,0,0],[0,0,0,0,0,0,15,33,24,22,15,0,0,0,0,0,0,0,0,1,5,25,10,5,6,17,13,23,2,6,0,0,0,0,0,0],[0,0,0,0,0,0,0,2,6,3,2,16,16,14,9,3,0,0,0,0,0,0,0,16,21,26,32,34,14,6,0,0,0,0,0,0],[0,0,0,0,0,0,0,14,18,9,1,19,22,24,17,15,0,0,0,0,0,0,0,0,5,18,22,7,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,3,0,6,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,4,22,8,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1,10,9,0,0,0,0,0,0,5,8,8,1,0,4,22,17,18,6,0,0,0,0,0,0,0],[7,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,9,13,7,12,17,23,14,14,21,14,25,13],[0,0,0,0,0,0,0,7,26,14,0,10,30,12,0,14,34,8,1,21,28,5,0,5,9,12,12,5,4,2,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,8,0,0,0,1,2,0,2,1,3,0,9,8,0,0,5,12,11,6,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,3,0,1,1,9,1,6,0,3,3,5,0,9,0,2,7,6,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,23,26,13,0,31,31,23,2,37,32,12,10,35,32,8,9,11,34,39,1,0,6,6,0,0,0,0,0,0],[0,0,0,0,0,0,0,30,15,6,0,32,33,20,5,19,14,3,11,33,16,0,0,6,9,4,7,7,9,3,0,0,0,0,0,0],[0,0,0,0,0,0,0,16,20,0,0,18,17,0,1,18,9,0,5,29,2,0,0,4,22,10,14,13,11,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,2,15,10,1,6,16,8,0,7,15,2,2,9,14,4,0,7,37,34,20,14,14,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,5,20,17,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,9,29,42,38,23,20,24,25,13,15,10,19,16,17,15,0,1,9,13,11,16,15,2,0,0,0,0,0,0],[0,0,0,0,0,0,6,26,28,28,25,17,25,20,22,26,20,28,1,8,18,12,1,8,17,26,37,37,13,0,0,0,0,0,0,0],[0,0,0,0,0,0,2,6,8,7,0,0,0,0,0,0,0,0,0,1,0,0,2,8,24,22,25,25,9,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,3,3,7,12,3,0,0,0,0,0,0,0,0,0,0,0,4,0,0,14,0,0,2,0,0,0,0,0,0],[0,0,0,0,0,0,0,13,14,19,14,16,3,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,7,7,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,3,4,9,8,8,10,9,13,20,15,16,11,7,10,12,10,11,2,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]]; // 37 rows (page top → bottom) × 36 cols, feature points per 50px cell
+  const R = M.length, C = M[0].length, MAX = 43;
+  const pageImg = new Image(); pageImg.src = '../assets/images/cases/research2/lenovo_page.jpg';
+  let tm = 0, mx = 0, my = 0, tot = 0;
+  M.forEach((row, i) => row.forEach((v, j) => { tot += v; mx += v * (j + .5); my += v * (i + .5); }));
+  const CMc = mx / tot, CMr = my / tot;
+  const cv = $('tcv'), ctx = cv.getContext('2d');
+  const RAMP = [[255,255,255],[201,246,255],[96,231,255],[52,135,150],[33,87,169],[10,10,10]];
+  const col = v => { const t = Math.min(1, v / MAX) * (RAMP.length - 1), k = Math.floor(t), f = t - k, a = RAMP[k], b = RAMP[Math.min(k + 1, RAMP.length - 1)]; return a.map((x, i) => Math.round(x + (b[i] - x) * f)); };
+  const shade = (c, s) => `rgb(${c.map(x => Math.round(x * s)).join(',')})`;
+  let tState = { img: 1, cells: 0, iso: 0, cm: 0 }, tTarget = { ...tState }, tStep = 0;
+  const STEPS = [
+    { img: 1, cells: 0, iso: 0, cm: 0, cap: ['1 · The page', 'The Lenovo cart page as people saw it: 1788 × 1846 px.'] },
+    { img: .35, cells: 1, iso: 0, cm: 0, cap: ['2 · Density', 'Feature points counted in 50 × 50 px cells. Darker cells hold more information.'] },
+    { img: 0, cells: 1, iso: 1, cm: 0, cap: ['3 · Terrain', 'Density becomes height. Peaks are where information piles up.'] },
+    { img: 0, cells: 1, iso: 1, cm: 1, cap: ['4 · Center of mass', `The balance point of the whole page: column ${CMc.toFixed(1)}, row ${CMr.toFixed(1)}, close to the middle.`] },
+  ];
+  function sizeT() { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); cv.width = r.width * d; cv.height = r.height * d; ctx.setTransform(d, 0, 0, d, 0, 0); drawT(); }
+  function drawT() {
+    const W = cv.clientWidth, H = cv.clientHeight; ctx.clearRect(0, 0, W, H);
+    const s = tState;
+    // flat placement: page image fitted into the stage
+    const fh = H * .92, fw = fh * (1788 / 1846), fx = (W - fw) / 2 - (W < 560 ? 0 : W * .08), fy = (H - fh) / 2;
+    const cw = fw / C, ch = fh / R;
+    // iso placement
+    const tile = Math.min(W * .8 / ((C + R) / 2), H * .62 / ((C + R) / 4 + 10)), ox = W * .5 + (R - C) * tile / 4, zk = H * .26 / MAX, oy = Math.max(H * .26, (H - (C + R) * tile / 4 + MAX * zk) / 2);
+    const P = (i, j, z) => {
+      const fxp = fx + j * cw, fyp = fy + i * ch;
+      const ix = ox + (j - i) * tile * .5, iy = oy + (j + i) * tile * .25 - z * zk * s.iso;
+      return [fxp + (ix - fxp) * s.iso, fyp + (iy - fyp) * s.iso];
+    };
+    if (s.img > .01 && pageImg.complete) { ctx.globalAlpha = s.img; ctx.drawImage(pageImg, fx, fy, fw, fh); ctx.globalAlpha = 1; ctx.strokeStyle = '#0A0A0A'; ctx.lineWidth = 2; ctx.strokeRect(fx, fy, fw, fh); }
+    if (s.cells > .01) {
+      ctx.globalAlpha = s.cells;
+      for (let k = 0; k < R + C - 1; k++) for (let i = Math.max(0, k - C + 1); i <= Math.min(R - 1, k); i++) {
+        const j = k - i, v = M[i][j]; if (!v && s.iso > .5) continue;
+        const c = col(v), z = v;
+        const a = P(i, j, z), b = P(i, j + 1, z), c2 = P(i + 1, j + 1, z), d = P(i + 1, j, z);
+        if (s.iso > .02 && v) {
+          const b0 = P(i, j + 1, 0), c0 = P(i + 1, j + 1, 0), d0 = P(i + 1, j, 0);
+          ctx.fillStyle = shade(c, .72); ctx.beginPath(); ctx.moveTo(d[0], d[1]); ctx.lineTo(c2[0], c2[1]); ctx.lineTo(c0[0], c0[1]); ctx.lineTo(d0[0], d0[1]); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = shade(c, .86); ctx.beginPath(); ctx.moveTo(b[0], b[1]); ctx.lineTo(c2[0], c2[1]); ctx.lineTo(c0[0], c0[1]); ctx.lineTo(b0[0], b0[1]); ctx.closePath(); ctx.fill();
+        }
+        if (v || s.iso < .5) {
+          ctx.fillStyle = v ? `rgb(${c.join(',')})` : 'rgba(255,255,255,0)';
+          ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.lineTo(c2[0], c2[1]); ctx.lineTo(d[0], d[1]); ctx.closePath(); ctx.fill();
+          if (s.iso > .5 && v > 8) { ctx.strokeStyle = 'rgba(10,10,10,.35)'; ctx.lineWidth = .6; ctx.stroke(); }
+        }
+      }
+      ctx.globalAlpha = 1;
+      if (s.iso > .5) { // base outline
+        const corners = [P(0, 0, 0), P(0, C, 0), P(R, C, 0), P(R, 0, 0)];
+        ctx.strokeStyle = 'rgba(10,10,10,.5)'; ctx.lineWidth = 1.5; ctx.beginPath(); corners.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.stroke();
+      }
+    }
+    if (s.cm > .01) {
+      const base = P(CMr, CMc, 0), top = P(CMr, CMc, MAX * 1.15);
+      ctx.globalAlpha = s.cm;
+      ctx.strokeStyle = '#E0352B'; ctx.lineWidth = 2.5; ctx.setLineDash([6, 5]); ctx.beginPath(); ctx.moveTo(base[0], base[1]); ctx.lineTo(top[0], top[1]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(224,53,43,.25)'; ctx.beginPath(); ctx.ellipse(base[0], base[1], 34, 17, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#E0352B'; ctx.strokeStyle = '#0A0A0A'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(top[0], top[1], 11, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.font = '500 12px "Roboto Mono", monospace'; ctx.fillStyle = '#0A0A0A'; ctx.fillText('center of mass', top[0] + 18, top[1] + 4);
+      ctx.globalAlpha = 1;
+    }
+  }
+  function setT(n) {
+    tStep = n; tTarget = { ...STEPS[n] }; $('tcap').innerHTML = `<b>${STEPS[n].cap[0]}</b>${STEPS[n].cap[1]}`;
+    document.querySelectorAll('[data-tstep]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.tstep === n));
+    if (reduced()) { tState = { ...tTarget }; drawT(); return; }
+    const from = { ...tState }, t0 = performance.now(), dur = 1100;
+    const ease = t => 1 - Math.pow(1 - t, 3);
+    cancelAnimationFrame(tm);
+    const f = now => { const p = Math.min(1, (now - t0) / dur), e = ease(p); for (const k of ['img', 'cells', 'iso', 'cm']) tState[k] = from[k] + (tTarget[k] - from[k]) * e; drawT(); if (p < 1) tm = requestAnimationFrame(f); };
+    tm = requestAnimationFrame(f);
+  }
+  document.querySelectorAll('[data-tstep]').forEach(b => b.addEventListener('click', () => { stopAutoT(); setT(+b.dataset.tstep); }));
+  let tAuto = null; const stopAutoT = () => { clearInterval(tAuto); tAuto = null; };
+  pageImg.onload = drawT; new ResizeObserver(sizeT).observe(cv); setT(0);
+  onView($('terrain'), () => { if (reduced()) { setT(3); return; } let n = 0; tAuto = setInterval(() => { n++; setT(n); if (n >= 3) stopAutoT(); }, 2000); });
+
+  /* ========= Fig 03 · live center of mass ========= */
+  const GC = 10, GR = 6, grid = $('cmgrid'), cells = [];
+  for (let r = 0; r < GR; r++) for (let c = 0; c < GC; c++) {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'cell'; b.dataset.m = 0; b.dataset.r = r; b.dataset.c = c;
+    b.setAttribute('aria-label', `Row ${r + 1}, column ${c + 1}, mass 0`);
+    b.addEventListener('click', () => { b.dataset.m = (+b.dataset.m + 1) % 4; b.setAttribute('aria-label', `Row ${r + 1}, column ${c + 1}, mass ${b.dataset.m}`); updCM(); });
+    grid.append(b); cells.push(b);
+  }
+  const dot = document.createElement('span'); dot.className = 'cmdot';
+  const vx = document.createElement('span'); vx.className = 'cross v'; const hy = document.createElement('span'); hy.className = 'cross h';
+  grid.append(vx, hy, dot);
+  function updCM() {
+    let m = 0, sx = 0, sy = 0; cells.forEach(b => { const w = +b.dataset.m; m += w; sx += w * (+b.dataset.c + .5); sy += w * (+b.dataset.r + .5); });
+    $('cmM').textContent = m;
+    const vis = m > 0; [dot, vx, hy].forEach(e => e.style.opacity = vis ? 1 : 0);
+    if (!vis) { $('cmXY').textContent = '—'; $('cmCalc').textContent = 'Add mass to see where the page balances.'; return; }
+    const x = sx / m, y = sy / m;
+    dot.style.left = (x / GC * 100) + '%'; dot.style.top = (y / GR * 100) + '%'; vx.style.left = (x / GC * 100) + '%'; hy.style.top = (y / GR * 100) + '%';
+    $('cmXY').textContent = `(${x.toFixed(2)}, ${y.toFixed(2)})`;
+    $('cmCalc').innerHTML = `x = ${sx.toFixed(1)} / ${m} = ${x.toFixed(2)}<br>y = ${sy.toFixed(1)} / ${m} = ${y.toFixed(2)}`;
+  }
+  const PRESETS = {
+    layout: ['3333333333', '2200001100', '2232203330', '2232203330', '0000000000', '1111111111'],
+    two: ['0000000000', '0330000000', '0330000000', '0000000330', '0000000330', '0000000000'],
+    clear: ['0000000000', '0000000000', '0000000000', '0000000000', '0000000000', '0000000000'],
+  };
+  const applyP = k => { cells.forEach(b => { b.dataset.m = PRESETS[k][b.dataset.r][b.dataset.c]; }); updCM(); };
+  document.querySelectorAll('[data-preset]').forEach(b => b.addEventListener('click', () => applyP(b.dataset.preset)));
+  applyP('layout');
+
+  /* ========= Fig 04 · pages to scale with 51 local CMs ========= */
+  // local CMs: [x in 1920px screen, y in page coordinates of 1080px screens]  (from "CM points for local scroll view")
+  const PAGES = [
+    ['HP', 17053, 'Item detail', [[1062,390],[689,1569],[873,2538],[923,3916],[822,4830],[726,6008],[853,7175],[1022,8039],[999,9121],[970,10234],[934,11196],[896,12284],[781,13570],[1023,14575],[705,15456],[715,16776],[652,17765]]],
+    ['Amazon', 16123, 'Item detail', [[1076,484],[802,1729],[782,2376],[988,3577],[1086,4938],[922,5989],[932,7220],[1038,7811],[830,9114],[954,10244],[963,11267],[926,12367],[814,13539],[931,14410],[915,15474],[939,16702]]],
+    ['Dell', 9886, 'Item list', [[971,596],[1043,1611],[1058,2700],[1035,3759],[1076,4829],[1204,5885],[990,6948],[850,8120],[749,9142],[827,10065]]],
+    ['Steam', 4138, 'Item list', [[884,641],[898,1608],[919,2811],[967,3681]]],
+    ['Lenovo', 1846, 'Cart', [[993,531],[934,1352]]],
+    ['PlayStation', 1709, 'Cart', [[972,668],[632,1617]]],
+  ];
+  const SC = 1788 / 1920; // screenshots are 1788px wide
+  const scale = $('scale'), maxH = 440, k = maxH / 17053;
+  PAGES.forEach(([name, h, cat, pts]) => {
+    const colEl = document.createElement('div'); colEl.className = 'pcol';
+    const bar = document.createElement('div'); bar.className = 'pbar'; bar.style.height = Math.max(24, h * k) + 'px'; bar.style.setProperty('--scr', (1080 * SC * k) + 'px');
+    pts.forEach(([x, y], i) => { const d = document.createElement('span'); d.className = 'pdot'; d.style.left = (x / 1920 * 100) + '%'; d.style.top = Math.min(99, (y * SC / h) * 100) + '%'; d.title = `${name} · screen ${i + 1}`; bar.append(d); });
+    colEl.append(bar); const b = document.createElement('b'); b.textContent = name; const s = document.createElement('span'); s.innerHTML = `${cat}<br>${h.toLocaleString('en-US')} px · ${pts.length}`;
+    colEl.append(b, s); scale.append(colEl);
+  });
+
+  /* ========= Fig 05 · gravity overlay ========= */
+  const gSvg = $('gSvg'); const NS = 'http://www.w3.org/2000/svg';
+  [[993, 531], [934, 1352]].forEach(([x, y], i) => {
+    const cx = x * SC, cy = y * SC;
+    const c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', cx); c.setAttribute('cy', cy); c.setAttribute('r', 230); c.setAttribute('fill', 'rgba(140,110,220,.28)'); c.setAttribute('stroke', '#0A0A0A'); c.setAttribute('stroke-width', 6); c.setAttribute('stroke-dasharray', '18 12');
+    const d = document.createElementNS(NS, 'circle'); d.setAttribute('cx', cx); d.setAttribute('cy', cy); d.setAttribute('r', 18); d.setAttribute('fill', '#E0352B'); d.setAttribute('stroke', '#0A0A0A'); d.setAttribute('stroke-width', 6);
+    const t = document.createElementNS(NS, 'text'); t.setAttribute('x', cx + 250); t.setAttribute('y', cy + 14); t.setAttribute('font-size', 48); t.setAttribute('font-family', 'Roboto Mono, monospace'); t.setAttribute('font-weight', 500); t.textContent = `CM · screen ${i + 1}`;
+    const bg = document.createElementNS(NS, 'rect'); bg.setAttribute('x', cx + 236); bg.setAttribute('y', cy - 34); bg.setAttribute('width', 400); bg.setAttribute('height', 66); bg.setAttribute('rx', 12); bg.setAttribute('fill', '#FFFFFF'); bg.setAttribute('stroke', '#0A0A0A'); bg.setAttribute('stroke-width', 5);
+    gSvg.append(c, d, bg, t);
+  });
+  const gState = { heat: true, cm: true };
+  const gUpd = () => { $('gHeatImg').style.opacity = gState.heat ? 1 : 0; gSvg.style.opacity = gState.cm ? 1 : 0; $('gHeat').setAttribute('aria-pressed', gState.heat); $('gCM').setAttribute('aria-pressed', gState.cm); $('gPage').setAttribute('aria-pressed', !gState.heat); };
+  $('gPage').addEventListener('click', () => { gState.heat = false; gUpd(); });
+  $('gHeat').addEventListener('click', () => { gState.heat = !gState.heat; gUpd(); });
+  $('gCM').addEventListener('click', () => { gState.cm = !gState.cm; gUpd(); });
+  gUpd();
+
+  /* ========= Fig 06 · movement down Amazon ========= */
+  const AM = PAGES[1][3], AH = 16123, mSvg = $('mSvg');
+  const ptsA = AM.map(([x, y]) => [x * SC, Math.min(AH - 20, y * SC)]);
+  const path = document.createElementNS(NS, 'polyline'); path.setAttribute('points', ptsA.map(p => p.join(',')).join(' ')); path.setAttribute('fill', 'none'); path.setAttribute('stroke', '#0A0A0A'); path.setAttribute('stroke-width', 14); path.setAttribute('vector-effect', 'non-scaling-stroke'); path.style.strokeWidth = '2.5px'; path.setAttribute('pathLength', 1); path.style.strokeDasharray = '1'; path.style.strokeDashoffset = '1'; path.style.transition = 'stroke-dashoffset 700ms cubic-bezier(.22,1,.36,1)';
+  mSvg.append(path);
+  const dotsA = ptsA.map(([x, y]) => { const c = document.createElementNS(NS, 'ellipse'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('rx', 70); c.setAttribute('ry', 70 * (16123 / 1788) / (3246 / 360)); c.setAttribute('fill', '#E0352B'); c.setAttribute('stroke', '#0A0A0A'); c.setAttribute('stroke-width', 3); c.setAttribute('vector-effect', 'non-scaling-stroke'); c.style.transition = 'opacity 300ms'; mSvg.append(c); return c; });
+  const list = $('mList'); const chips = AM.map((_, i) => { const s = document.createElement('span'); s.textContent = String(i + 1).padStart(2, '0'); list.append(s); return s; });
+  let mIdx = 1;
+  function setM(n) {
+    mIdx = n; $('mRange').value = n; $('mNo').textContent = `${String(n).padStart(2, '0')} / 16`;
+    const [x, y] = AM[n - 1]; $('mXY').textContent = `x ${x} px · y ${y - (n - 1) * 1080} px`;
+    const wrap = $('stripWrap'), strip = $('strip'), sh = strip.offsetHeight, wh = wrap.clientHeight;
+    const scr = 1080 * SC / AH * sh, top = (n - 1) * scr;
+    const off = Math.max(0, Math.min(sh - wh, top + scr / 2 - wh / 2));
+    strip.style.transform = `translateY(${-off}px)`; const v = $('mView'); v.style.top = (top - off) + 'px'; v.style.height = scr + 'px';
+    path.style.strokeDashoffset = String(1 - (n - 1) / 15);
+    dotsA.forEach((d, i) => d.style.opacity = i < n ? 1 : .25);
+    chips.forEach((c, i) => { c.classList.toggle('on', i === n - 1); c.classList.toggle('past', i < n - 1); });
+  }
+  $('mRange').addEventListener('input', e => { stopM(); setM(+e.target.value); });
+  let mT = null; const stopM = () => { clearInterval(mT); mT = null; $('mPlay').textContent = 'Play ▶'; };
+  $('mPlay').addEventListener('click', () => { if (mT) return stopM(); if (mIdx >= 16) setM(1); $('mPlay').textContent = 'Pause ❚❚'; mT = setInterval(() => { if (mIdx >= 16) return stopM(); setM(mIdx + 1); }, reduced() ? 400 : 900); });
+  const amImg = $('strip').querySelector('img'); const initM = () => setM(mIdx);
+  amImg.complete ? initM() : amImg.addEventListener('load', initM); addEventListener('resize', initM);
+  onView($('stripWrap'), () => { if (!reduced()) $('mPlay').click(); }, .5);
+
+  /* ========= Fig 07 · assimilation span ========= */
+  const phasesEl = [...$('phases').children];
+  function setS(t) {
+    $('sRange').value = t; $('sOut').textContent = Math.round(t) + ' s';
+    const blend = t <= 15 ? 0 : t >= 35 ? 1 : (t - 15) / 20; $('sLate').style.opacity = blend;
+    const ph = t < 15 ? 0 : t < 35 ? 1 : 2; phasesEl.forEach((p, i) => p.classList.toggle('on', i === ph));
+  }
+  $('sRange').addEventListener('input', e => { stopS(); setS(+e.target.value); });
+  let sRaf = 0; const stopS = () => { cancelAnimationFrame(sRaf); sRaf = 0; $('sPlay').textContent = 'Play ▶'; };
+  $('sPlay').addEventListener('click', () => {
+    if (sRaf) return stopS(); let t = +$('sRange').value; if (t >= 60) t = 0; $('sPlay').textContent = 'Pause ❚❚';
+    let last = performance.now(); const f = now => { t += (now - last) / 1000 * 8; last = now; setS(Math.min(60, t)); if (t < 60) sRaf = requestAnimationFrame(f); else stopS(); }; sRaf = requestAnimationFrame(f);
+  });
+  setS(0); onView($('spanStage'), () => { if (reduced()) setS(60); else $('sPlay').click(); }, .5);
+
+  /* ========= Fig 08 · double-well attractor ========= */
+  const wc = $('wcv'), wx = wc.getContext('2d'); let tilt = 0;
+  const V = x => (x * x - 1) ** 2 + tilt * x, dV = x => 4 * x * (x * x - 1) + tilt;
+  let ball = { x: -1.55, v: 0, drag: false }, trail = [], wRaf = 0, running = false;
+  const X0 = -1.8, X1 = 1.8;
+  function geo() { const W = wc.clientWidth, H = wc.clientHeight; const yMax = Math.max(V(X0), V(X1)) , yMin = Math.min(V(-1), V(1), 0) - .05; return { W, H, sx: x => (x - X0) / (X1 - X0) * (W - 60) + 30, sy: y => H - 34 - (y - yMin) / (yMax - yMin) * (H - 90), ix: px => X0 + (px - 30) / (W - 60) * (X1 - X0) }; }
+  function drawW() {
+    const g = geo(), { W, H } = g; wx.clearRect(0, 0, W, H);
+    wx.strokeStyle = 'rgba(10,10,10,.08)'; wx.lineWidth = 1; for (let gx = 0; gx < W; gx += 28) { wx.beginPath(); wx.moveTo(gx, 0); wx.lineTo(gx, H); wx.stroke(); }
+    wx.beginPath(); for (let i = 0; i <= 200; i++) { const x = X0 + (X1 - X0) * i / 200; const px = g.sx(x), py = g.sy(V(x)); i ? wx.lineTo(px, py) : wx.moveTo(px, py); }
+    wx.lineTo(g.sx(X1), H); wx.lineTo(g.sx(X0), H); wx.closePath(); wx.fillStyle = '#D2FAFF'; wx.fill();
+    wx.beginPath(); for (let i = 0; i <= 200; i++) { const x = X0 + (X1 - X0) * i / 200; const px = g.sx(x), py = g.sy(V(x)); i ? wx.lineTo(px, py) : wx.moveTo(px, py); } wx.strokeStyle = '#0A0A0A'; wx.lineWidth = 3; wx.stroke();
+    wx.font = '500 12px "Roboto Mono", monospace'; wx.fillStyle = '#0A0A0A'; wx.textAlign = 'center';
+    [[-1, 'CM A'], [1, 'CM B']].forEach(([x, l]) => { const px = g.sx(x), py = g.sy(V(x)); wx.fillText(l, px, py + 26); });
+    wx.fillStyle = '#6E6A66'; wx.fillText('dissipation', g.sx(0), g.sy(V(0)) - 14);
+    trail.forEach((p, i) => { wx.fillStyle = `rgba(224,53,43,${i / trail.length * .35})`; wx.beginPath(); wx.arc(g.sx(p), g.sy(V(p)) - 13, 4, 0, Math.PI * 2); wx.fill(); });
+    const bx = g.sx(ball.x), by = g.sy(V(ball.x)) - 13; wx.fillStyle = '#E0352B'; wx.strokeStyle = '#0A0A0A'; wx.lineWidth = 3; wx.beginPath(); wx.arc(bx, by, 12, 0, Math.PI * 2); wx.fill(); wx.stroke();
+    wx.textAlign = 'left';
+  }
+  function sizeW() { const r = wc.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); wc.width = r.width * d; wc.height = r.height * d; wx.setTransform(d, 0, 0, d, 0, 0); drawW(); }
+  function stepW() {
+    if (!running) return;
+    for (let i = 0; i < 4; i++) { const a = -dV(ball.x) - .55 * ball.v; ball.v += a * .004 * 4; ball.x += ball.v * .004 * 4; ball.x = Math.max(X0, Math.min(X1, ball.x)); }
+    trail.push(ball.x); if (trail.length > 40) trail.shift();
+    drawW();
+    if (Math.abs(ball.v) < .004 && Math.abs(dV(ball.x)) < .02) { running = false; trail = []; drawW(); $('wOut').textContent = `Settled at ${ball.x < 0 ? 'A' : 'B'}`; return; }
+    wRaf = requestAnimationFrame(stepW);
+  }
+  function release() { if (reduced()) { ball.x = Math.abs(ball.x + 1) < Math.abs(ball.x - 1) ? -1 : 1; drawW(); return; } running = true; ball.v = 0; trail = []; $('wOut').textContent = 'Rolling…'; cancelAnimationFrame(wRaf); wRaf = requestAnimationFrame(stepW); }
+  wc.addEventListener('pointerdown', e => { ball.drag = true; running = false; wc.setPointerCapture(e.pointerId); wc.style.cursor = 'grabbing'; moveB(e); });
+  const moveB = e => { if (!ball.drag) return; const r = wc.getBoundingClientRect(); ball.x = Math.max(X0, Math.min(X1, geo().ix(e.clientX - r.left))); drawW(); };
+  wc.addEventListener('pointermove', moveB);
+  wc.addEventListener('pointerup', () => { if (!ball.drag) return; ball.drag = false; wc.style.cursor = 'grab'; release(); });
+  $('wDrop').addEventListener('click', () => { ball.x = X0 + .15 + Math.random() * (X1 - X0 - .3); release(); });
+  $('wTilt').addEventListener('input', e => { tilt = +e.target.value / 10 * .9; $('wOut').textContent = tilt === 0 ? 'A and B balanced' : tilt > 0 ? 'A is heavier' : 'B is heavier'; if (!running) drawW(); });
+  new ResizeObserver(sizeW).observe(wc);
+  onView($('well'), () => release(), .5);
+})();
+</script>

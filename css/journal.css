@@ -34,6 +34,7 @@
 .case--aiorc    { --accent: #60C2FF; --accent-d: #2157A9; }
 .case--cockpit  { --accent: #60FFA2; --accent-d: #318D57; }
 .case--task     { --accent: #FD93E2; --accent-d: #8B487A; }
+.case--research2 { --accent: #60E7FF; --accent-d: #348796; }
 
 /* ================= Tokens: Night edition ================= */
 
@@ -407,6 +408,14 @@ html:has(.journal--night) {
   color: var(--text-3);
 }
 
+.toc .toc-meta a {
+  display: inline;
+  padding: 0;
+  border: 0;
+  color: var(--text-2);
+  text-decoration: underline;
+}
+
 .entries {
   min-width: 0;
 }
@@ -566,6 +575,7 @@ html:has(.journal--night) {
 .mnote--pink  { --note-bg: #FFD8F4; --note-sh: #8B487A; --note-k: #7A3A69; }
 .mnote--blue  { --note-bg: #D6EEFF; --note-sh: #2157A9; --note-k: #1D4A8A; }
 .mnote--green { --note-bg: #D4FFE6; --note-sh: #318D57; --note-k: #24704A; }
+.mnote--cyan  { --note-bg: #D2FAFF; --note-sh: #348796; --note-k: #1F6875; }
 
 .journal--night .mnote {
   box-shadow: 4px 4px 0 0 var(--shadow-ink);
@@ -1076,6 +1086,116 @@ html:has(.journal--night) {
   max-width: none;
 }
 
+/* Formula block: equations set in mono, with stacked fractions */
+.formula {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 32px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 20px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  border: 2px dashed var(--ink);
+  border-radius: 10px;
+  background-color: var(--card);
+  color: var(--text);
+  font: 400 16px/1.6 var(--font-mono);
+}
+
+.formula > span {
+  white-space: nowrap;
+}
+
+.formula .frac {
+  display: inline-flex;
+  flex-direction: column;
+  margin: 0 4px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.formula .frac > span:first-child {
+  padding: 0 6px 3px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.formula .frac > span:last-child {
+  padding: 3px 6px 0;
+}
+
+/* Data table: a ruled index card for small tables */
+.jtable-wrap {
+  margin: 6px 0 28px;
+  overflow-x: auto;
+  border: 3px solid var(--ink);
+  border-radius: var(--radius);
+  background-color: var(--card);
+  box-shadow: 6px 6px 0 0 var(--accent-d);
+  --lift-shadow: var(--accent-d);
+}
+
+.jtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.jtable caption {
+  padding: 12px 18px;
+  border-bottom: 3px solid var(--ink);
+  background-color: var(--accent);
+  color: #0A0A0A;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.jtable th,
+.jtable td {
+  padding: 7px 18px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.jtable thead th,
+.jtable thead .num {
+  white-space: normal;
+  vertical-align: bottom;
+  font: var(--weight-medium) 12px/1.6 var(--font-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.jtable tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.jtable .num {
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+/* Two figures side by side (stack on phones) */
+.fig-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.fig-pair .fig {
+  margin-bottom: 30px;
+}
+
+/* Shown inside a figure when its data could not load */
+.fig-error {
+  margin: 10px 0 0;
+  font: var(--weight-medium) 12px/1.5 var(--font-mono);
+  color: var(--text-3);
+}
+
 /* Closing + next case */
 .sign-off {
   margin: 40px 0 0;
@@ -1126,6 +1246,18 @@ html:has(.journal--night) {
 .next .arrow {
   font-family: var(--font-display);
   font-size: 40px;
+}
+
+/* Secondary link above the next-case card (e.g. back to an earlier part) */
+.next-back {
+  display: inline-block;
+  margin-top: 14px;
+  font: var(--weight-medium) 14px/1.5 var(--font-mono);
+  color: var(--text-2);
+}
+
+.next-back:hover {
+  color: var(--text);
 }
 
 /* ================= Lightbox ================= */
@@ -1363,6 +1495,7 @@ html:has(.journal--night) {
 
   .pair,
   .pair--three,
+  .fig-pair,
   .specimen .cols {
     grid-template-columns: 1fr;
   }
@@ -1389,5 +1522,19 @@ html:has(.journal--night) {
 
   .index-card dl {
     grid-template-columns: 78px 1fr;
+  }
+
+  .jtable {
+    font-size: 13px;
+  }
+
+  .jtable th,
+  .jtable td {
+    padding: 7px 6px;
+    white-space: normal;
+  }
+
+  .jtable td.num {
+    white-space: nowrap;
   }
 }
