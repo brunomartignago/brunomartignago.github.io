@@ -564,4 +564,196 @@
     set(0);
     onceInView(stage, play, .5);
   })();
+  /* ================= Fig 08 · Two centers of mass (double well) ================= */
+  (() => {
+    const fig = document.getElementById("cf-wells");
+    if (!fig) return;
+    const stage = fig.querySelector(".r2-w-stage");
+    const cv = stage.querySelector("canvas");
+    const ctx = cv.getContext("2d");
+    const out = fig.querySelector(".r2-w-ctrls output");
+    const tiltInput = fig.querySelector("[data-w-tilt]");
+    const { watchVisible } = window.Figures;
+
+    // Potential with wells at x = −1 (A) and x = 1 (B); tilt deepens one of them
+    let tilt = 0;
+    const V = x => (x * x - 1) ** 2 + tilt * x;
+    const dV = x => 4 * x * (x * x - 1) + tilt;
+    const X0 = -1.8, X1 = 1.8, DAMP = .55, DT = .004 * 4;
+    const clampX = x => Math.max(X0, Math.min(X1, x));
+
+    let ball = { x: -1.55, v: 0 }, trail = [], raf = 0, running = false, dragging = false, visible = false;
+
+    const geo = () => {
+      const W = cv.clientWidth, H = cv.clientHeight;
+      const yMax = Math.max(V(X0), V(X1)), yMin = Math.min(V(-1), V(1), 0) - .05;
+      return {
+        W, H,
+        sx: x => (x - X0) / (X1 - X0) * (W - 60) + 30,
+        sy: y => H - 34 - (y - yMin) / (yMax - yMin) * (H - 90),
+        ix: px => X0 + (px - 30) / (W - 60) * (X1 - X0),
+      };
+    };
+
+    function draw() {
+      const g = geo(), { W, H } = g;
+      if (!W || !H) return;
+      ctx.clearRect(0, 0, W, H);
+      ctx.strokeStyle = "rgba(10,10,10,.08)";
+      ctx.lineWidth = 1;
+      for (let gx = 0; gx < W; gx += 28) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
+      const curve = () => {
+        ctx.beginPath();
+        for (let i = 0; i <= 200; i++) {
+          const x = X0 + (X1 - X0) * i / 200;
+          i ? ctx.lineTo(g.sx(x), g.sy(V(x))) : ctx.moveTo(g.sx(x), g.sy(V(x)));
+        }
+      };
+      curve();
+      ctx.lineTo(g.sx(X1), H); ctx.lineTo(g.sx(X0), H); ctx.closePath();
+      ctx.fillStyle = "#D2FAFF";
+      ctx.fill();
+      curve();
+      ctx.strokeStyle = "#0A0A0A";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      ctx.font = '500 12px "Roboto Mono", monospace';
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#0A0A0A";
+      [[-1, "CM A"], [1, "CM B"]].forEach(([x, l]) => ctx.fillText(l, g.sx(x), g.sy(V(x)) + 26));
+      ctx.fillStyle = "#6E6A66";
+      ctx.fillText("dissipation", g.sx(0), g.sy(V(0)) - 14);
+      ctx.textAlign = "left";
+
+      trail.forEach((p, i) => {
+        ctx.fillStyle = `rgba(224,53,43,${i / trail.length * .35})`;
+        ctx.beginPath(); ctx.arc(g.sx(p), g.sy(V(p)) - 13, 4, 0, Math.PI * 2); ctx.fill();
+      });
+      const bx = g.sx(ball.x), by = g.sy(V(ball.x)) - 13;
+      ctx.fillStyle = "#E0352B";
+      ctx.strokeStyle = "#0A0A0A";
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(bx, by, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    }
+
+    function size() {
+      const r = cv.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+      cv.width = Math.round(r.width * dpr);
+      cv.height = Math.round(r.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      draw();
+    }
+
+    const tiltText = () => (tilt === 0 ? "A and B balanced" : tilt > 0 ? "A is heavier" : "B is heavier");
+    const where = x => (x < 0 ? "A" : "B");
+    const setValue = () => {
+      cv.setAttribute("aria-valuenow", ball.x.toFixed(2));
+      cv.setAttribute("aria-valuetext", Math.abs(ball.x) < .25 ? "On the hump between A and B" : `On the ${where(ball.x)} side`);
+    };
+
+    const physics = () => {
+      for (let i = 0; i < 4; i++) {
+        const a = -dV(ball.x) - DAMP * ball.v;
+        ball.v += a * DT;
+        ball.x = clampX(ball.x + ball.v * DT);
+      }
+    };
+    const settled = () => Math.abs(ball.v) < .004 && Math.abs(dV(ball.x)) < .02;
+    const finish = () => {
+      running = false;
+      trail = [];
+      draw();
+      setValue();
+      out.textContent = `Settled at ${where(ball.x)}`;
+    };
+
+    function step() {
+      raf = 0;
+      if (!running || !visible) return;
+      physics();
+      trail.push(ball.x);
+      if (trail.length > 40) trail.shift();
+      draw();
+      if (settled()) { finish(); return; }
+      raf = requestAnimationFrame(step);
+    }
+    const resume = () => { if (running && visible && !raf) raf = requestAnimationFrame(step); };
+
+    function release() {
+      ball.v = 0;
+      trail = [];
+      cancelAnimationFrame(raf);
+      raf = 0;
+      if (reduced()) {
+        // Same physics, run to rest without drawing the journey
+        for (let n = 0; n < 20000 && !(n && settled()); n++) physics();
+        finish();
+        return;
+      }
+      running = true;
+      out.textContent = "Rolling…";
+      resume();
+    }
+
+    const hold = x => {
+      running = false;
+      cancelAnimationFrame(raf);
+      raf = 0;
+      trail = [];
+      ball = { x: clampX(x), v: 0 };
+      draw();
+      setValue();
+    };
+
+    // Pointer: drag the ball along the curve, let go to release
+    const toX = e => geo().ix(e.clientX - cv.getBoundingClientRect().left);
+    cv.addEventListener("pointerdown", e => {
+      dragging = true;
+      cv.setPointerCapture(e.pointerId);
+      cv.classList.add("is-dragging");
+      hold(toX(e));
+    });
+    cv.addEventListener("pointermove", e => { if (dragging) hold(toX(e)); });
+    const drop = () => {
+      if (!dragging) return;
+      dragging = false;
+      cv.classList.remove("is-dragging");
+      release();
+    };
+    cv.addEventListener("pointerup", drop);
+    cv.addEventListener("pointercancel", drop);
+
+    // Keyboard: arrows move the held ball, Enter or Space lets it go
+    cv.addEventListener("keydown", e => {
+      const big = e.shiftKey ? .3 : .1;
+      if (e.key === "ArrowLeft" || e.key === "ArrowDown") hold(ball.x - big);
+      else if (e.key === "ArrowRight" || e.key === "ArrowUp") hold(ball.x + big);
+      else if (e.key === "Home") hold(X0);
+      else if (e.key === "End") hold(X1);
+      else if (e.key === "Enter" || e.key === " ") release();
+      else return;
+      e.preventDefault();
+    });
+
+    fig.querySelector("[data-w-drop]").addEventListener("click", () => {
+      hold(X0 + .15 + Math.random() * (X1 - X0 - .3));
+      release();
+    });
+    // Slider right makes B (the right well) heavier
+    tiltInput.setAttribute("aria-valuetext", tiltText());
+    tiltInput.addEventListener("input", () => {
+      tilt = -(+tiltInput.value) / 10 * .9;
+      out.textContent = tiltText();
+      tiltInput.setAttribute("aria-valuetext", tiltText());
+      if (!running) draw();
+    });
+
+    watchVisible(fig, v => { visible = v; resume(); }, .3);
+    new ResizeObserver(size).observe(cv);
+    setValue();
+    live(fig);
+    // The first ball rolls in once, the first time the figure is in view
+    onceInView(stage, release, .5);
+  })();
 })();

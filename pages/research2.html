@@ -435,8 +435,9 @@
                   <span class="cf-label">Fig. 08 — Two centers of mass</span>
                   <div class="cf-ctrls"><button class="cf-btn" type="button" data-w-drop>Drop a ball</button></div>
                 </div>
-                <div class="cf-stage r2-w-stage" role="img" aria-label="A curve with two wells labeled center of mass A and B. A ball dropped on the curve rolls, crosses the hump between the wells, and settles in one of them.">
-                  <canvas></canvas>
+                <div class="cf-stage r2-w-stage">
+                  <p class="sr-only" id="r2-w-desc">A curve with two wells labeled center of mass A and B. A ball dropped on the curve rolls, crosses the hump between the wells, and settles in one of them.</p>
+                  <canvas tabindex="0" role="slider" aria-label="Ball position. Arrow keys move the ball, Enter lets it go." aria-describedby="r2-w-desc" aria-valuemin="-1.8" aria-valuemax="1.8"></canvas>
                 </div>
                 <div class="r2-w-ctrls">
                   <label>Heavier center <input type="range" min="-10" max="10" value="0" step="1" data-w-tilt /></label>
