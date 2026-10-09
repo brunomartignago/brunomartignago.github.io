@@ -187,6 +187,16 @@
   text-decoration: underline;
 }
 
+/* Non-link placeholder (e.g. "Coming soon") */
+.card-cta-muted {
+  color: var(--text-tertiary);
+  cursor: default;
+}
+
+.card-cta-muted:hover {
+  text-decoration: none;
+}
+
 .card-services1 {
   --card-bg: #FAFAF2;
   --card-shadow: #C4CF85;
