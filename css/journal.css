@@ -614,8 +614,15 @@ html:has(.journal--night) {
   border-radius: 4px;
 }
 
+/* Night figures sit on the dark slate the AI Orchestration artwork was drawn for
+   (several images are transparent with white labels) */
 .journal--night .frame {
   border-color: #0A0A0A;
+  background-color: #374152;
+}
+
+.journal--night .lightbox img {
+  background-color: #374152;
 }
 
 .fig-zoom:hover .frame {
