@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sketch A1 · From searching to being served</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sketch.css" />
+<style>
+  .search { position: absolute; left: 8%; right: 8%; top: 8%; height: 11%; border: 2px solid #ECE6DF; border-radius: 8px; display: flex; align-items: center; padding: 0 8px; font: 500 11px/1 var(--font-mono); }
+  .count { position: absolute; left: 8%; top: 22%; font: 500 10px/1 var(--font-mono); color: #A39C95; }
+  .row { position: absolute; left: 8%; right: 8%; height: 4.5%; border-radius: 3px; background: #4A5466; }
+  .bubble { position: absolute; padding: 5px 8px; border-radius: 10px; font: 500 10px/1.3 var(--font-body); max-width: 60%; }
+  .bubble.ai { left: 8%; background: #2B3342; border: 1.5px solid #60C2FF; }
+  .bubble.me { right: 8%; background: #60C2FF; color: #0A0A0A; }
+  .offer { position: absolute; top: 18%; width: 26%; height: 54%; border: 2px solid #0A0A0A; border-radius: 8px; background: #FFFFFF; box-shadow: 3px 3px 0 0 var(--cd); color: #0A0A0A; }
+  .offer b { position: absolute; left: 8%; top: 6%; padding: 2px 5px; border-radius: 4px; background: var(--c); font: 500 9px/1 var(--font-mono); }
+  .offer i { position: absolute; left: 8%; right: 8%; height: 34%; top: 22%; border-radius: 4px; background: #ECE6E1; }
+  .effort { position: absolute; left: 8%; right: 8%; bottom: 6%; font: 500 10px/1.3 var(--font-mono); color: #C9C2BA; }
+  .effort .m { height: 8px; margin-top: 5px; border: 1.5px solid #ECE6DF; border-radius: 4px; overflow: hidden; }
+  .effort .m span { display: block; height: 100%; background: #FFB37A; }
+</style>
+</head>
+<body class="night">
+<main class="sheet">
+  <a class="back" href="index.html">← All sketches</a>
+  <p class="eyebrow">Sketch A1 · AI Orchestration · entry 01</p>
+  <h1>From searching to <mark>being served</mark></h1>
+  <p class="idea">One search window moves through the three moments. In the past you type keywords and scan a million results; in the present a conversation filters the list down; in the future nothing is typed and three answers simply arrive. The figure shows the effort moving from the person to the system, instead of three labelled columns.</p>
+  <ul class="meta"><li><b>Replaces</b>ui_phases.png</li><li><b>Real values</b>1,000,000 results · “How can I help you?” · Good / Better / Best</li><li><b>Illustrative</b>list lengths in the present step, effort meter</li></ul>
+  <ul class="behave">
+    <li><b>Plays once in view:</b> Past → Present → Future, ~2s each. The result list collapses, bubbles appear, then three cards land.</li>
+    <li><b>Reader drives:</b> a Past / Present / Future stepper (buttons with aria-pressed).</li>
+    <li><b>Reduced motion:</b> static on Future, with the stepper working. No JS: the original ui_phases.png.</li>
+  </ul>
+
+  <div class="board">
+    <div class="panel">
+      <div class="k"><span>01 · Past</span><span>keyword search</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 02 — How we search</span><span class="btns"><span class="btn on">Past</span><span class="btn">Present</span><span class="btn">Future</span></span></div>
+        <div class="stage" style="--ar:4/4">
+          <div class="search">⌕ laptop for 3D modeling</div>
+          <div class="count">1,000,000 results</div>
+          <div class="row" style="top:28%"></div><div class="row" style="top:35%"></div><div class="row" style="top:42%"></div><div class="row" style="top:49%"></div><div class="row" style="top:56%"></div><div class="row" style="top:63%"></div><div class="row" style="top:70%"></div>
+          <div class="effort">You do the work: keywords &amp; tags<div class="m"><span style="width:92%"></span></div></div>
+        </div>
+      </div>
+      <p class="cap">A million rows; the person must know how to find what's relevant.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>02 · Present</span><span>filtering through conversation</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 02 — How we search</span><span class="btns"><span class="btn">Past</span><span class="btn on">Present</span><span class="btn">Future</span></span></div>
+        <div class="stage" style="--ar:4/4">
+          <div class="bubble ai" style="top:8%">How can I help you?</div>
+          <div class="bubble me" style="top:21%">A laptop that runs SolidWorks</div>
+          <div class="bubble ai" style="top:34%">Budget? Screen size?</div>
+          <div class="row" style="top:52%"></div><div class="row" style="top:59%"></div><div class="row" style="top:66%"></div>
+          <div class="effort">You answer questions<div class="m"><span style="width:50%"></span></div></div>
+        </div>
+      </div>
+      <p class="cap">The conversation filters the list down; the rows that don't fit slide away.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>03 · Future</span><span>autonomous delivery</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 02 — How we search</span><span class="btns"><span class="btn">Past</span><span class="btn">Present</span><span class="btn on">Future</span></span></div>
+        <div class="stage" style="--ar:4/4">
+          <div class="count" style="top:8%">Delivered for you</div>
+          <div class="offer" style="left:6%;--c:#D9D1CA;--cd:#5B524B"><b>Good</b><i></i></div>
+          <div class="offer" style="left:37%;--c:#FFF260;--cd:#A9A03E"><b>Better</b><i></i></div>
+          <div class="offer" style="left:68%;--c:#60FFA2;--cd:#318D57"><b>Best</b><i></i></div>
+          <div class="effort">The system does the work<div class="m"><span style="width:8%"></span></div></div>
+        </div>
+      </div>
+      <p class="cap">Nothing typed. Three options arrive, ranked.</p>
+    </div>
+  </div>
+
+  <p class="note">Open question: the ui_phases.png “Future” panel repeats the “Present” description. The figure only uses the titles and the visible UI (search field, chat, Good/Better/Best), so it doesn't depend on that text.</p>
+</main>
+</body>
+</html>

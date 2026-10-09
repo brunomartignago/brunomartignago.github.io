@@ -1,0 +1,607 @@
+<title>Case Journal Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: a research journal — sticky contents in the left margin, a 660px reading column, and a 240px marginalia column for notes.
+   Uses the homepage brand (ink borders, hard shadows, pastel tags). "Level" classes dial white paper → journal → scrapbook.
+   Day edition is the default; Night edition shows how the dark AI Orchestration case can join the same system. */
+:root {
+  color-scheme: light;
+  --paper: #FAF5F2;
+  --paper-2: #FFFFFF;
+  --ink: #0A0A0A;
+  --text: #1F1F1F;
+  --text-2: #4A4A4A;
+  --text-3: #6E6A66;
+  --rule: rgba(10,10,10,.08);
+  --line: #D8D0C9;
+  --accent: #FFF260;     /* per-case accent: Research = yellow */
+  --accent-d: #A9A03E;
+  --blue: #60C2FF; --blue-d: #2157A9;
+  --cyan: #60E7FF; --cyan-d: #348796;
+  --green: #60FFA2; --green-d: #318D57;
+  --pink: #FD93E2; --pink-d: #8B487A;
+  --peach: #FFB37A; --peach-d: #9A4F1C;
+  --orange: #D7763D;
+  --tape: rgba(255, 242, 96, .55);
+  --card: #FFFFFF;
+  --shadow-ink: #0A0A0A;
+
+  --font-body: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Black Han Sans', 'Arial Black', Impact, system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --radius: 15px;
+  --ease-out: cubic-bezier(.22,1,.36,1);
+  --ease-land: cubic-bezier(.34,1.56,.64,1);
+}
+.night {
+  color-scheme: dark;
+  --paper: #232A36;
+  --paper-2: #2B3342;
+  --ink: #F1EBE4;
+  --text: #ECE6DF;
+  --text-2: #C9C2BA;
+  --text-3: #A39C95;
+  --rule: rgba(241,235,228,.07);
+  --line: #4A5466;
+  --accent: #60C2FF;     /* AI Orchestration = blue */
+  --accent-d: #2157A9;
+  --tape: rgba(96, 194, 255, .45);
+  --card: #2B3342;
+  --shadow-ink: #0E121A;
+}
+html { overflow-x: clip; }
+body {
+  margin: 0; background: var(--paper); color: var(--text);
+  font: 400 17px/1.7 var(--font-body);
+  overflow-x: clip;
+  transition: background-color 300ms;
+}
+a { color: inherit; }
+img { display: block; max-width: 100%; height: auto; }
+::selection { background: var(--accent); color: #0A0A0A; }
+
+/* Paper texture per level */
+.lvl-2 body, .lvl-3 body {
+  background-image:
+    linear-gradient(var(--rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30;
+  background: var(--paper); border-bottom: 3px solid var(--ink);
+}
+.header-inner { max-width: 1280px; margin: 0 auto; padding: 10px clamp(16px, 3vw, 32px); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
+.brand img { width: 34px; height: 38px; }
+.night .brand img { filter: invert(1); }
+.crumb { font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.crumb span { color: var(--text-3); font-weight: 400; }
+.header-meta { font: 500 12px/1 var(--font-mono); color: var(--text-3); white-space: nowrap; }
+.progress { position: absolute; left: 0; right: 0; bottom: -3px; height: 3px; background: var(--orange); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
+
+/* ---------- Cover ---------- */
+.cover { max-width: 1280px; margin: 0 auto; padding: 56px clamp(16px, 3vw, 32px) 24px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 48px; align-items: start; position: relative; }
+.eyebrow { font: 500 12px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 0 0 18px; }
+.eyebrow b { color: var(--text); font-weight: 500; }
+.case-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(38px, 5.4vw, 72px); line-height: 1.05; margin: 0 0 22px; color: var(--text); text-wrap: balance; }
+.case-title mark { background: none; color: inherit; position: relative; z-index: 0; padding: 0 .08em; }
+.case-title mark::before { content: ""; position: absolute; inset: .12em -.02em .02em; background: var(--accent); z-index: -1; border-radius: 6px; transform-origin: 0 50%; }
+.lede { font-size: clamp(18px, 1.7vw, 21px); line-height: 1.6; color: var(--text-2); max-width: 60ch; margin: 0; }
+
+.index-card {
+  background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius);
+  box-shadow: 6px 6px 0 0 var(--shadow-ink); padding: 20px 22px; position: relative;
+  font-size: 15px;
+}
+.index-card h2 { font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; margin: 0 0 14px; padding-bottom: 12px; border-bottom: 2px dashed var(--line); color: var(--text-3); }
+.index-card dl { margin: 0; display: grid; grid-template-columns: 92px 1fr; gap: 10px 12px; }
+.index-card dt { font: 500 12px/1.6 var(--font-mono); color: var(--text-3); text-transform: uppercase; letter-spacing: .04em; }
+.index-card dd { margin: 0; line-height: 1.5; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { display: inline-flex; padding: 3px 9px; font-size: 13px; font-weight: 500; color: #0A0A0A; border: 2px solid var(--ink); border-radius: 10px; background: var(--tag-bg); box-shadow: 3px 3px 0 0 var(--tag-sh); }
+.t-y { --tag-bg: #FFF260; --tag-sh: #A9A03E; } .t-g { --tag-bg: #60FFA2; --tag-sh: #318D57; } .t-p { --tag-bg: #FD93E2; --tag-sh: #8B487A; } .t-b { --tag-bg: #60C2FF; --tag-sh: #2157A9; }
+
+.stamp {
+  position: absolute; right: 24px; top: -18px; display: none;
+  font: 500 12px/1.2 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; text-align: center;
+  color: #C2412D; border: 2px solid #C2412D; border-radius: 8px; padding: 6px 10px;
+  transform: rotate(6deg); opacity: .85; background: transparent;
+}
+.lvl-3 .stamp { display: block; }
+
+/* ---------- Journal grid ---------- */
+.journal { max-width: 1280px; margin: 0 auto; padding: 24px clamp(16px, 3vw, 32px) 80px; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 48px; }
+.toc { position: sticky; top: 92px; align-self: start; font-size: 14px; }
+.toc h2 { font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin: 0 0 14px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; position: relative; }
+.toc a { display: grid; grid-template-columns: 30px 1fr; gap: 4px; padding: 7px 10px; border-radius: 10px; text-decoration: none; color: var(--text-2); border: 2px solid transparent; transition: background 200ms, border-color 200ms, color 200ms, box-shadow 200ms var(--ease-land), transform 200ms var(--ease-land); }
+.toc a span { font: 500 12px/1.7 var(--font-mono); color: var(--text-3); }
+.toc a:hover { color: var(--text); background: var(--paper-2); }
+.toc a.active { color: #0A0A0A; background: var(--accent); border-color: var(--ink); box-shadow: 3px 3px 0 0 var(--accent-d); transform: translate(-1px,-1px); }
+.toc a.active span { color: #0A0A0A; }
+.toc-meta { margin-top: 18px; padding-top: 14px; border-top: 2px dashed var(--line); font: 400 12px/1.6 var(--font-mono); color: var(--text-3); }
+
+.entries { min-width: 0; }
+.row { display: grid; grid-template-columns: minmax(0, 660px) 230px; gap: 0 48px; align-items: start; }
+.row > .main { min-width: 0; }
+.row > .wide { grid-column: 1 / -1; }
+.entry { padding-block: 40px 24px; scroll-margin-top: 80px; }
+.entry + .entry { border-top: 2px dashed var(--line); }
+
+.entry-head { display: flex; align-items: flex-end; gap: 18px; margin: 0 0 22px; }
+.entry-num { font-family: var(--font-display); font-size: 64px; line-height: .8; color: var(--paper); -webkit-text-stroke: 2px var(--ink); text-shadow: 4px 4px 0 var(--accent); }
+.lvl-1 .entry-num { color: var(--text-3); -webkit-text-stroke: 0; text-shadow: none; font-size: 40px; }
+.entry-head h2 { margin: 0; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.15; font-weight: 600; text-wrap: balance; color: var(--text); }
+.entry-head small { display: block; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 8px; }
+
+.main p { margin: 0 0 18px; color: var(--text); max-width: 66ch; }
+.main ul { margin: 0 0 18px; padding-left: 22px; }
+
+/* Highlighter */
+.hl {
+  background-image: linear-gradient(transparent 58%, var(--accent) 58%, var(--accent) 92%, transparent 92%);
+  background-color: transparent; background-repeat: no-repeat; background-size: 100% 100%; padding: 0 2px;
+  color: inherit;
+}
+.night .hl { background-image: linear-gradient(transparent 58%, rgba(96,194,255,.45) 58%, rgba(96,194,255,.45) 92%, transparent 92%); }
+.lvl-1 .hl { background-image: none; font-weight: 600; }
+
+/* Margin notes */
+.mnote { font-size: 14px; line-height: 1.55; color: var(--text-2); padding-top: 4px; }
+.mnote .k { display: block; font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 6px; }
+.mnote a { font-weight: 500; }
+.lvl-1 .mnote { border-left: 2px solid var(--line); padding-left: 12px; }
+.lvl-2 .mnote { border-left: 3px solid var(--ink); padding-left: 12px; }
+.lvl-3 .mnote {
+  background: #FFF7B8; color: #2A2A2A; border: 2px solid #0A0A0A; border-radius: 4px 4px 14px 4px;
+  padding: 14px 14px 12px; box-shadow: 4px 4px 0 0 #A9A03E; transform: rotate(var(--r, 1.2deg)); position: relative;
+}
+.lvl-3 .mnote .k { color: #6A6416; }
+.lvl-3 .mnote.pink { background: #FFD8F4; box-shadow: 4px 4px 0 0 #8B487A; }
+.lvl-3 .mnote.pink .k { color: #7A3A69; }
+.lvl-3 .mnote.blue { background: #D6EEFF; box-shadow: 4px 4px 0 0 #2157A9; }
+.lvl-3 .mnote.blue .k { color: #1D4A8A; }
+
+/* Figures */
+.fig { margin: 8px 0 30px; position: relative; }
+.fig button { all: unset; display: block; cursor: zoom-in; width: 100%; }
+.fig button:focus-visible .frame { outline: 3px solid var(--blue-d); outline-offset: 4px; }
+.frame { display: block; background: #FFFFFF; position: relative; transition: transform 300ms var(--ease-land), box-shadow 300ms var(--ease-land); }
+.frame img { width: 100%; }
+.lvl-1 .frame { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; padding: 12px; }
+.lvl-2 .frame, .lvl-3 .frame { border: 3px solid var(--ink); border-radius: var(--radius); padding: 14px; box-shadow: 6px 6px 0 0 var(--shadow-ink); }
+.lvl-2 .fig button:hover .frame { transform: translate(-2px,-2px); box-shadow: 9px 9px 0 0 var(--shadow-ink); }
+.lvl-3 .frame { transform: rotate(var(--r, -1deg)); border-radius: 6px; }
+.lvl-3 .fig button:hover .frame { transform: rotate(0deg) translate(-2px,-2px); box-shadow: 9px 9px 0 0 var(--shadow-ink); }
+.lvl-3 .frame::before, .lvl-3 .frame::after {
+  content: ""; position: absolute; width: 96px; height: 26px; background: var(--tape); top: -14px;
+  border-left: 1px dashed rgba(0,0,0,.12); border-right: 1px dashed rgba(0,0,0,.12); mix-blend-mode: multiply;
+}
+.lvl-3 .frame::before { left: 18px; transform: rotate(-5deg); }
+.lvl-3 .frame::after { right: 18px; transform: rotate(4deg); }
+.night.lvl-3 .frame::before, .night.lvl-3 .frame::after { mix-blend-mode: normal; }
+figcaption { display: flex; gap: 10px; margin-top: 14px; font-size: 14px; line-height: 1.5; color: var(--text-2); }
+figcaption b { font: 500 12px/1.75 var(--font-mono); color: var(--text); white-space: nowrap; text-transform: uppercase; letter-spacing: .04em; }
+.zoom-hint { position: absolute; right: 12px; top: 12px; z-index: 2; font: 500 11px/1 var(--font-mono); background: var(--ink); color: var(--paper); padding: 5px 7px; border-radius: 6px; opacity: 0; transition: opacity 200ms; pointer-events: none; }
+.fig button:hover .zoom-hint, .fig button:focus-visible .zoom-hint { opacity: 1; }
+
+/* Pillar + question cards */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 4px 0 26px; }
+.qcard {
+  background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); padding: 18px 20px; position: relative;
+  box-shadow: 6px 6px 0 0 var(--qs, var(--shadow-ink)); color: var(--text);
+}
+.qcard .qn { font-family: var(--font-display); font-size: 40px; line-height: 1; color: var(--qc, var(--accent)); -webkit-text-stroke: 2px var(--ink); display: block; margin-bottom: 10px; }
+.qcard p { margin: 0; font-size: 18px; line-height: 1.45; font-weight: 600; }
+.qcard .sub { display: block; margin-top: 8px; font: 400 13px/1.5 var(--font-mono); color: var(--text-3); }
+.lvl-1 .qcard { border-width: 1px; border-color: var(--line); box-shadow: none; }
+.lvl-3 .qcard:nth-child(odd) { transform: rotate(-.8deg); }
+.lvl-3 .qcard:nth-child(even) { transform: rotate(.9deg); }
+
+/* Specimen card (ruled index card) */
+.specimen {
+  background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); overflow: hidden; margin: 6px 0 28px;
+  box-shadow: 6px 6px 0 0 var(--blue-d);
+}
+.specimen header { background: var(--blue); color: #0A0A0A; padding: 12px 18px; border-bottom: 3px solid var(--ink); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.specimen header h3 { margin: 0; font-size: 18px; font-weight: 600; }
+.specimen header span { font: 500 12px/1 var(--font-mono); }
+.specimen .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; padding: 6px 18px 14px;
+  background-image: linear-gradient(transparent 31px, var(--line) 31px, var(--line) 32px, transparent 32px); background-size: 100% 32px; background-position: 0 6px; }
+.specimen h4 { margin: 0; font: 500 12px/32px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); }
+.specimen ul { list-style: none; margin: 0; padding: 0; }
+.specimen li { line-height: 32px; font-size: 15px; }
+.specimen li::before { content: "□ "; font-family: var(--font-mono); color: var(--text-3); }
+.lvl-1 .specimen { border-width: 1px; border-color: var(--line); box-shadow: none; }
+.lvl-1 .specimen header { background: var(--paper-2); border-bottom: 1px solid var(--line); color: var(--text); }
+.lvl-3 .specimen { transform: rotate(-.6deg); }
+
+/* Dictionary entry */
+.defn { background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); padding: 22px 24px; margin: 6px 0 28px; box-shadow: 6px 6px 0 0 var(--green-d); position: relative; }
+.defn .term { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0 0 4px; }
+.defn .term h3 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 34px; line-height: 1.1; color: var(--text); }
+.defn .term i { font: italic 400 16px/1 var(--font-body); color: var(--text-3); }
+.defn .term .no { margin-left: auto; font: 500 11px/1 var(--font-mono); padding: 5px 7px; border: 2px solid var(--ink); border-radius: 8px; background: var(--green); color: #0A0A0A; }
+.defn ol { margin: 12px 0 0; padding-left: 22px; }
+.defn li { margin-bottom: 6px; }
+.defn p { margin: 12px 0 0; }
+.defn .see { margin-top: 14px; padding-top: 12px; border-top: 2px dashed var(--line); font: 400 13px/1.5 var(--font-mono); color: var(--text-3); }
+.lvl-1 .defn { border-width: 1px; border-color: var(--line); box-shadow: none; }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 18px; margin: 8px 0 30px; }
+.stat { background: var(--sb); color: #0A0A0A; border: 3px solid var(--ink); border-radius: var(--radius); padding: 16px 16px 14px; box-shadow: 5px 5px 0 0 var(--ss); }
+.stat strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 40px; line-height: 1; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 14px; line-height: 1.45; display: block; }
+.s1 { --sb: #FFF260; --ss: #A9A03E; } .s2 { --sb: #60E7FF; --ss: #348796; } .s3 { --sb: #60FFA2; --ss: #318D57; } .s4 { --sb: #FD93E2; --ss: #8B487A; } .s5 { --sb: #FFB37A; --ss: #9A4F1C; }
+.lvl-1 .stat { background: var(--card); color: var(--text); border-width: 1px; border-color: var(--line); box-shadow: none; }
+.lvl-3 .stat:nth-child(2n) { transform: rotate(1deg); } .lvl-3 .stat:nth-child(3n) { transform: rotate(-1.2deg); }
+
+/* Pull quote */
+.pull { margin: 10px 0 28px; padding: 6px 0 6px 22px; border-left: 6px solid var(--ink); }
+.pull p { font-family: var(--font-display); font-weight: 400; font-size: clamp(30px, 3.6vw, 44px); line-height: 1.12; margin: 0; max-width: none; color: var(--text); }
+.pull cite { display: block; margin-top: 12px; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); font-style: normal; }
+
+.metadata-line { font: 500 14px/1.6 var(--font-mono); background: var(--card); border: 2px dashed var(--ink); border-radius: 10px; padding: 12px 14px; margin: 0 0 18px; overflow-x: auto; white-space: nowrap; color: var(--text); }
+
+/* Next entry */
+.next { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; margin-top: 40px; padding: 22px 24px; text-decoration: none; background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 6px 6px 0 0 var(--shadow-ink); transition: transform 300ms var(--ease-land), box-shadow 300ms var(--ease-land); color: var(--text); }
+.next:hover { transform: translate(-2px,-2px); box-shadow: 9px 9px 0 0 var(--shadow-ink); }
+.next small { display: block; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 8px; }
+.next strong { font-size: 22px; font-weight: 600; }
+.next .arrow { font-family: var(--font-display); font-size: 40px; }
+
+/* Lightbox */
+.lightbox { position: fixed; inset: 0; z-index: 60; background: rgba(10,10,10,.82); display: grid; place-items: center; padding: 24px; cursor: zoom-out; }
+.lightbox[hidden] { display: none !important; }
+.lightbox figure { margin: 0; max-width: min(1400px, 100%); max-height: 100%; display: grid; gap: 12px; }
+.lightbox img { max-height: calc(100vh - 120px); width: auto; margin: 0 auto; background: #FFFFFF; border: 3px solid #0A0A0A; border-radius: 10px; box-shadow: 8px 8px 0 0 #000; }
+.lightbox figcaption { color: #FAF5F2; justify-content: center; }
+.lightbox figcaption b { color: #FFF260; }
+
+/* Lab panel (prototype only) */
+.lab { position: fixed; z-index: 50; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: min(300px, calc(100vw - 32px)); background: #FFFFFF; color: #0A0A0A; border: 3px solid #0A0A0A; border-radius: var(--radius); box-shadow: 6px 6px 0 0 #0A0A0A; font-size: 14px; }
+.lab summary { list-style: none; cursor: pointer; padding: 10px 14px; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; display: flex; justify-content: space-between; }
+.lab summary::-webkit-details-marker { display: none; }
+.lab summary::after { content: "+"; } .lab[open] summary::after { content: "–"; }
+.lab-body { padding: 12px 14px 14px; display: grid; gap: 10px; border-top: 2px solid #0A0A0A; }
+.lab-h { font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: #666; margin: 0; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; border: 0; margin: 0; padding: 0; }
+.seg.two { grid-template-columns: 1fr 1fr; }
+.seg label { cursor: pointer; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span { display: block; text-align: center; padding: 8px 4px; font-size: 12.5px; font-weight: 500; line-height: 1.2; border: 2px solid #0A0A0A; border-radius: 10px; background: #FFFFFF; box-shadow: 3px 3px 0 0 #0A0A0A; transition: transform 150ms, box-shadow 150ms, background 150ms; }
+.seg input:checked + span { background: #60E7FF; transform: translate(3px,3px); box-shadow: 0 0 0 0 #0A0A0A; }
+.seg input:focus-visible + span { outline: 3px solid #2157A9; outline-offset: 2px; }
+.lab small { color: #666; font-size: 12px; line-height: 1.4; }
+
+/* ---------- Motion ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .js .rv:not(.in) { opacity: 0; transform: translateY(18px); }
+  .js .rv { transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
+  .js .fig.rv:not(.in) .frame { transform: translateY(-10px) scale(1.03) rotate(calc(var(--r, 0deg) + 1.5deg)); box-shadow: 0 0 0 0 var(--shadow-ink); }
+  .js .fig.rv:not(.in) { transform: none; }
+  .js .hl:not(.in) { background-size: 0% 100%; }
+  .js .hl { transition: background-size 900ms var(--ease-out) 200ms; }
+  .js .case-title mark::before { animation: wipe 700ms var(--ease-out) 450ms backwards; }
+  .js .cover .rise { animation: rise 700ms var(--ease-out) backwards; animation-delay: var(--d, 0ms); }
+  .js .index-card.rise { animation: lift 650ms var(--ease-land) 350ms backwards; }
+  .js .stamp { animation: stampIn 420ms var(--ease-land) 1000ms backwards; }
+}
+@keyframes wipe { from { transform: scaleX(0); } }
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+@keyframes lift { from { transform: translate(6px,6px); box-shadow: 0 0 0 0 var(--shadow-ink); } }
+@keyframes stampIn { from { opacity: 0; transform: rotate(6deg) scale(1.6); } }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1180px) {
+  .row { grid-template-columns: minmax(0, 1fr); }
+  .row > .mnote { margin: -4px 0 22px; max-width: 520px; }
+  .lvl-3 .row > .mnote { margin-inline: 8px; }
+}
+@media (max-width: 900px) {
+  .journal { grid-template-columns: 1fr; gap: 0; }
+  .toc { position: static; margin-bottom: 8px; }
+  .toc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .toc-meta { display: none; }
+  .cover { grid-template-columns: 1fr; gap: 32px; }
+  .header-meta { display: none; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .pair, .specimen .cols { grid-template-columns: 1fr; }
+  .entry-num { font-size: 48px; }
+  .toc ol { grid-template-columns: 1fr; }
+  .lvl-2 .frame, .lvl-3 .frame { padding: 8px; }
+}
+</style>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="https://brunomartignago.github.io/" target="_blank" rel="noopener">
+      <img src="../assets/images/logo.png" alt="Bruno Martignago logo" width="69" height="77">
+      <span class="crumb">Bruno Martignago <span>/ Visual patterns in web page generation</span></span>
+    </a>
+    <span class="header-meta" id="readLeft">24 min read</span>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<section class="cover">
+  <div>
+    <p class="eyebrow rise" style="--d:0ms"><b>Case file 01</b> · Research · Part 1 of 2</p>
+    <h1 class="case-title rise" style="--d:80ms">This is a new way to think about <mark>webpage structure.</mark></h1>
+    <p class="lede rise" style="--d:200ms">A four-year research project into the core pillars that make up a web page. Along the way it produced a classification method and a universal design–development taxonomy, built to make discovery research faster and, one day, to help train AI to generate pages and flows.</p>
+  </div>
+  <aside class="index-card rise" aria-label="Project facts">
+    <span class="stamp">Field notes<br>2022 – 2025</span>
+    <h2>Index card</h2>
+    <dl>
+      <dt>Role</dt><dd>Researcher &amp; designer</dd>
+      <dt>Studies</dt><dd>5 tests, 2022–2025. This case covers studies 1 and 2.</dd>
+      <dt>Team</dt><dd>Bruno Martignago, Leonardo Souza</dd>
+      <dt>Methods</dt><dd><span class="tags"><span class="tag t-y">Taxonomy</span><span class="tag t-g">Benchmark</span><span class="tag t-p">Data analysis</span></span></dd>
+      <dt>Read</dt><dd>~24 minutes · 7 entries</dd>
+    </dl>
+  </aside>
+</section>
+
+<div class="journal">
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol id="toc">
+      <li><a href="#e1"><span>01</span>Context</a></li>
+      <li><a href="#e2"><span>02</span>Introduction</a></li>
+      <li><a href="#e3"><span>03</span>Research questions</a></li>
+      <li><a href="#e4"><span>04</span>The first study</a></li>
+      <li><a href="#e5"><span>05</span>The second study</a></li>
+      <li><a href="#e6"><span>06</span>Insights &amp; scaling</a></li>
+    </ol>
+    <p class="toc-meta">Prototype excerpt. The full case continues with entry 07, “Building my own classification tool”.</p>
+  </nav>
+
+  <div class="entries">
+
+    <!-- 01 -->
+    <section class="entry" id="e1">
+      <div class="row">
+        <div class="main">
+          <div class="entry-head rv"><span class="entry-num" aria-hidden="true">01</span><div><small>Entry 01</small><h2>Context</h2></div></div>
+          <p class="rv">This is a research project I've been working on for the last four years. The focus was on understanding the core pillars that constitute a web page. This understanding would eventually pave the way for creating an algorithm for webpage and flow generation via AI training.</p>
+          <p class="rv">This is the first part of a large set of findings from 5 tests conducted from 2022 to 2025. This case focuses on results that address element placement and the development of a <mark class="hl">universal design–development taxonomy</mark>, enabling web templates that facilitate discovery research and speed it up.</p>
+        </div>
+        <aside class="mnote rv pink" style="--r:1.6deg"><span class="k">Part 2</span>The second half of this research lives in its own case: <a href="https://brunomartignago.github.io/" target="_blank" rel="noopener">Cognitive Load Influence on Page Navigation →</a></aside>
+      </div>
+      <div class="row">
+        <figure class="fig rv main" style="--r:-.8deg">
+          <button type="button" data-zoom><span class="frame"><span class="zoom-hint">Click to zoom</span><img src="../assets/images/cases/research1/hero.jpg" alt="Grid of 27 summarized page templates, each made of colored blocks" width="576" height="212"></span></button>
+          <figcaption><b>Fig. 01</b><span>Summarized templates of the pages analyzed. Each color is a section type.</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="entry" id="e2">
+      <div class="row">
+        <div class="main">
+          <div class="entry-head rv"><span class="entry-num" aria-hidden="true">02</span><div><small>Entry 02</small><h2>Introduction</h2></div></div>
+          <p class="rv">For this project, I worked with a base definition, an axiom, that we will use throughout the entire study. It's important to have this definition made very early in the conversation, so all the knots are tied to this truth.</p>
+          <p class="rv">We will define a webpage as a visual structure that is designed from a combination of two pillars:</p>
+        </div>
+        <aside class="mnote rv" style="--r:-1.4deg"><span class="k">Axiom</span>The one definition everything else in this study is tied back to.</aside>
+      </div>
+      <div class="row">
+        <div class="main">
+          <div class="pair rv">
+            <div class="qcard" style="--qc:#60C2FF;--qs:#2157A9"><span class="qn">A</span><p>Graphic components</p><span class="sub">content · low variation · follows rules</span></div>
+            <div class="qcard" style="--qc:#FD93E2;--qs:#8B487A"><span class="qn">B</span><p>Culture</p><span class="sub">user demographics · high variation</span></div>
+          </div>
+          <figure class="fig rv" style="--r:1deg">
+            <button type="button" data-zoom><span class="frame"><span class="zoom-hint">Click to zoom</span><img src="../assets/images/cases/research1/intro.png" alt="Diagram: a web page splits into two pillars, graphic components and culture" width="914" height="718"></span></button>
+            <figcaption><b>Fig. 02</b><span>The two pillars that sustain the structure of a web page.</span></figcaption>
+          </figure>
+          <p class="rv">These pillars sustain the entire structure of a webpage and guide designers, developers, and product people in making decisions when building these solutions.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="entry" id="e3">
+      <div class="row">
+        <div class="main">
+          <div class="entry-head rv"><span class="entry-num" aria-hidden="true">03</span><div><small>Entry 03</small><h2>Research questions</h2></div></div>
+          <p class="rv">We want to better understand what makes people navigate the way they navigate, how they decide what to look at on a page, and what helps them find the information they're looking for. This is the part where AI-generated pages fail when exposed to users: <mark class="hl">they look good, but there's no appeal outside of the visual layer.</mark></p>
+          <figure class="fig rv" style="--r:-1.2deg">
+            <button type="button" data-zoom><span class="frame"><span class="zoom-hint">Click to zoom</span><img src="../assets/images/cases/research1/research_questions.png" alt="Culture: high variation, research dependable, hard to automate. Content: low variation, predictable, follows a set of rules." width="808" height="248"></span></button>
+            <figcaption><b>Fig. 03</b><span>Culture varies a lot and depends on research. Content is predictable and follows rules.</span></figcaption>
+          </figure>
+          <p class="rv">With these considerations, I had two questions in mind that I wanted to understand with this research:</p>
+          <div class="pair rv">
+            <div class="qcard"><span class="qn">Q1</span><p>If demographics are fixed, would it be possible to map patterns of visual elements on pages and flows?</p></div>
+            <div class="qcard"><span class="qn">Q2</span><p>Is it possible to simplify web page structuring so it's easier to automate?</p></div>
+          </div>
+        </div>
+        <aside class="mnote rv blue" style="--r:1deg"><span class="k">Method note</span>Culture is treated as a constant: each test came with a pre-selected set of demographic information.</aside>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="entry" id="e4">
+      <div class="row">
+        <div class="main">
+          <div class="entry-head rv"><span class="entry-num" aria-hidden="true">04</span><div><small>Entry 04 · Study 1</small><h2>The first study</h2></div></div>
+          <p class="rv">In the first test, our main objective was to understand how to classify the elements within a page, their visual properties, and their relative positions on the screen. Our sample was formed by the following:</p>
+          <div class="specimen rv">
+            <header><h3>First test guidelines</h3><span>31 pages · most-used websites in Brazil</span></header>
+            <div class="cols">
+              <div><h4>5 page types</h4><ul><li>Home</li><li>Item list</li><li>Item detail</li><li>Article</li><li>User page</li></ul></div>
+              <div><h4>6 content types</h4><ul><li>E-commerce</li><li>News</li><li>Social media</li><li>Streaming</li><li>Weather</li><li>Services</li></ul></div>
+            </div>
+          </div>
+          <p class="rv">To compare pages of different sizes, we needed a uniform categorization of page sections. We built it through a series of template section definitions, starting with the header.</p>
+        </div>
+        <aside class="mnote rv" style="--r:-1deg"><span class="k">Tooling</span>Study 1 was organized in Figma. Study 2 moved to Adobe XD, which keeps images at their original size and exports layer names as JSON.</aside>
+      </div>
+      <div class="row">
+        <div class="main">
+          <article class="defn rv">
+            <div class="term"><h3>Header</h3><i>noun · template section</i><span class="no">DEF. 01</span></div>
+            <p>The top portion of the page, consisting of a combination, but not exclusively, of:</p>
+            <ol><li>Site logo / title</li><li>Navigational menu (links and/or dropdowns that lead to a new page)</li><li>Search bar</li><li>Login / user area</li></ol>
+            <p>Headers usually have a visual delimitation: a line, shadow, or color difference. In code, it's the entire area inside the <code>&lt;header&gt;</code> section.</p>
+            <p class="see">See also: Subheader · Footer · Overlay · Columns · Panels &amp; Menus</p>
+          </article>
+          <figure class="fig rv" style="--r:.8deg">
+            <button type="button" data-zoom><span class="frame"><span class="zoom-hint">Click to zoom</span><img src="../assets/images/cases/research1/headers.jpg" alt="Header examples from Dell, Amazon, Vox and AmCharts, each outlined in orange" width="1320" height="742"></span></button>
+            <figcaption><b>Fig. 04</b><span>Header examples: Dell, Amazon, Vox and AmCharts.</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="entry" id="e5">
+      <div class="row">
+        <div class="main">
+          <div class="entry-head rv"><span class="entry-num" aria-hidden="true">05</span><div><small>Entry 05 · Study 2</small><h2>The second study</h2></div></div>
+          <p class="rv">With the new definitions in hand, we ran a second test, classifying every block by hand in much more detail. Each rectangle received a description code:</p>
+          <p class="metadata-line rv">Page; template; function; form; component; width; height</p>
+          <p class="rv">Here is what we found when analyzing the amount of information across all pages:</p>
+        </div>
+        <aside class="mnote rv pink" style="--r:1.4deg"><span class="k">Sample</span>10 e-commerce sites × 3 page types (item list, item detail, cart) = 30 pages, all following a “purchase flow with 2 items added to the cart”.</aside>
+      </div>
+      <div class="row">
+        <div class="main">
+          <div class="stats rv">
+            <div class="stat s1"><strong data-count="29.19">29.19%</strong><span>median of the total amount of information on the analyzed pages</span></div>
+            <div class="stat s2"><strong data-count="1.05">1.05%</strong><span>variation in the total amount of information</span></div>
+            <div class="stat s3"><strong data-count="10.25">10.25%</strong><span>standard deviation of the total amount of information</span></div>
+            <div class="stat s4"><strong data-count="56" data-dec="0">56%</strong><span>of the information had the Form “Typo”</span></div>
+            <div class="stat s5"><strong data-count="86" data-dec="0">86%</strong><span>is the combination of illustrations, links and plain text</span></div>
+          </div>
+          <figure class="fig rv" style="--r:-.6deg">
+            <button type="button" data-zoom><span class="frame"><span class="zoom-hint">Click to zoom</span><img src="../assets/images/cases/research1/form_function.jpeg" alt="Sankey chart showing how element functions distribute across forms: typo, space, image and icon" width="1269" height="552"></span></button>
+            <figcaption><b>Fig. 05</b><span>Form × Function distribution within elements.</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 -->
+    <section class="entry" id="e6">
+      <div class="row">
+        <div class="main">
+          <div class="entry-head rv"><span class="entry-num" aria-hidden="true">06</span><div><small>Entry 06</small><h2>Insights and the scaling problem</h2></div></div>
+          <blockquote class="pull rv"><p>How can we make this process scalable?</p><cite>The question after study 2</cite></blockquote>
+          <p class="rv">The second test took months to complete. All categorization, data organization and analysis was done by hand. My approach was to look for a classification model we could train on our hand-made examples, but <mark class="hl">image recognition models are usually trained on a single label at a time</mark>, not multiple labels like we were doing.</p>
+          <p class="rv">In a third, smaller study, each selection box also carried its coordinates, so the extracted metadata looked like this:</p>
+          <p class="metadata-line rv">Form; Function; Component; Template taxonomy; Width; Height; Position X; Position Y</p>
+        </div>
+        <aside class="mnote rv blue" style="--r:-1.3deg"><span class="k">Co-researcher</span>Leonardo Souza, my product design intern at the time, ran the categorization and analysis of study 2 with me.</aside>
+      </div>
+      <div class="row">
+        <a class="next main rv" href="https://brunomartignago.github.io/pages/aiorc.html" target="_blank" rel="noopener">
+          <span><small>Next case file</small><strong>AI Orchestration – Digital Twin</strong></span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Zoomed figure">
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+</div>
+
+<details class="lab" id="lab" open>
+  <summary>Journal lab</summary>
+  <div class="lab-body">
+    <p class="lab-h">Scrapbook level</p>
+    <fieldset class="seg" aria-label="Scrapbook level">
+      <label><input type="radio" name="lvl" value="1" id="l1"><span>White paper</span></label>
+      <label><input type="radio" name="lvl" value="2" id="l2" checked><span>Journal</span></label>
+      <label><input type="radio" name="lvl" value="3" id="l3"><span>Scrapbook</span></label>
+    </fieldset>
+    <p class="lab-h">Edition</p>
+    <fieldset class="seg two" aria-label="Edition">
+      <label><input type="radio" name="ed" value="day" id="eDay" checked><span>Day</span></label>
+      <label><input type="radio" name="ed" value="night" id="eNight"><span>Night (AI Orch.)</span></label>
+    </fieldset>
+    <small>Click any figure to zoom. Night shows how the dark AI Orchestration case can use the same system with a blue accent.</small>
+  </div>
+</details>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  root.classList.add('js', 'lvl-2');
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+
+  // Reveal + highlighter
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    e.target.querySelectorAll('.hl').forEach(h => h.classList.add('in'));
+    e.target.querySelectorAll('[data-count]').forEach(countUp);
+    io.unobserve(e.target);
+  }), { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  function countUp(el) {
+    if (el.dataset.done) return; el.dataset.done = 1;
+    const target = parseFloat(el.dataset.count), dec = el.dataset.dec != null ? +el.dataset.dec : 2;
+    if (reduced()) { el.textContent = target.toFixed(dec) + '%'; return; }
+    const t0 = performance.now(), dur = 1100;
+    const f = now => { const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3); el.textContent = (target * e).toFixed(dec) + '%'; if (p < 1) requestAnimationFrame(f); };
+    requestAnimationFrame(f);
+  }
+
+  // Progress + time left + TOC scrollspy
+  const bar = $('progress'), left = $('readLeft');
+  const links = [...document.querySelectorAll('#toc a')];
+  const entries = links.map(a => document.querySelector(a.getAttribute('href')));
+  const TOTAL_MIN = 24;
+  function onScroll() {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const p = max > 0 ? Math.min(1, scrollY / max) : 0;
+    bar.style.setProperty('--p', p.toFixed(4));
+    left.textContent = p > 0.97 ? 'Finished · thanks for reading' : `${Math.max(1, Math.round(TOTAL_MIN * (1 - p)))} min left`;
+    let idx = 0;
+    entries.forEach((e, i) => { if (e.getBoundingClientRect().top < innerHeight * 0.35) idx = i; });
+    links.forEach((a, i) => a.classList.toggle('active', i === idx));
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  links.forEach(a => a.addEventListener('click', ev => {
+    ev.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth' });
+  }));
+
+  // Lightbox
+  const lb = $('lightbox'), lbImg = $('lbImg'), lbCap = $('lbCap');
+  let lastFocus = null;
+  document.querySelectorAll('[data-zoom]').forEach(btn => btn.addEventListener('click', () => {
+    const img = btn.querySelector('img'), cap = btn.closest('figure').querySelector('figcaption');
+    lbImg.src = img.src; lbImg.alt = img.alt; lbCap.innerHTML = cap ? cap.innerHTML : '';
+    lastFocus = btn; lb.hidden = false; lb.tabIndex = -1; lb.focus();
+  }));
+  const close = () => { lb.hidden = true; if (lastFocus) lastFocus.focus(); };
+  lb.addEventListener('click', close);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !lb.hidden) close(); });
+
+  // Lab
+  document.querySelectorAll('input[name="lvl"]').forEach(r => r.addEventListener('change', e => {
+    root.classList.remove('lvl-1', 'lvl-2', 'lvl-3'); root.classList.add('lvl-' + e.target.value);
+  }));
+  document.querySelectorAll('input[name="ed"]').forEach(r => r.addEventListener('change', e => root.classList.toggle('night', e.target.value === 'night')));
+  if (innerWidth < 640) $('lab').open = false;
+})();
+</script>

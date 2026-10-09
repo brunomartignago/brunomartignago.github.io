@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sketch C3 · One dashboard, three modes</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sketch.css" />
+<style>
+  .dash { position: absolute; inset: 6%; display: grid; gap: 6px; }
+  .kc { border: 2px solid #0A0A0A; border-radius: 6px; background: #FFFFFF; box-shadow: 2px 2px 0 0 var(--cd); padding: 5px 6px; color: #1F1F1F; overflow: hidden; }
+  .kc .n { font: 500 8px/1.2 var(--font-body); }
+  .kc .v { font: 700 15px/1.1 var(--font-body); margin-top: 3px; }
+  .kc .d { font: 400 7px/1.3 var(--font-body); color: #4A4A4A; margin-top: 3px; }
+  .kc .sp { height: 10px; margin-top: 4px; border-bottom: 1.5px solid var(--cd); border-radius: 0 0 4px 4px; }
+  .slide { display: grid; grid-template-columns: 18px 1fr 18px; align-items: center; gap: 6px; }
+  .nav { width: 18px; height: 18px; display: grid; place-items: center; border: 2px solid #0A0A0A; border-radius: 50%; font: 500 9px/1 var(--font-mono); background: #FFFFFF; }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <a class="back" href="index.html">← All sketches</a>
+  <p class="eyebrow">Sketch C3 · Cockpit · entry 03</p>
+  <h1>One dashboard, <mark>three modes</mark></h1>
+  <p class="idea">Instead of three screenshots, one set of real KPI cards switches between Detailed, Compact and Slide show. The cards slide to their new places, so the reader sees the same data trading detail for density (Compact) or focus (Slide show), which is the trade-off each mode makes for its users.</p>
+  <ul class="meta"><li><b>Replaces</b>detailed.png · compact.png · slide.png (kept as supporting figures if you want)</li><li><b>Real values</b>card names and numbers from the three screenshots · “1/8”</li><li><b>Illustrative</b>sparklines</li></ul>
+  <ul class="behave">
+    <li><b>Plays once in view:</b> Detailed → Compact → Slide show (~1.8s each), FLIP between layouts.</li>
+    <li><b>Reader drives:</b> a Detailed / Compact / Slide show segmented control (aria-pressed); in Slide show, ‹ › step through the cards.</li>
+    <li><b>Reduced motion:</b> static on Detailed with the control working. No JS: detailed.png.</li>
+  </ul>
+
+  <div class="board">
+    <div class="panel">
+      <div class="k"><span>Detailed</span><span>default · bigger cards</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 05 — View modes</span><span class="btns"><span class="btn on">Detailed</span><span class="btn">Compact</span><span class="btn">Slide</span></span></div>
+        <div class="stage" style="--ar:4/3"><div class="dash" style="grid-template-columns:1fr 1fr">
+          <div class="kc" style="--cd:#2157A9"><div class="n">Site Search Visits</div><div class="v">178,318</div><div class="d">Avg 179,289 · 200K goal. Shows how many visits from users who went to dell.com and visited search.</div><div class="sp"></div></div>
+          <div class="kc" style="--cd:#A9A03E"><div class="n">Critical Vulnerability Count</div><div class="v">32.93%</div><div class="d">Avg 29.12% · 40% goal</div><div class="sp"></div></div>
+          <div class="kc" style="--cd:#8B487A"><div class="n">Null Results %</div><div class="v">13.64%</div><div class="d">Week 19</div><div class="sp"></div></div>
+          <div class="kc" style="--cd:#318D57"><div class="n">Resolution Time</div><div class="v">1.5h</div><div class="d">Avg 1h · 30 min goal</div><div class="sp"></div></div>
+        </div></div>
+      </div>
+      <p class="cap">Extra information helps people understand each chart.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>Compact</span><span>more cards at once</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 05 — View modes</span><span class="btns"><span class="btn">Detailed</span><span class="btn on">Compact</span><span class="btn">Slide</span></span></div>
+        <div class="stage" style="--ar:4/3"><div class="dash" style="grid-template-columns:repeat(4,1fr)">
+          <div class="kc" style="--cd:#2157A9"><div class="n">Site Search Visits</div><div class="v" style="font-size:11px">178,318</div><div class="sp"></div></div>
+          <div class="kc" style="--cd:#9A4F1C"><div class="n">1st Click CTR</div><div class="v" style="font-size:11px">32.93%</div><div class="sp"></div></div>
+          <div class="kc" style="--cd:#A9A03E"><div class="n">Critical Vuln.</div><div class="v" style="font-size:11px">32.93%</div><div class="sp"></div></div>
+          <div class="kc" style="--cd:#348796"><div class="n">Site Searches</div><div class="v" style="font-size:11px">295,825</div><div class="sp"></div></div>
+          <div class="kc" style="--cd:#318D57"><div class="n">Resolution Time</div><div class="v" style="font-size:11px">1.5h</div><div class="sp"></div></div>
+          <div class="kc" style="--cd:#8B487A"><div class="n">CSAT</div><div class="v" style="font-size:11px">80.65%</div><div class="sp"></div></div>
+          <div class="kc" style="--cd:#5B524B"><div class="n">Order Conversion</div><div class="v" style="font-size:11px">16.51%</div><div class="sp"></div></div>
+          <div class="kc" style="--cd:#2157A9"><div class="n">Avg Click Rank</div><div class="v" style="font-size:11px">4.9</div><div class="sp"></div></div>
+        </div></div>
+      </div>
+      <p class="cap">For people who already know where to look.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>Slide show</span><span>one card · 1/8</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 05 — View modes</span><span class="btns"><span class="btn">Detailed</span><span class="btn">Compact</span><span class="btn on">Slide</span></span></div>
+        <div class="stage" style="--ar:4/3"><div class="dash slide">
+          <span class="nav">‹</span>
+          <div class="kc" style="--cd:#2157A9;height:100%"><div class="n">Business Adoption and Impact · 1/8</div><div style="display:flex;justify-content:space-around;margin-top:10px"><div><div class="d">Current adoption</div><div class="v">16.32%</div></div><div><div class="d">Current impact</div><div class="v">56.65%</div></div></div><div class="sp" style="height:46px;margin-top:10px"></div></div>
+          <span class="nav">›</span>
+        </div></div>
+      </div>
+      <p class="cap">One card at a time, for presentations and sharing insights.</p>
+    </div>
+  </div>
+</main>
+</body>
+</html>

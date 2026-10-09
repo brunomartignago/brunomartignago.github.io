@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sketch A3 · Combined, it becomes exponential</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sketch.css" />
+<style>
+  .src { position: absolute; left: 5%; width: 34%; height: 13%; display: flex; align-items: center; justify-content: center; border: 2px solid #0A0A0A; border-radius: 6px; font: 500 10px/1 var(--font-mono); letter-spacing: .05em; color: #0A0A0A; background: var(--c); box-shadow: 2px 2px 0 0 #0E121A; }
+  .src.off { background: transparent; border: 2px dashed #6E7A8E; color: #8A93A3; box-shadow: none; }
+  .pipe { position: absolute; left: 39%; height: 2px; width: 18%; background: #6E7A8E; transform-origin: 0 50%; }
+  .pipe.on { background: #FFF260; height: 3px; }
+  .orb { position: absolute; left: 62%; top: 30%; width: 32%; aspect-ratio: 1; border-radius: 50%; border: 2px solid #0A0A0A; background: radial-gradient(circle at 40% 40%, #9BD3FF, #2157A9); }
+  .orb.blur { filter: blur(3px); opacity: .55; }
+  .meter { position: absolute; left: 5%; right: 5%; bottom: 6%; font: 500 10px/1.3 var(--font-mono); color: #C9C2BA; }
+  .meter .m { height: 9px; margin-top: 4px; border: 1.5px solid #ECE6DF; border-radius: 5px; overflow: hidden; }
+  .meter .m span { display: block; height: 100%; background: #60FFA2; }
+</style>
+</head>
+<body class="night">
+<main class="sheet">
+  <a class="back" href="index.html">← All sketches</a>
+  <p class="eyebrow">Sketch A3 · AI Orchestration · entry 01</p>
+  <h1>Combined, it becomes <mark>exponential</mark></h1>
+  <p class="idea">Four data sources (Typology, Purchasing, Social, Surfing) can be switched on one by one. Each one sharpens the picture of the person, and the “ability to engage” meter grows faster with every source added. That is the page's claim, “every data source has great value, but combined, it becomes exponential”, made visible.</p>
+  <ul class="meta"><li><b>Replaces</b>data_structure.png</li><li><b>Real labels</b>Person · Typology · Purchasing · Social · Surfing</li><li><b>Illustrative</b>meter values (labelled “illustrative” in the figure)</li></ul>
+  <ul class="behave">
+    <li><b>Plays once in view:</b> the sources switch on one after another (~700ms each); the profile comes into focus and the meter grows, faster each time.</li>
+    <li><b>Reader drives:</b> each source is a toggle button (aria-pressed); any combination.</li>
+    <li><b>Reduced motion:</b> static with all four on. No JS: data_structure.png.</li>
+  </ul>
+
+  <div class="board">
+    <div class="panel">
+      <div class="k"><span>1 source</span><span>typology</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 04 — Data density</span><span class="btns"><span class="btn on">Typology</span><span class="btn">Purchasing</span><span class="btn">Social</span><span class="btn">Surfing</span></span></div>
+        <div class="stage" style="--ar:5/4">
+          <div class="src" style="top:8%;--c:#7F96BF">TYPOLOGY</div><div class="src off" style="top:25%">PURCHASING</div><div class="src off" style="top:42%">SOCIAL</div><div class="src off" style="top:59%">SURFING</div>
+          <div class="pipe on" style="top:14.5%;transform:rotate(28deg)"></div>
+          <div class="orb blur"></div><span class="lbl" style="left:70%;top:72%">PERSON</span>
+          <div class="meter">Ability to engage · illustrative<div class="m"><span style="width:8%"></span></div></div>
+        </div>
+      </div>
+      <p class="cap">One source: a blurry picture of the person.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>2 sources</span><span>+ purchasing</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 04 — Data density</span><span class="btns"><span class="btn on">Typology</span><span class="btn on">Purchasing</span><span class="btn">Social</span><span class="btn">Surfing</span></span></div>
+        <div class="stage" style="--ar:5/4">
+          <div class="src" style="top:8%;--c:#7F96BF">TYPOLOGY</div><div class="src" style="top:25%;--c:#7F96BF">PURCHASING</div><div class="src off" style="top:42%">SOCIAL</div><div class="src off" style="top:59%">SURFING</div>
+          <div class="pipe on" style="top:14.5%;transform:rotate(28deg)"></div><div class="pipe on" style="top:31.5%;transform:rotate(12deg)"></div>
+          <div class="orb" style="filter:blur(1.5px);opacity:.75"></div><span class="lbl" style="left:70%;top:72%">PERSON</span>
+          <div class="meter">Ability to engage · illustrative<div class="m"><span style="width:22%"></span></div></div>
+        </div>
+      </div>
+      <p class="cap">Two sources: more than twice the meter.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>4 sources</span><span>all combined</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 04 — Data density</span><span class="btns"><span class="btn on">Typology</span><span class="btn on">Purchasing</span><span class="btn on">Social</span><span class="btn on">Surfing</span></span></div>
+        <div class="stage" style="--ar:5/4">
+          <div class="src" style="top:8%;--c:#7F96BF">TYPOLOGY</div><div class="src" style="top:25%;--c:#7F96BF">PURCHASING</div><div class="src" style="top:42%;--c:#A7DCC0">SOCIAL</div><div class="src" style="top:59%;--c:#5AA9D6">SURFING</div>
+          <div class="pipe on" style="top:14.5%;transform:rotate(28deg)"></div><div class="pipe on" style="top:31.5%;transform:rotate(12deg)"></div><div class="pipe on" style="top:48.5%;transform:rotate(-6deg)"></div><div class="pipe on" style="top:65.5%;transform:rotate(-22deg)"></div>
+          <div class="orb" style="box-shadow:0 0 0 6px rgba(155,211,255,.25)"></div><span class="lbl" style="left:70%;top:72%">PERSON</span>
+          <div class="meter">Ability to engage · illustrative<div class="m"><span style="width:90%"></span></div></div>
+        </div>
+      </div>
+      <p class="cap">All four: a sharp profile and a full meter. “The greater the data density, the greater ability to continuously engage.”</p>
+    </div>
+  </div>
+
+  <p class="note">The original diagram also lists Place and Thing next to Person. To keep one idea per figure, this sketch only uses Person; a Person / Place / Thing switch could be added if you want it.</p>
+</main>
+</body>
+</html>

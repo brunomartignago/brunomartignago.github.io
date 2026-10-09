@@ -1,0 +1,523 @@
+<title>Research Concept Figures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: a figure sheet in the "Journal" case style — each concept figure gets a wide interactive frame,
+   then a row with the figure it replaces and a sticky note on what it communicates.
+   Single light theme on purpose (it mirrors the case pages' Day edition). */
+:root {
+  color-scheme: light;
+  --paper: #FAF5F2;
+  --card: #FFFFFF;
+  --ink: #0A0A0A;
+  --text: #1F1F1F;
+  --text-2: #4A4A4A;
+  --text-3: #6E6A66;
+  --rule: rgba(10,10,10,.08);
+  --line: #D8D0C9;
+  --wire: #ECE6E1;
+  --accent: #FFF260; --accent-d: #A9A03E;
+  --blue: #60C2FF; --blue-d: #2157A9;
+  --cyan: #60E7FF; --cyan-d: #348796;
+  --green: #60FFA2; --green-d: #318D57;
+  --pink: #FD93E2; --pink-d: #8B487A;
+  --peach: #FFB37A; --peach-d: #9A4F1C;
+  --stone: #D9D1CA; --stone-d: #5B524B;
+  --orange: #D7763D;
+  /* research template legend (from the original study) */
+  --t-header: #9A9A9A; --t-sub: #5C2A7A; --t-col1: #BB6720; --t-panel: #1C3397; --t-col0: #BA2121; --t-footer: #1E0A28;
+
+  --font-body: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Black Han Sans', 'Arial Black', Impact, system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --radius: 15px;
+  --ease-out: cubic-bezier(.22,1,.36,1);
+  --ease-land: cubic-bezier(.34,1.56,.64,1);
+}
+html { overflow-x: clip; }
+body {
+  margin: 0; background: var(--paper); color: var(--text); font: 400 17px/1.65 var(--font-body); overflow-x: clip;
+  background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 28px 28px; background-position: -1px -1px;
+}
+.sheet { max-width: 1040px; margin: 0 auto; padding: 48px clamp(16px, 4vw, 32px) 96px; }
+.eyebrow { font: 500 12px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin: 0 0 16px; }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(36px, 5vw, 60px); line-height: 1.05; margin: 0 0 18px; text-wrap: balance; }
+h1 mark { background: none; position: relative; z-index: 0; color: inherit; padding: 0 .06em; }
+h1 mark::before { content: ""; position: absolute; inset: .12em -.02em .02em; background: var(--accent); z-index: -1; border-radius: 6px; }
+.lede { font-size: 19px; color: var(--text-2); max-width: 64ch; margin: 0 0 12px; }
+.principles { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 8px; padding: 0; list-style: none; }
+.principles li { font: 500 13px/1 var(--font-mono); padding: 8px 10px; border: 2px solid var(--ink); border-radius: 10px; background: var(--card); box-shadow: 3px 3px 0 0 var(--ink); }
+
+.figblock { margin-top: 72px; padding-top: 40px; border-top: 2px dashed var(--line); }
+.fighead { display: flex; gap: 18px; align-items: flex-end; margin-bottom: 20px; flex-wrap: wrap; }
+.fignum { font-family: var(--font-display); font-size: 60px; line-height: .8; color: var(--paper); -webkit-text-stroke: 2px var(--ink); text-shadow: 4px 4px 0 var(--accent); }
+.fighead small { display: block; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 8px; }
+.fighead h2 { margin: 0; font-size: clamp(24px, 2.6vw, 30px); line-height: 1.15; font-weight: 600; }
+.idea { margin: 0 0 22px; max-width: 70ch; color: var(--text-2); }
+
+.frame { position: relative; background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 6px 6px 0 0 var(--ink); overflow: hidden; }
+.frame-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 10px 14px; border-bottom: 3px solid var(--ink); background: var(--paper); }
+.frame-bar .lbl { font: 500 12px/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; }
+.ctrls { display: flex; gap: 8px; flex-wrap: wrap; }
+.ctrl {
+  font: 500 13px/1 var(--font-body); color: var(--ink); cursor: pointer;
+  padding: 8px 12px; border: 2px solid var(--ink); border-radius: 10px; background: var(--card); box-shadow: 3px 3px 0 0 var(--ink);
+  transition: transform 150ms, box-shadow 150ms, background 150ms;
+}
+.ctrl:hover { transform: translate(1px,1px); box-shadow: 2px 2px 0 0 var(--ink); }
+.ctrl:active, .ctrl[aria-pressed="true"] { transform: translate(3px,3px); box-shadow: 0 0 0 0 var(--ink); background: var(--cyan); }
+.ctrl:focus-visible { outline: 3px solid var(--blue-d); outline-offset: 2px; }
+.stage { position: relative; }
+figcaption { display: flex; gap: 10px; margin-top: 14px; font-size: 14px; line-height: 1.5; color: var(--text-2); }
+figcaption b { font: 500 12px/1.75 var(--font-mono); color: var(--text); white-space: nowrap; text-transform: uppercase; letter-spacing: .04em; }
+figure { margin: 0; }
+
+.compare { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; margin-top: 28px; align-items: start; }
+.was { opacity: .9; }
+.was .k, .note .k { display: block; font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 8px; }
+.was img { width: 100%; height: auto; display: block; background: #FFFFFF; border: 1px solid var(--line); border-radius: 10px; padding: 10px; filter: grayscale(.2); }
+.note { background: #FFF7B8; color: #2A2A2A; border: 2px solid #0A0A0A; border-radius: 4px 4px 14px 4px; padding: 14px 16px; box-shadow: 4px 4px 0 0 #A9A03E; transform: rotate(var(--r, 1deg)); font-size: 15px; line-height: 1.55; }
+.note .k { color: #6A6416; }
+.note p { margin: 0 0 8px; } .note p:last-child { margin: 0; }
+.note.pink { background: #FFD8F4; box-shadow: 4px 4px 0 0 #8B487A; } .note.pink .k { color: #7A3A69; }
+.note.blue { background: #D6EEFF; box-shadow: 4px 4px 0 0 #2157A9; } .note.blue .k { color: #1D4A8A; }
+.note.green { background: #D4FFE6; box-shadow: 4px 4px 0 0 #318D57; } .note.green .k { color: #24704A; }
+.illus { font: 400 12px/1.4 var(--font-mono); color: var(--text-3); padding: 8px 14px 12px; }
+
+/* ================= Fig A · Two pillars (exploded layers) ================= */
+.figA .stage { height: 460px; perspective: 1400px; overflow: hidden; background-image: radial-gradient(circle at 50% 55%, rgba(255,242,96,.18), transparent 60%); }
+.iso { position: absolute; left: 50%; top: 52%; width: 300px; height: 360px; margin: -180px 0 0 -150px; transform-style: preserve-3d; }
+.layer {
+  position: absolute; inset: 0; border-radius: 12px; transform-style: preserve-3d;
+  transform: rotateX(58deg) rotateZ(-38deg) translateZ(var(--z, 0px));
+  transition: transform 1000ms var(--ease-land), box-shadow 600ms;
+}
+.l-content { background: #FFFFFF; border: 3px solid var(--ink); box-shadow: 10px 10px 0 0 rgba(10,10,10,.85); --z: 0px; }
+.l-culture { background: rgba(253,147,226,.16); border: 3px dashed var(--pink-d); --z: 2px; }
+.exploded .l-content { --z: -70px; }
+.exploded .l-culture { --z: 110px; background: rgba(253,147,226,.24); }
+.blk { position: absolute; border: 2px solid var(--ink); border-radius: 5px; background: var(--c); box-shadow: 2px 2px 0 0 var(--cd); }
+.trait {
+  position: absolute; font: 500 12px/1 var(--font-mono); padding: 6px 8px; border: 2px solid var(--ink); border-radius: 8px;
+  background: #FFFFFF; color: var(--ink); white-space: nowrap; box-shadow: 2px 2px 0 0 var(--pink-d);
+}
+.figA .tag-lbl {
+  position: absolute; left: clamp(12px, 4%, 40px); max-width: 230px; opacity: 0; transform: translateX(-10px);
+  transition: opacity 500ms 400ms, transform 500ms 400ms var(--ease-out);
+}
+.exploded .tag-lbl { opacity: 1; transform: none; }
+.tag-lbl strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 1.1; }
+.tag-lbl span { display: block; font: 400 12px/1.5 var(--font-mono); color: var(--text-2); margin-top: 4px; }
+.tag-lbl.top { top: 34px; } .tag-lbl.top strong { color: var(--pink-d); }
+.tag-lbl.bot { bottom: 34px; } .tag-lbl.bot strong { color: var(--blue-d); }
+.figA .eq { position: absolute; right: clamp(12px, 4%, 40px); bottom: 34px; text-align: right; font-family: var(--font-display); font-size: 26px; line-height: 1.1; transition: opacity 400ms; }
+.figA .eq span { display: block; font: 400 12px/1.5 var(--font-mono); color: var(--text-2); }
+.exploded .eq { opacity: .25; }
+
+/* ================= Fig B · From people to pages ================= */
+.figB .stage { padding: 28px 22px 26px; display: grid; grid-template-columns: 1fr 56px 1fr 56px 1.15fr; align-items: center; gap: 0; }
+.station { border: 3px solid var(--ink); border-radius: 12px; background: var(--paper); padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; transition: background 400ms, box-shadow 400ms var(--ease-land), transform 400ms var(--ease-land); }
+.station h3 { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.3; }
+.station h3 small { display: block; font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 6px; }
+.station.on { background: #FFFFFF; transform: translate(-2px,-2px); box-shadow: 6px 6px 0 0 var(--sc); }
+.st1 { --sc: var(--pink-d); } .st2 { --sc: var(--blue-d); } .st3 { --sc: var(--green-d); }
+.chips { display: flex; flex-direction: column; gap: 8px; }
+.chip { display: flex; align-items: center; gap: 8px; padding: 7px 9px; border: 2px solid var(--ink); border-radius: 9px; background: var(--cc); font-size: 13px; font-weight: 500; color: #0A0A0A; box-shadow: 2px 2px 0 0 var(--ccd); opacity: .25; transform: scale(.96); transition: opacity 300ms, transform 420ms var(--ease-land); }
+.chip i { width: 14px; height: 14px; border: 2px solid var(--ink); border-radius: var(--shape, 50%); background: #FFFFFF; flex: none; }
+.on .chip { opacity: 1; transform: none; }
+.on .chip:nth-child(2) { transition-delay: 120ms; } .on .chip:nth-child(3) { transition-delay: 240ms; }
+.pipe { position: relative; display: grid; place-items: center; }
+.pipe svg { width: 100%; height: 24px; overflow: visible; }
+.pipe path { stroke: var(--ink); stroke-width: 3; fill: none; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 600ms var(--ease-out); }
+.pipe.on path { stroke-dashoffset: 0; }
+.token { position: absolute; left: 0; top: 50%; width: 16px; height: 16px; margin-top: -8px; border: 2px solid var(--ink); border-radius: 4px; background: var(--tc); opacity: 0; }
+.pipe.on .token { animation: travel 700ms var(--ease-out) forwards; }
+@keyframes travel { 0% { opacity: 1; transform: translateX(0); } 90% { opacity: 1; } 100% { opacity: 0; transform: translateX(40px); } }
+.mini-page { position: relative; aspect-ratio: 4 / 3; border: 2px solid var(--ink); border-radius: 8px; background: #FFFFFF; overflow: hidden; }
+.mp { position: absolute; border: 2px solid var(--ink); border-radius: 4px; background: var(--c); opacity: 0; transform: translateX(-24px); transition: opacity 300ms, transform 450ms var(--ease-land); }
+.on .mp { opacity: 1; transform: none; }
+.flows { display: flex; align-items: center; gap: 4px; }
+.flows .fp { flex: 1; aspect-ratio: 3/4; border: 2px solid var(--ink); border-radius: 5px; background: var(--wire); opacity: 0; transform: scale(.8); transition: opacity 300ms, transform 400ms var(--ease-land); }
+.flows .ar { font-size: 12px; opacity: 0; transition: opacity 300ms; }
+.on .flows .fp, .on .flows .ar { opacity: 1; transform: none; }
+.steps-note { display: flex; justify-content: space-between; gap: 12px; padding: 0 22px 18px; font: 400 12px/1.4 var(--font-mono); color: var(--text-3); }
+
+/* ================= Fig C · Variation vs rules ================= */
+.figC .stage { display: grid; grid-template-columns: 1fr 1fr; }
+.panel { padding: 16px; min-width: 0; }
+.panel + .panel { border-left: 3px solid var(--ink); }
+.panel h3 { margin: 0 0 2px; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.1; }
+.panel .sub { font: 400 12px/1.5 var(--font-mono); color: var(--text-3); margin: 0 0 12px; }
+.panel.culture h3 { color: var(--pink-d); } .panel.content h3 { color: var(--blue-d); }
+.field { position: relative; aspect-ratio: 4 / 3.3; border: 2px solid var(--ink); border-radius: 10px; background: #FFFFFF; overflow: hidden; }
+.tok {
+  position: absolute; left: 0; top: 0; display: grid; place-items: center; padding: 5px 8px;
+  font: 500 12px/1 var(--font-mono); color: #0A0A0A; white-space: nowrap;
+  border: 2px solid var(--ink); background: var(--c); box-shadow: 2px 2px 0 0 var(--ink);
+  transition: transform 750ms var(--ease-land), background-color 500ms, border-radius 500ms;
+  will-change: transform;
+}
+.grid-ov { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 300ms;
+  background-image: linear-gradient(90deg, rgba(33,87,169,.22) 1px, transparent 1px); background-size: calc(100% / 12) 100%; }
+.show-rules .grid-ov { opacity: 1; }
+.pb { position: absolute; border: 2px solid var(--ink); border-radius: 5px; background: var(--c); box-shadow: 2px 2px 0 0 var(--cd);
+  transition: left 600ms var(--ease-out), top 600ms var(--ease-out), width 600ms var(--ease-out), height 600ms var(--ease-out), opacity 300ms; }
+.pb.ghost { opacity: 0; }
+.rule-tag { position: absolute; right: 6px; font: 500 10px/1 var(--font-mono); background: var(--blue-d); color: #FFFFFF; padding: 3px 5px; border-radius: 4px; opacity: 0; transition: opacity 300ms; }
+.show-rules .rule-tag { opacity: 1; }
+.meter { margin-top: 12px; }
+.meter .row { display: flex; justify-content: space-between; font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text-2); margin-bottom: 6px; }
+.meter .bar { height: 14px; border: 2px solid var(--ink); border-radius: 7px; background: var(--paper); overflow: hidden; }
+.meter .fill { height: 100%; width: var(--w, 50%); background: var(--mc); border-right: 2px solid var(--ink); transition: width 600ms var(--ease-land); }
+.panel .facts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.panel .facts span { font: 500 11px/1 var(--font-mono); padding: 5px 7px; border: 2px solid var(--ink); border-radius: 7px; background: var(--fc); }
+.sample-no { font: 500 12px/1 var(--font-mono); }
+
+/* ================= Fig D · Template summarization ================= */
+.figD .stage { height: 430px; position: relative; overflow: hidden; }
+.pg { position: absolute; border: 2px solid var(--ink); background: #FFFFFF; transition: left 900ms var(--ease-out), top 900ms var(--ease-out), width 900ms var(--ease-out), height 900ms var(--ease-out), opacity 600ms, transform 900ms var(--ease-out); overflow: hidden; }
+.sec { position: absolute; left: 0; width: 100%; background: transparent; transition: background-color 600ms, top 900ms var(--ease-out), height 900ms var(--ease-out), border-color 400ms, box-shadow 400ms; border-bottom: 1px solid #C9C1BA; }
+.sec .ln { position: absolute; left: 10%; height: 2px; background: #CFC7C0; transition: opacity 400ms; }
+.st-seg .sec { box-shadow: inset 0 0 0 2px var(--sc); }
+.st-sum .sec, .st-stack .sec { background: var(--sc); box-shadow: none; border-bottom-color: rgba(255,255,255,.55); }
+.st-sum .sec .ln, .st-stack .sec .ln { opacity: 0; }
+.st-stack .pg.b { opacity: .5; mix-blend-mode: multiply; }
+.pg-lbl { position: absolute; font: 500 11px/1.4 var(--font-mono); color: var(--text-2); text-align: center; transition: left 900ms var(--ease-out), top 900ms var(--ease-out), opacity 400ms; width: 220px; margin-left: -110px; }
+.pg-lbl b { display: block; color: var(--ink); font-weight: 500; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; padding: 0 14px 14px; font: 500 11px/1 var(--font-mono); color: var(--text-2); opacity: .35; transition: opacity 400ms; }
+.legend.on { opacity: 1; }
+.legend i { display: inline-block; width: 12px; height: 12px; border: 1.5px solid var(--ink); vertical-align: -2px; margin-right: 6px; }
+.stepper { display: flex; gap: 6px; flex-wrap: wrap; }
+.stepper .ctrl { padding: 7px 10px; font-size: 12px; }
+.st-caption { position: absolute; left: 16px; top: 14px; max-width: 280px; font-size: 14px; line-height: 1.45; color: var(--text-2); }
+.st-caption b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 22px; color: var(--text); margin-bottom: 4px; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0ms !important; animation: none !important; }
+}
+
+/* Responsive */
+@media (max-width: 820px) {
+  .compare { grid-template-columns: 1fr; }
+  .figB .stage { grid-template-columns: 1fr; gap: 0; }
+  .pipe { height: 40px; }
+  .pipe svg { width: 24px; height: 100%; transform: rotate(90deg); }
+  .figC .stage { grid-template-columns: 1fr; }
+  .panel + .panel { border-left: 0; border-top: 3px solid var(--ink); }
+  .st-caption { position: static; padding: 14px 16px 0; max-width: none; }
+  .figD .stage { height: 520px; }
+}
+@media (max-width: 560px) {
+  .figA .stage { height: 400px; }
+  .iso { transform: scale(.72); }
+  .tag-lbl strong { font-size: 18px; }
+  .figA .eq { font-size: 20px; }
+}
+</style>
+
+<main class="sheet">
+  <p class="eyebrow">Case file 01 · Concept figures · prototype</p>
+  <h1>Figures that <mark>show the idea</mark>, not just name it.</h1>
+  <p class="lede">The current concept images are icon diagrams: circles, symbols and arrows that label an idea. Your research is about structure, variation and rules, so each figure should <em>demonstrate</em> its point. These four use the same building blocks as the rest of the site: wireframe blocks, your tag colors and the original study's template legend.</p>
+  <ul class="principles"><li>Show, don't label</li><li>One idea per figure</li><li>Plays once, then the reader drives</li><li>Same visual language as the method</li></ul>
+
+  <!-- ============ FIG A ============ -->
+  <section class="figblock">
+    <div class="fighead"><span class="fignum" aria-hidden="true">02</span><div><small>Fig. 02 · Entry 02 · Introduction</small><h2>A web page is two layers</h2></div></div>
+    <p class="idea">The axiom, made literal: a page is a <strong>content</strong> layer (graphic components) with a <strong>culture</strong> layer (who it's for) on top. Assembled, they look like one page. Exploded, you see the two pillars.</p>
+    <figure>
+      <div class="frame figA" id="figA">
+        <div class="frame-bar"><span class="lbl">Fig. 02 — Two pillars</span><div class="ctrls"><button class="ctrl" type="button" id="aToggle" aria-pressed="false">Explode layers</button></div></div>
+        <div class="stage" role="img" aria-label="Animated diagram: a web page separates into two layers. The bottom layer holds graphic components such as navigation, hero, cards and footer. The top layer holds cultural traits such as language, currency, age range and local holidays.">
+          <div class="tag-lbl top"><strong>Culture</strong><span>user demographics · varies a lot · needs research</span></div>
+          <div class="tag-lbl bot"><strong>Graphic components</strong><span>content · follows a set of rules</span></div>
+          <div class="eq">= a web page<span>both layers, assembled</span></div>
+          <div class="iso" id="iso">
+            <div class="layer l-content" id="lContent"></div>
+            <div class="layer l-culture" id="lCulture"></div>
+          </div>
+        </div>
+        <p class="illus">Culture traits shown are illustrative examples.</p>
+      </div>
+      <figcaption><b>Fig. 02</b><span>The two pillars that sustain the structure of a web page: content and culture.</span></figcaption>
+    </figure>
+    <div class="compare">
+      <div class="was"><span class="k">Replaces</span><img src="../assets/images/cases/research1/intro.png" alt="Current figure: icon circles for page, content and culture connected by arrows" width="914" height="718"></div>
+      <div class="note" style="--r:1.2deg"><span class="k">Why it works</span><p>The icon version asks readers to decode symbols. The layered version shows that culture <em>sits on</em> the same page as the components, so the axiom reads at a glance.</p><p>It plays when scrolled into view: assembled → exploded. The button lets readers compare.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ FIG B ============ -->
+  <section class="figblock">
+    <div class="fighead"><span class="fignum" aria-hidden="true">03</span><div><small>Fig. 03 · Entry 02 · Introduction</small><h2>From people to pages</h2></div></div>
+    <p class="idea">Your text says that you start by understanding people, then you define the system, and only then do pages and flows exist. The figure plays that order as an assembly line: each stage hands its output to the next, and the page is built from the components of stage 2.</p>
+    <figure>
+      <div class="frame figB" id="figB">
+        <div class="frame-bar"><span class="lbl">Fig. 03 — Product phases</span><div class="ctrls"><button class="ctrl" type="button" id="bReplay">Replay</button></div></div>
+        <div class="stage" role="img" aria-label="Animated diagram in three stages. Stage one, understand people: persona, interviews, user journey. Stage two, define the system: design principles, design system, components. Stage three, build: pages and flows assembled from the components.">
+          <div class="station st1" id="b1"><h3><small>01 · Culture</small>Understand people</h3>
+            <div class="chips">
+              <span class="chip" style="--cc:#FFD8F4;--ccd:var(--pink-d)"><i></i>Persona</span>
+              <span class="chip" style="--cc:#FFD8F4;--ccd:var(--pink-d)"><i style="--shape:3px"></i>Interviews</span>
+              <span class="chip" style="--cc:#FFD8F4;--ccd:var(--pink-d)"><i style="--shape:0"></i>User journey</span>
+            </div>
+          </div>
+          <div class="pipe" id="p1"><svg viewBox="0 0 56 24" aria-hidden="true"><path pathLength="1" d="M4 12H50M42 5l8 7-8 7"/></svg><span class="token" style="--tc:var(--pink)"></span></div>
+          <div class="station st2" id="b2"><h3><small>02 · Content</small>Define the system</h3>
+            <div class="chips">
+              <span class="chip" style="--cc:#D6EEFF;--ccd:var(--blue-d)"><i></i>Design principles</span>
+              <span class="chip" style="--cc:#D6EEFF;--ccd:var(--blue-d)"><i style="--shape:3px"></i>Design system</span>
+              <span class="chip" style="--cc:#D6EEFF;--ccd:var(--blue-d)"><i style="--shape:0"></i>Components</span>
+            </div>
+          </div>
+          <div class="pipe" id="p2"><svg viewBox="0 0 56 24" aria-hidden="true"><path pathLength="1" d="M4 12H50M42 5l8 7-8 7"/></svg><span class="token" style="--tc:var(--blue)"></span></div>
+          <div class="station st3" id="b3"><h3><small>03 · Product</small>Pages &amp; flows</h3>
+            <div class="mini-page" id="miniPage"></div>
+            <div class="flows" aria-hidden="true"><span class="fp"></span><span class="ar">→</span><span class="fp"></span><span class="ar">→</span><span class="fp"></span></div>
+          </div>
+        </div>
+        <div class="steps-note"><span>Culture first</span><span>then content</span><span>then pages</span></div>
+      </div>
+      <figcaption><b>Fig. 03</b><span>How the two pillars map to product phases: people → system → pages and flows.</span></figcaption>
+    </figure>
+    <div class="compare">
+      <div class="was"><span class="k">Replaces</span><img src="../assets/images/cases/research1/intro2.png" alt="Current figure: three icon circles connected by arrows, labeled persona, design principles and pages" width="808" height="328"></div>
+      <div class="note pink" style="--r:-1deg"><span class="k">Why it works</span><p>The arrows in the current image read as a list. Here each stage visibly <em>produces</em> something the next one uses: the stage 3 page is assembled from blocks colored like stage 2's components.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ FIG C ============ -->
+  <section class="figblock">
+    <div class="fighead"><span class="fignum" aria-hidden="true">04</span><div><small>Fig. 04 · Entry 03 · Research questions</small><h2>One pillar is chaos, the other has rules</h2></div></div>
+    <p class="idea">Instead of listing “high variation” and “low variation”, the figure lets readers <em>see</em> variation. Each new sample reshuffles both sides. Culture changes completely. Content changes too (more cards, the image on the other side), but the structure holds: the header stays on top, the footer at the bottom, everything snaps to the grid.</p>
+    <figure>
+      <div class="frame figC" id="figC">
+        <div class="frame-bar"><span class="lbl">Fig. 04 — Variation vs rules · <span class="sample-no" id="cNo">sample 01</span></span>
+          <div class="ctrls"><button class="ctrl" type="button" id="cNext">New sample ↻</button><button class="ctrl" type="button" id="cRules" aria-pressed="false">Show the rules</button></div></div>
+        <div class="stage">
+          <div class="panel culture">
+            <h3>Culture</h3><p class="sub">user demographics</p>
+            <div class="field" id="cField" role="img" aria-label="Cultural traits such as language, region, age and currency scattered at random; every sample looks completely different."></div>
+            <div class="meter"><div class="row"><span>Predictability</span><span id="cMeterL">low</span></div><div class="bar"><div class="fill" id="cFillL" style="--mc:var(--pink);--w:18%"></div></div></div>
+            <div class="facts"><span style="--fc:#FFD8F4">high variation</span><span style="--fc:#FFD8F4">research dependent</span><span style="--fc:#FFD8F4">hard to automate</span></div>
+          </div>
+          <div class="panel content">
+            <h3>Content</h3><p class="sub">graphic components</p>
+            <div class="field" id="pField" role="img" aria-label="A page wireframe whose content changes every sample, while header, footer and grid alignment stay the same.">
+              <div class="grid-ov"></div>
+            </div>
+            <div class="meter"><div class="row"><span>Predictability</span><span id="cMeterR">high</span></div><div class="bar"><div class="fill" id="cFillR" style="--mc:var(--blue);--w:90%"></div></div></div>
+            <div class="facts"><span style="--fc:#D6EEFF">low variation</span><span style="--fc:#D6EEFF">predictable</span><span style="--fc:#D6EEFF">follows a set of rules</span></div>
+          </div>
+        </div>
+        <p class="illus">Illustrative. The meters show the idea, not measured values.</p>
+      </div>
+      <figcaption><b>Fig. 04</b><span>Culture varies a lot and depends on research. Content is predictable and follows rules.</span></figcaption>
+    </figure>
+    <div class="compare">
+      <div class="was"><span class="k">Replaces</span><img src="../assets/images/cases/research1/research_questions.png" alt="Current figure: two icon circles labeled high variation and low variation" width="808" height="248"></div>
+      <div class="note blue" style="--r:1deg"><span class="k">Why it works</span><p>This is the argument the whole study rests on, so it gets the most interactive figure. “Show the rules” overlays the grid and labels the fixed slots, which turns “follows a set of rules” into something the reader can check.</p><p>It also sets up Q1 and Q2: if content behaves like the right panel, it can be mapped and automated.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ FIG D ============ -->
+  <section class="figblock">
+    <div class="fighead"><span class="fignum" aria-hidden="true">05</span><div><small>Fig. 05 · Entry 05 · The second study</small><h2>Template summarization</h2></div></div>
+    <p class="idea">Your method in four steps. Two item-detail pages have different lengths, so their sections land at different heights. Segmenting them into template sections and summarizing each into a same-size frame makes them comparable. Stacking the frames reveals the shared structure.</p>
+    <figure>
+      <div class="frame figD" id="figD">
+        <div class="frame-bar"><span class="lbl">Fig. 05 — Summarizing two item-detail pages</span>
+          <div class="stepper" role="group" aria-label="Steps">
+            <button class="ctrl" type="button" data-step="0" aria-pressed="true">1 · Raw</button>
+            <button class="ctrl" type="button" data-step="1" aria-pressed="false">2 · Segment</button>
+            <button class="ctrl" type="button" data-step="2" aria-pressed="false">3 · Summarize</button>
+            <button class="ctrl" type="button" data-step="3" aria-pressed="false">4 · Stack</button>
+          </div></div>
+        <div class="stage" id="dStage" role="img" aria-label="Two long item-detail pages of different heights are segmented into sections, summarized into equal-size colored templates, and stacked to show their shared structure.">
+          <div class="st-caption" id="dCap"></div>
+        </div>
+        <div class="legend" id="dLegend">
+          <span><i style="background:var(--t-header)"></i>Header</span><span><i style="background:var(--t-sub)"></i>Subheader</span><span><i style="background:var(--t-col1)"></i>Column 1</span><span><i style="background:var(--t-panel)"></i>Panel</span><span><i style="background:var(--t-col0)"></i>Column 0</span><span><i style="background:var(--t-footer)"></i>Footer</span>
+        </div>
+      </div>
+      <figcaption><b>Fig. 05</b><span>Template summarization: pages of different sizes become comparable, same-size templates.</span></figcaption>
+    </figure>
+    <div class="compare">
+      <div class="was"><span class="k">Replaces (and connects)</span><img src="../assets/images/cases/research1/summarized_template.jpg" alt="Current figure: a PlayStation cart page next to its summarized template" width="1320" height="612"></div>
+      <div class="note green" style="--r:-1.2deg"><span class="k">Why it works</span><p>Today the method is spread across several static images (the size comparison, the template example, the stacked view). This figure tells it as one process the reader steps through, using the original legend colors.</p><p>The page heights use the real Dell item-detail numbers from the study: 18,482 px and 19,432 px.</p></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+  const h = (tag, cls, style, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (style) e.setAttribute('style', style); if (txt != null) e.textContent = txt; return e; };
+  const pct = (x, y, w, hh) => `left:${x}%;top:${y}%;width:${w}%;height:${hh}%;`;
+  const onView = (el, fn, threshold = 0.45) => { const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { fn(); io.disconnect(); } }, { threshold }); io.observe(el); };
+
+  /* ---------- Fig A ---------- */
+  const BLK = [
+    [6, 5, 88, 9, 'var(--blue)', 'var(--blue-d)'], [6, 18, 54, 30, 'var(--accent)', 'var(--accent-d)'], [64, 18, 30, 30, 'var(--pink)', 'var(--pink-d)'],
+    [6, 52, 27, 20, 'var(--green)', 'var(--green-d)'], [36.5, 52, 27, 20, 'var(--green)', 'var(--green-d)'], [67, 52, 27, 20, 'var(--green)', 'var(--green-d)'],
+    [6, 76, 60, 7, 'var(--cyan)', 'var(--cyan-d)'], [6, 87, 88, 8, 'var(--stone)', 'var(--stone-d)'] ];
+  BLK.forEach(([x, y, w, hh, c, cd]) => $('lContent').append(h('div', 'blk', pct(x, y, w, hh) + `--c:${c};--cd:${cd};`)));
+  [['pt-BR', 8, 8], ['R$ · BRL', 54, 20], ['Age 25–44', 12, 40], ['Mobile-first', 50, 52], ['Local holidays', 8, 70], ['Trust signals', 52, 84]]
+    .forEach(([t, x, y]) => $('lCulture').append(h('span', 'trait', `left:${x}%;top:${y}%;`, t)));
+  const figA = $('figA'), aBtn = $('aToggle');
+  const setA = on => { figA.classList.toggle('exploded', on); aBtn.setAttribute('aria-pressed', on); aBtn.textContent = on ? 'Assemble page' : 'Explode layers'; };
+  aBtn.addEventListener('click', () => setA(!figA.classList.contains('exploded')));
+  onView(figA, () => setTimeout(() => setA(true), reduced() ? 0 : 500));
+
+  /* ---------- Fig B ---------- */
+  const MP = [[6, 5, 88, 10, 'var(--blue)'], [6, 20, 55, 32, 'var(--accent)'], [65, 20, 29, 32, 'var(--pink)'], [6, 57, 41, 22, 'var(--green)'], [53, 57, 41, 22, 'var(--green)'], [6, 84, 88, 11, 'var(--stone)']];
+  MP.forEach(([x, y, w, hh, c], i) => $('miniPage').append(h('span', 'mp', pct(x, y, w, hh) + `--c:${c};transition-delay:${i * 110}ms;`)));
+  let bTimers = [];
+  function playB() {
+    bTimers.forEach(clearTimeout); bTimers = [];
+    const seq = ['b1', 'p1', 'b2', 'p2', 'b3'];
+    seq.forEach(id => $(id).classList.remove('on'));
+    if (reduced()) { seq.forEach(id => $(id).classList.add('on')); return; }
+    void $('figB').offsetWidth;
+    seq.forEach((id, i) => bTimers.push(setTimeout(() => $(id).classList.add('on'), 150 + i * 750)));
+  }
+  $('bReplay').addEventListener('click', playB);
+  onView($('figB'), playB);
+
+  /* ---------- Fig C ---------- */
+  const TRAITS = ['pt-BR', 'EN-US', 'Age 18–24', 'Age 55+', 'Rural', 'Urban', 'R$', '€', 'RTL', 'Gen Z', 'Low bandwidth', 'Faith', 'Holidays', 'Formal', 'Slang', 'Family'];
+  const PAL = ['#FD93E2', '#FFF260', '#60FFA2', '#60C2FF', '#FFB37A', '#60E7FF', '#FFFFFF'];
+  const field = $('cField');
+  const toks = TRAITS.map(t => { const e = h('span', 'tok', null, t); field.append(e); return e; });
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  function shuffleCulture() {
+    const W = field.clientWidth, H = field.clientHeight;
+    toks.forEach(e => {
+      const s = rnd(.7, 1.45), r = rnd(-40, 40);
+      const x = rnd(-10, W - 40), y = rnd(-6, H - 20);
+      e.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg) scale(${s})`;
+      e.style.backgroundColor = PAL[(Math.random() * PAL.length) | 0];
+      e.style.borderRadius = Math.random() < .4 ? '999px' : Math.random() < .5 ? '0' : '8px';
+      e.style.transitionDelay = (Math.random() * 180) + 'ms';
+    });
+    const w = Math.round(rnd(6, 30));
+    $('cFillL').style.setProperty('--w', w + '%');
+  }
+
+  const pf = $('pField');
+  const PB = {};
+  ['header', 'hero', 'media', 'c0', 'c1', 'c2', 'c3', 'text', 'footer'].forEach(k => {
+    const color = { header: ['var(--blue)', 'var(--blue-d)'], hero: ['var(--accent)', 'var(--accent-d)'], media: ['var(--pink)', 'var(--pink-d)'], text: ['var(--cyan)', 'var(--cyan-d)'], footer: ['var(--stone)', 'var(--stone-d)'] }[k] || ['var(--green)', 'var(--green-d)'];
+    PB[k] = h('div', 'pb', `--c:${color[0]};--cd:${color[1]};`); pf.append(PB[k]);
+  });
+  const ruleTop = h('span', 'rule-tag', 'top:6px;', 'header · always top'); const ruleBot = h('span', 'rule-tag', 'bottom:6px;', 'footer · always bottom'); const ruleGrid = h('span', 'rule-tag', 'top:46%;', '12-col grid');
+  pf.append(ruleTop, ruleBot, ruleGrid);
+  const place = (el, x, y, w, hh) => { Object.assign(el.style, { left: x + '%', top: y + '%', width: w + '%', height: hh + '%' }); el.classList.remove('ghost'); };
+  const col = n => n * (100 - 8) / 12; // 12-col grid inside 4% margins
+  function shuffleContent() {
+    place(PB.header, 4, 4, 92, 9);
+    const imgLeft = Math.random() < .5, heroH = Math.round(rnd(24, 32));
+    const heroCols = Math.random() < .5 ? 7 : 8;
+    const heroW = col(heroCols) - 1.5, mediaW = col(12 - heroCols) - 1.5;
+    if (imgLeft) { place(PB.media, 4, 17, mediaW, heroH); place(PB.hero, 4 + col(12 - heroCols) + 1.5, 17, heroW, heroH); }
+    else { place(PB.hero, 4, 17, heroW, heroH); place(PB.media, 4 + col(heroCols) + 1.5, 17, mediaW, heroH); }
+    const n = [2, 3, 4][(Math.random() * 3) | 0], cy = 17 + heroH + 4, ch = Math.round(rnd(16, 22));
+    const span = 12 / n;
+    ['c0', 'c1', 'c2', 'c3'].forEach((k, i) => {
+      if (i < n) place(PB[k], 4 + col(span * i) + (i ? 1 : 0), cy, col(span) - (i ? 1 : 0) - (i < n - 1 ? 1 : 0), ch);
+      else { PB[k].classList.add('ghost'); }
+    });
+    const ty = cy + ch + 4;
+    place(PB.text, 4, ty, col(Math.random() < .5 ? 8 : 6), Math.max(4, 85 - ty - 3));
+    place(PB.footer, 4, 87, 92, 9);
+    $('cFillR').style.setProperty('--w', Math.round(rnd(86, 94)) + '%');
+  }
+  let sample = 1, cTimer = null, cHover = false, cVisible = false;
+  function nextSample() { sample++; $('cNo').textContent = 'sample ' + String(sample).padStart(2, '0'); shuffleCulture(); shuffleContent(); }
+  $('cNext').addEventListener('click', nextSample);
+  $('cRules').addEventListener('click', e => { const on = !$('figC').classList.contains('show-rules'); $('figC').classList.toggle('show-rules', on); e.currentTarget.setAttribute('aria-pressed', on); });
+  $('figC').addEventListener('pointerenter', () => cHover = true);
+  $('figC').addEventListener('pointerleave', () => cHover = false);
+  new IntersectionObserver(([e]) => { cVisible = e.isIntersecting; }, { threshold: .3 }).observe($('figC'));
+  requestAnimationFrame(() => { shuffleCulture(); shuffleContent(); });
+  if (!reduced()) cTimer = setInterval(() => { if (cVisible && !cHover && !document.hidden) nextSample(); }, 2600);
+  addEventListener('resize', shuffleCulture);
+
+  /* ---------- Fig D ---------- */
+  // fractions of page height for each section; panel shares the column-1 band
+  const PAGES = {
+    a: { name: 'Item detail · Dell 1', px: 18482, secs: [['header', 0, .03], ['sub', .03, .05], ['col1', .05, .37], ['col0', .37, .89], ['footer', .89, 1]], panel: [.72, 1] },
+    b: { name: 'Item detail · Dell 2', px: 19432, secs: [['header', 0, .025], ['sub', .025, .045], ['col1', .045, .31], ['col0', .31, .87], ['footer', .87, 1]], panel: [.75, 1] },
+  };
+  // summarized templates: normalized section bands (same frame size)
+  const SUMMARY = { a: [['header', 0, .08], ['sub', .08, .13], ['col1', .13, .48], ['col0', .48, .87], ['footer', .87, 1]], b: [['header', 0, .07], ['sub', .07, .12], ['col1', .12, .46], ['col0', .46, .88], ['footer', .88, 1]] };
+  const SC = { header: 'var(--t-header)', sub: 'var(--t-sub)', col1: 'var(--t-col1)', col0: 'var(--t-col0)', footer: 'var(--t-footer)', panel: 'var(--t-panel)' };
+  const stage = $('dStage');
+  const D = {};
+  ['a', 'b'].forEach(k => {
+    const pg = h('div', 'pg ' + k); stage.append(pg);
+    const secs = PAGES[k].secs.map(([type, y0, y1]) => {
+      const s = h('div', 'sec', `--sc:${SC[type]};`);
+      for (let i = 0; i < 3; i++) s.append(h('span', 'ln', `top:${25 + i * 22}%;width:${50 + Math.random() * 35}%;`));
+      pg.append(s); return { el: s, type };
+    });
+    const panel = h('div', 'sec', `--sc:${SC.panel};border-left:1px solid #C9C1BA;`); pg.append(panel);
+    const lbl = h('div', 'pg-lbl'); lbl.innerHTML = `<b>${PAGES[k].name}</b>1788 × ${PAGES[k].px.toLocaleString('en-US')} px`; stage.append(lbl);
+    D[k] = { pg, secs, panel, lbl };
+  });
+  const CAPS = [
+    ['Raw pages', 'Same page type, same site, similar products. The lengths still differ, so sections land at different heights.'],
+    ['Segment', 'Each page is split into template sections: header, subheader, columns, panels and footer.'],
+    ['Summarize', 'Every page becomes a same-size frame, with each section as a solid block in the legend colors.'],
+    ['Stack', 'Overlaying the summarized templates shows the structure that item-detail pages share.'],
+  ];
+  let dStep = 0;
+  function layoutD(step) {
+    const W = stage.clientWidth, H = stage.clientHeight;
+    const narrow = W < 640;
+    const capH = narrow ? 0 : 0;
+    const maxH = H - 90;
+    stage.className = 'stage ' + ['st-raw', 'st-seg', 'st-sum', 'st-stack'][step];
+    $('dLegend').classList.toggle('on', step >= 2);
+    $('dCap').innerHTML = `<b>${CAPS[step][0]}</b>${CAPS[step][1]}`;
+    ['a', 'b'].forEach((k, i) => {
+      const P = PAGES[k], d = D[k];
+      let w, hh, x, y;
+      if (step < 2) {
+        hh = maxH * (P.px / 19432); w = hh * (1788 / P.px) * 2.2; // exaggerate width a little so content is visible
+        x = W * (narrow ? .35 : .55) + i * (w + 70); y = 30;
+      } else if (step === 2) {
+        hh = Math.min(maxH * .78, W * (narrow ? .36 : .24)); w = hh;
+        x = W * (narrow ? .08 : .44) + i * (w + 40); y = narrow ? 160 : (H - hh) / 2 - 16;
+      } else {
+        hh = Math.min(maxH * .78, W * (narrow ? .42 : .26)); w = hh;
+        x = W * (narrow ? .5 : .56) - w / 2; y = narrow ? 160 : (H - hh) / 2 - 16;
+      }
+      Object.assign(d.pg.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: hh + 'px' });
+      const bands = step >= 2 ? SUMMARY[k] : P.secs;
+      bands.forEach(([type, y0, y1], j) => {
+        const s = d.secs[j].el; s.style.top = (y0 * 100) + '%'; s.style.height = ((y1 - y0) * 100) + '%';
+        if (type === 'col1') { const pnl = d.panel; pnl.style.top = (y0 * 100) + '%'; pnl.style.height = ((y1 - y0) * 100) + '%'; pnl.style.left = (P.panel[0] * 100) + '%'; pnl.style.width = ((P.panel[1] - P.panel[0]) * 100) + '%'; }
+      });
+      d.lbl.style.left = (x + w / 2) + 'px'; d.lbl.style.top = (y + hh + 10) + 'px';
+      d.lbl.style.opacity = step === 3 ? (i === 0 ? 1 : 0) : 1;
+      if (step === 3 && i === 0) d.lbl.innerHTML = '<b>Stacked templates</b>item detail pages';
+      else d.lbl.innerHTML = `<b>${P.name}</b>${step >= 2 ? 'summarized template' : '1788 × ' + P.px.toLocaleString('en-US') + ' px'}`;
+    });
+    document.querySelectorAll('[data-step]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.step === step));
+  }
+  document.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => { dStep = +b.dataset.step; stopAuto(); layoutD(dStep); }));
+  let dAuto = null;
+  const stopAuto = () => { clearInterval(dAuto); dAuto = null; };
+  layoutD(0);
+  addEventListener('resize', () => layoutD(dStep));
+  onView($('figD'), () => {
+    if (reduced()) { dStep = 2; layoutD(2); return; }
+    dAuto = setInterval(() => { dStep++; layoutD(dStep); if (dStep >= 3) stopAuto(); }, 1900);
+  });
+})();
+</script>
