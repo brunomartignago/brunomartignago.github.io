@@ -57,6 +57,13 @@
   from { transform: scaleY(0); }
 }
 
+@keyframes letterLift {
+  from {
+    transform: translate(.045em, .045em);
+    text-shadow: 0 0 0 var(--text-primary);
+  }
+}
+
 /* ---------- Hero intro (on load, done in ~1.35s) ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
@@ -113,6 +120,20 @@
   }
 }
 
+/* ---------- Footer: LET'S TALK letters lift in ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js .talk:not(.is-in) .ch {
+    transform: translate(.045em, .045em);
+    text-shadow: 0 0 0 var(--text-primary);
+  }
+
+  .talk.is-in .ch {
+    animation: letterLift 560ms var(--ease-land) backwards;
+    animation-delay: calc(var(--i, 0) * 55ms);
+  }
+}
+
 /* ---------- Header scroll progress ---------- */
 
 @keyframes progress {
@@ -136,6 +157,8 @@
   .site-header .header-inner,
   .site-header .brand-icon,
   .site-header .brand-name,
+  .talk .ch,
+  .mag,
   .card,
   .viz-chip,
   .ae,

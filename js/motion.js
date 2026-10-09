@@ -36,6 +36,27 @@
   };
   window.Motion = Motion;
 
+  /* ---------- Footer headline: split into per-letter spans (before the reveal observes it) ---------- */
+  const talk = document.querySelector(".talk");
+  if (talk) {
+    const words = talk.textContent.trim().split(/\s+/);
+    talk.textContent = "";
+    let i = 0;
+    words.forEach(word => {
+      const wd = document.createElement("span");
+      wd.className = "wd";
+      wd.setAttribute("aria-hidden", "true");
+      [...word].forEach(letter => {
+        const ch = document.createElement("span");
+        ch.className = "ch";
+        ch.style.setProperty("--i", i++);
+        ch.textContent = letter;
+        wd.append(ch);
+      });
+      talk.append(wd);
+    });
+  }
+
   /* ---------- Reveal ---------- */
   // Adds .is-in once and fires "motion:in" so other effects can start with it
   document.querySelectorAll("[data-reveal]").forEach(el => {
@@ -70,6 +91,31 @@
   document.querySelectorAll(".tag").forEach(tag => {
     tag.style.setProperty("--rot", (Math.random() * 6 - 3).toFixed(1) + "deg");
   });
+
+  /* ---------- Magnetic footer buttons (desktop only) ---------- */
+  const footer = document.querySelector(".footer-cta");
+  const mags = footer ? [...footer.querySelectorAll(".mag")] : [];
+  if (mags.length) {
+    const REACH = 160; // px
+    const MAX = 8;     // px
+    const clampPull = v => Math.max(-MAX, Math.min(MAX, v));
+    footer.addEventListener("pointermove", e => {
+      if (!Motion.finePointer() || Motion.reduced()) return;
+      mags.forEach(mag => {
+        const r = mag.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width / 2);
+        const dy = e.clientY - (r.top + r.height / 2);
+        const dist = Math.hypot(dx, dy);
+        if (dist < REACH) {
+          const f = (1 - dist / REACH) * 0.35;
+          mag.style.transform = `translate(${clampPull(dx * f).toFixed(1)}px, ${clampPull(dy * f).toFixed(1)}px)`;
+        } else {
+          mag.style.transform = "";
+        }
+      });
+    });
+    footer.addEventListener("pointerleave", () => mags.forEach(mag => { mag.style.transform = ""; }));
+  }
 
   /* ---------- Research diagram: draw on view, replay on hover/click ---------- */
   const diagram = document.getElementById("diagram");

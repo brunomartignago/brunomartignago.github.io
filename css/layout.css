@@ -350,9 +350,15 @@ body {
     width: 100%;
   }
 
+  .footer-cta-actions .mag {
+    display: block;
+    width: 100%;
+  }
+
   .footer-cta-actions .btn,
   .footer-cta-actions .header-btn {
     width: 100%;
+    box-sizing: border-box;
     justify-content: center;
   }
 

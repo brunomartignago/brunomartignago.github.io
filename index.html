@@ -387,25 +387,30 @@
 
 <section class="footer-cta">
   <div class="footer-cta-inner">
-    <h2 style=" color: #FFFFFF; margin-bottom: 32px;">
-    	Thank you for visiting!
-		<br />
-		Reach out and let’s chat!
-	</h2>
+    <p class="footer-kicker">Thank you for visiting!</p>
 
+    <!-- js/motion.js splits this into per-letter spans (aria-hidden); the label keeps it readable -->
+    <h2 class="talk" aria-label="Let's talk" data-reveal="talk">LET'S TALK</h2>
+
+    <p class="footer-sub">Reach out and let’s chat.</p>
+
+    <!-- Magnetic buttons: the pull goes on the .mag wrapper so the buttons' own press effect still works -->
     <div class="footer-cta-actions">
-      <a href="mailto:bruno_martignago@hotmail.com" class="btn btn-footer">
-        Email me
-        <img src="assets/icons/email.png" alt="" class="btn-icon" />
-      </a>
+      <span class="mag">
+        <a href="mailto:bruno_martignago@hotmail.com" class="btn btn-footer">
+          Email me
+          <img src="assets/icons/email.png" alt="" class="btn-icon" />
+        </a>
+      </span>
 
-      <a 
-	      href="assets/Bruno-Martignago-Resume.pdf" 
-	      class="header-btn"
-	      download
-	    >
-	      Download my resume
-	        <span class="header-btn-icon-wrapper">
+      <span class="mag">
+        <a
+	        href="assets/Bruno-Martignago-Resume.pdf"
+	        class="header-btn"
+	        download
+	      >
+	        Download my resume
+	          <span class="header-btn-icon-wrapper">
 				<img
 					src="assets/icons/download.png"
 					alt=""
@@ -417,7 +422,8 @@
 					class="header-icon header-icon-hover"
 				/>
 			 </span>
-	    </a>
+	      </a>
+      </span>
     </div>
   </div>
 </section>

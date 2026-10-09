@@ -692,17 +692,63 @@
   --btn-shadow: #3E822E;
 }
 
-.footer-cta h2 {
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-sm);
+.footer-kicker,
+.footer-sub {
+  font-size: clamp(18px, 2vw, 22px);
+  color: #FFFFFF;
 }
 
-.footer-cta p {
-  font-size: 16px;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-lg);
+.footer-kicker {
+  font-weight: var(--weight-medium);
+  margin: 0 0 6px;
+}
+
+.footer-sub {
+  margin: 0 0 36px;
+}
+
+/* "LET'S TALK": cream display letters with a hard ink shadow */
+.talk {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: .06em;
+  margin: 0 0 14px;
+
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(56px, 10.5vw, 136px);
+  line-height: 1;
+  letter-spacing: .01em;
+  color: var(--bg-main);
+  text-shadow: .045em .045em 0 var(--text-primary);
+}
+
+/* Each word stays on one line */
+.talk .wd {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.talk .wd + .wd {
+  margin-left: .22em;
+}
+
+.talk .ch {
+  display: inline-block;
+  transition:
+    transform 260ms var(--ease-land),
+    text-shadow 260ms var(--ease-land);
+}
+
+.talk .ch:hover {
+  transform: translate(-.015em, -.015em);
+  text-shadow: .065em .065em 0 var(--text-primary);
+}
+
+.mag {
+  display: inline-block;
+  transition: transform 400ms var(--ease-land);
 }
 
 .footer-cta-actions {
