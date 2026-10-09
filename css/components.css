@@ -406,7 +406,18 @@
   background-color: var(--card-bg, var(--bg-card));
 
   box-shadow:
-    6px 6px 0 0 var(--card-shadow, var(--text-primary));
+    var(--shadow-offset) var(--shadow-offset) 0 0 var(--card-shadow, var(--text-primary));
+  --lift-shadow: var(--card-shadow, var(--text-primary));
+
+  transition:
+    transform var(--dur-base) var(--ease-land),
+    box-shadow var(--dur-base) var(--ease-land);
+}
+
+/* Hover lift: the card rises a little further off its shadow */
+.card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 9px 9px 0 0 var(--card-shadow, var(--text-primary));
 }
 
 .card-label {
