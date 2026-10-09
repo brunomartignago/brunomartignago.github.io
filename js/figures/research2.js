@@ -193,4 +193,117 @@
       })
       .catch(() => fail(fig));
   })();
+
+  /* ================= Fig 03 · Balance a page ================= */
+  (() => {
+    const fig = document.getElementById("cf-balance");
+    if (!fig) return;
+    const stage = fig.querySelector(".r2-b-stage");
+    const presetButtons = [...fig.querySelectorAll("[data-preset]")];
+    const COLS = 10, ROWS = 6;
+    const PRESETS = {
+      layout: ["3333333333", "2200001100", "2232203330", "2232203330", "0000000000", "1111111111"],
+      two:    ["0000000000", "0330000000", "0330000000", "0000000330", "0000000330", "0000000000"],
+      clear:  ["0000000000", "0000000000", "0000000000", "0000000000", "0000000000", "0000000000"],
+    };
+
+    // Grid: one tab stop, arrow keys move between cells (roving tabindex)
+    const wrap = el("div", "r2-b-gridwrap");
+    const grid = el("div", "r2-b-grid");
+    grid.setAttribute("role", "group");
+    grid.setAttribute("aria-label", "Grid of 60 cells, 10 columns by 6 rows. Use the arrow keys to move and Enter or Space to add mass; the red dot shows the center of mass.");
+    const cells = [];
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const b = el("button", "r2-b-cell");
+        b.type = "button";
+        b.tabIndex = r === 0 && c === 0 ? 0 : -1;
+        Object.assign(b.dataset, { r, c, m: 0 });
+        grid.append(b);
+        cells.push(b);
+      }
+    }
+    const crossV = el("span", "r2-b-cross v"), crossH = el("span", "r2-b-cross h"), dot = el("span", "r2-b-dot");
+    [crossV, crossH, dot].forEach(n => n.setAttribute("aria-hidden", "true"));
+    grid.append(crossV, crossH, dot);
+    wrap.append(grid);
+
+    // Readout
+    const read = el("div", "r2-b-read");
+    read.setAttribute("aria-live", "polite");
+    const massOut = el("strong", null, null, "0"), xyOut = el("strong", null, null, "—"), calc = el("p", "r2-b-calc");
+    const block = (label, value) => { const d = el("div"); d.append(el("span", "k", null, label), value); return d; };
+    const legend = el("div", "r2-b-legend");
+    legend.setAttribute("aria-hidden", "true");
+    [1, 2, 3].forEach(m => { const k = el("span", null, null, String(m)); k.prepend(el("i", "m" + m)); legend.append(k); });
+    legend.append(el("span", null, null, "· click to add"));
+    read.append(block("Total mass", massOut), block("Center of mass", xyOut), calc, legend);
+
+    stage.append(wrap, read);
+
+    const label = b => b.setAttribute("aria-label", `Row ${+b.dataset.r + 1}, column ${+b.dataset.c + 1}, mass ${b.dataset.m}`);
+
+    function update() {
+      let m = 0, sx = 0, sy = 0;
+      cells.forEach(b => {
+        const w = +b.dataset.m;
+        m += w; sx += w * (+b.dataset.c + .5); sy += w * (+b.dataset.r + .5);
+        label(b);
+      });
+      massOut.textContent = String(m);
+      grid.classList.toggle("is-empty", m === 0);
+      if (!m) {
+        xyOut.textContent = "—";
+        calc.textContent = "Add mass to see where the page balances.";
+        return;
+      }
+      const x = sx / m, y = sy / m;
+      const left = `${x / COLS * 100}%`, top = `${y / ROWS * 100}%`;
+      Object.assign(dot.style, { left, top });
+      crossV.style.left = left;
+      crossH.style.top = top;
+      xyOut.textContent = `(${x.toFixed(2)}, ${y.toFixed(2)})`;
+      calc.replaceChildren(
+        document.createTextNode(`x = ${sx.toFixed(1)} / ${m} = ${x.toFixed(2)}`), el("br"),
+        document.createTextNode(`y = ${sy.toFixed(1)} / ${m} = ${y.toFixed(2)}`)
+      );
+    }
+
+    const setPressed = key => presetButtons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.preset === key)));
+    const applyPreset = key => {
+      cells.forEach(b => { b.dataset.m = PRESETS[key][b.dataset.r][b.dataset.c]; });
+      setPressed(key);
+      update();
+    };
+
+    grid.addEventListener("click", e => {
+      const b = e.target.closest(".r2-b-cell");
+      if (!b) return;
+      b.dataset.m = (+b.dataset.m + 1) % 4;
+      cells.forEach(n => { n.tabIndex = n === b ? 0 : -1; });
+      setPressed(null); // the grid no longer matches a preset
+      update();
+    });
+    grid.addEventListener("keydown", e => {
+      const b = e.target.closest(".r2-b-cell");
+      if (!b) return;
+      let r = +b.dataset.r, c = +b.dataset.c;
+      if (e.key === "ArrowRight") c = Math.min(COLS - 1, c + 1);
+      else if (e.key === "ArrowLeft") c = Math.max(0, c - 1);
+      else if (e.key === "ArrowDown") r = Math.min(ROWS - 1, r + 1);
+      else if (e.key === "ArrowUp") r = Math.max(0, r - 1);
+      else if (e.key === "Home") c = 0;
+      else if (e.key === "End") c = COLS - 1;
+      else return;
+      e.preventDefault();
+      const next = cells[r * COLS + c];
+      b.tabIndex = -1;
+      next.tabIndex = 0;
+      next.focus();
+    });
+    presetButtons.forEach(b => b.addEventListener("click", () => applyPreset(b.dataset.preset)));
+
+    applyPreset("layout");
+    live(fig);
+  })();
 })();
