@@ -113,9 +113,29 @@
   }
 }
 
+/* ---------- Header scroll progress ---------- */
+
+@keyframes progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Scroll-linked, not autonomous, so it stays on under reduced motion. JS fallback in motion.js. */
+@supports (animation-timeline: scroll()) {
+  .header-progress {
+    animation: progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
 /* ---------- Reduced motion: everything rests in its final state ---------- */
 
 @media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .site-header::after,
+  .site-header .header-inner,
+  .site-header .brand-icon,
+  .site-header .brand-name,
   .card,
   .viz-chip,
   .ae,

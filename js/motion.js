@@ -45,6 +45,27 @@
     });
   });
 
+  /* ---------- Header: compact after 80px, scroll progress fallback ---------- */
+  const header = document.querySelector(".site-header");
+  if (header) {
+    const progress = header.querySelector(".header-progress");
+    const cssProgress = window.CSS && CSS.supports("animation-timeline: scroll()");
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const y = window.scrollY;
+      header.classList.toggle("is-compact", y > 80);
+      if (progress && !cssProgress) {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        progress.style.setProperty("--progress", max > 0 ? Math.min(1, y / max).toFixed(4) : "0");
+      }
+    };
+    addEventListener("scroll", () => {
+      if (!queued) { queued = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  }
+
   /* ---------- Tags: each sticker settles at its own small tilt ---------- */
   document.querySelectorAll(".tag").forEach(tag => {
     tag.style.setProperty("--rot", (Math.random() * 6 - 3).toFixed(1) + "deg");
