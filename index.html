@@ -26,6 +26,7 @@
 	</script>
 	<script src="js/motion.js" defer></script>
 	<script src="js/anatomy.js" defer></script>
+	<script src="js/gaze.js" defer></script>
 
 	<!-- Page transitions: must run before first render, so no defer; wait for the tiles to be parsed -->
 	<link rel="expect" href="#other-projects" blocking="render" />
@@ -280,7 +281,8 @@
 
     <div class="project" data-reveal="project">
       <div class="project-image project-slide">
-        <img src="assets/images/research_2.png" alt="Cognitive Load influence on page navigation">
+        <!-- js/gaze.js swaps this for the animated attention map; the image stays if it can't -->
+        <img src="assets/images/research_2.png" alt="Cognitive Load influence on page navigation" data-gaze>
       </div>
 
       <div class="project-content">

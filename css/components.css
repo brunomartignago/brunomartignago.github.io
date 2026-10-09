@@ -72,6 +72,10 @@
 
 .viz-chip[data-state="scanning"] { background-color: #60E7FF; }
 .viz-chip[data-state="classified"] { background-color: #60FFA2; }
+.viz-chip[data-state="replay"] { background-color: #FFF260; }
+.viz-chip[data-state="live"] { background-color: #FD93E2; }
+.viz-chip[data-state="ready"],
+.viz-chip[data-state="paused"] { background-color: #ECE6E1; }
 
 .viz-body {
   position: relative;
@@ -182,6 +186,69 @@
 
 .anatomy-scan.on {
   opacity: 1;
+}
+
+/* ---------- Featured project 2 visual: attention map (js/gaze.js) ---------- */
+
+.gaze {
+  width: 100%;
+  max-width: 520px;
+  --sx: 8px;
+  --sy: 8px;
+}
+
+.gaze .viz-body {
+  cursor: crosshair;
+}
+
+.gaze-wire {
+  position: absolute;
+  border-radius: 6px;
+}
+
+.gaze-heat,
+.gaze-path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.gaze-path {
+  overflow: visible;
+}
+
+.gaze-fix {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--text-primary);
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, .88);
+  box-shadow: 2px 2px 0 0 var(--text-primary);
+  font: var(--weight-medium) 10px/1 var(--font-mono);
+  color: var(--text-primary);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 380ms var(--ease-land), opacity 300ms;
+}
+
+.gaze-fix.enter {
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.gaze-hint {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 5px 7px;
+  border-radius: 6px;
+  background-color: var(--text-primary);
+  color: var(--bg-main);
+  font: var(--weight-medium) 10px/1 var(--font-mono);
+  pointer-events: none;
+  transition: opacity 300ms;
 }
 
 @media (max-width: 900px) {

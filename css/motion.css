@@ -165,7 +165,9 @@
   .viz-chip,
   .ae,
   .ae-box,
-  .ae-label {
+  .ae-label,
+  .gaze-fix,
+  .gaze-hint {
     transition: none;
   }
 
