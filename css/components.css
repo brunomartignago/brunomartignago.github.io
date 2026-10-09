@@ -582,7 +582,8 @@
 
   border: 3px solid var(--text-primary);
   border-radius: var(--radius-sm);
-  box-shadow: 6px 6px 0 0 #CFA185;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 #CFA185;
+  --lift-shadow: #CFA185;
 
   background-image: var(--tile-image);
   background-size: cover;
@@ -590,11 +591,59 @@
   background-repeat: no-repeat;
 
   overflow: hidden;
+
+  transition:
+    transform var(--dur-base) var(--ease-land),
+    box-shadow var(--dur-base) var(--ease-land);
 }
 
+/* Hover lift; press on active */
 .project-tile:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 4px 4px 0 0 var(--text-primary);
+  transform: translate(-2px, -2px);
+  box-shadow: 9px 9px 0 0 #CFA185;
+}
+
+.project-tile:active {
+  transform: translate(var(--shadow-offset), var(--shadow-offset));
+  box-shadow: 0 0 0 0 #CFA185;
+  transition-duration: var(--dur-fast);
+}
+
+/* Media layers under the overlay: hover video preview, or a Ken Burns copy of the thumbnail */
+.tile-video,
+.tile-pan {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.tile-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 400ms var(--ease-out);
+}
+
+.project-tile.is-playing .tile-video {
+  opacity: 1;
+}
+
+.tile-pan {
+  background-image: var(--tile-image);
+  background-size: cover;
+  background-position: center;
+  transform-origin: 60% 40%;
+  transition: transform 700ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-tile:hover .tile-pan,
+  .project-tile:focus-visible .tile-pan {
+    transform: scale(1.12) translate(-2%, 1.5%);
+    transition: transform 7s cubic-bezier(.25, .1, .25, 1);
+  }
 }
 
 /* Overlay for text readability */
@@ -654,14 +703,6 @@
   transform: translateY(0);
 }
 
-.project-tile {
-  transition: transform 150ms ease, box-shadow 150ms ease;
-}
-
-.project-tile:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 4px 4px 0 0 var(--text-primary);
-}
 
 
 .about h2 {

@@ -117,6 +117,34 @@
     footer.addEventListener("pointerleave", () => mags.forEach(mag => { mag.style.transform = ""; }));
   }
 
+  /* ---------- Other Projects tiles: video preview on hover/focus (desktop only) ---------- */
+  // src is set on first hover (preload="none"); the video fades in once it is actually playing
+  document.querySelectorAll(".project-tile").forEach(tile => {
+    const video = tile.querySelector(".tile-video");
+    if (!video) return;
+    let active = false;
+    video.addEventListener("playing", () => {
+      if (active) tile.classList.add("is-playing");
+    });
+    const start = () => {
+      if (!Motion.finePointer() || Motion.reduced()) return;
+      active = true;
+      if (!video.getAttribute("src")) video.src = video.dataset.src;
+      const p = video.play();
+      if (p) p.catch(() => {});
+      if (!video.paused && video.readyState > 2) tile.classList.add("is-playing");
+    };
+    const stop = () => {
+      active = false;
+      tile.classList.remove("is-playing");
+      video.pause();
+    };
+    tile.addEventListener("pointerenter", start);
+    tile.addEventListener("focus", start);
+    tile.addEventListener("pointerleave", stop);
+    tile.addEventListener("blur", stop);
+  });
+
   /* ---------- Research diagram: draw on view, replay on hover/click ---------- */
   const diagram = document.getElementById("diagram");
   const diagramProject = diagram && diagram.closest(".project");
