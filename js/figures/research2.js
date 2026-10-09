@@ -343,4 +343,51 @@
       onceInView(stage, () => stage.classList.replace("is-waiting", "is-in"));
     }).catch(() => fail(fig));
   })();
+  /* ================= Fig 05 · Gravity overlay ================= */
+  (() => {
+    const fig = document.getElementById("cf-gravity");
+    if (!fig) return;
+    const stage = fig.querySelector(".r2-g-stage");
+    const heat = stage.querySelector(".r2-g-heat");
+    const layer = stage.querySelector(".r2-g-cm");
+    const btn = key => fig.querySelector(`[data-layer="${key}"]`);
+    const { svg } = window.Figures;
+
+    load("local_centers_of_mass.json").then(data => {
+      const SC = data.screenshot_width / data.screen[0];
+      data.pages.lenovo.cm.forEach(([x, y], i) => {
+        const cx = x * SC, cy = y * SC;
+        const g = svg("g", { class: "r2-g-mark", style: `--i:${i};transform-origin:${cx}px ${cy}px;` });
+        g.append(
+          svg("circle", { cx, cy, r: 230, fill: "rgba(140,110,220,.28)", stroke: "#0A0A0A", "stroke-width": 6, "stroke-dasharray": "18 12" }),
+          svg("circle", { cx, cy, r: 18, fill: "#E0352B", stroke: "#0A0A0A", "stroke-width": 6 }),
+          svg("rect", { x: cx + 236, y: cy - 34, width: 400, height: 66, rx: 12, fill: "#FFFFFF", stroke: "#0A0A0A", "stroke-width": 5 })
+        );
+        const t = svg("text", { x: cx + 252, y: cy + 14, "font-size": 44, "font-family": "Roboto Mono, monospace", "font-weight": 500, fill: "#0A0A0A" });
+        t.textContent = `CM · screen ${i + 1}`;
+        g.append(t);
+        layer.append(g);
+      });
+
+      // Page and Heatmap pick the base layer; Centers of mass toggles on top
+      const state = { heat: true, cm: true };
+      const update = () => {
+        stage.classList.toggle("no-heat", !state.heat);
+        stage.classList.toggle("no-cm", !state.cm);
+        btn("page").setAttribute("aria-pressed", String(!state.heat));
+        btn("heat").setAttribute("aria-pressed", String(state.heat));
+        btn("cm").setAttribute("aria-pressed", String(state.cm));
+      };
+      btn("page").addEventListener("click", () => { state.heat = false; update(); });
+      btn("heat").addEventListener("click", () => { state.heat = true; update(); });
+      btn("cm").addEventListener("click", () => { state.cm = !state.cm; update(); });
+      update();
+
+      live(fig);
+      if (reduced()) return;
+      // The circles land on the heatmap once, the first time it's in view
+      stage.classList.add("is-waiting");
+      onceInView(stage, () => stage.classList.replace("is-waiting", "is-in"), .5);
+    }).catch(() => fail(fig));
+  })();
 })();
