@@ -390,4 +390,117 @@
       onceInView(stage, () => stage.classList.replace("is-waiting", "is-in"), .5);
     }).catch(() => fail(fig));
   })();
+  /* ================= Fig 06 · Movement down Amazon ================= */
+  (() => {
+    const fig = document.getElementById("cf-move");
+    if (!fig) return;
+    const stage = fig.querySelector(".r2-m-stage");
+    const playBtn = fig.querySelector("[data-m-play]");
+    const { svg } = window.Figures;
+    const IMG = { src: "../assets/images/cases/research2/amazon_heat_14p.jpg", w: 360, h: 3246 };
+
+    load("local_centers_of_mass.json").then(data => {
+      const page = data.pages.amazon;
+      const SC = data.screenshot_width / data.screen[0];
+      const SH = data.screen[1];
+      const W = data.screenshot_width, H = page.height_px, N = page.cm.length;
+      const pts = page.cm.map(([x, y]) => [x * SC, Math.min(H - 20, y * SC)]);
+
+      // Left: the clipped page strip with the viewport frame; right: the readout and controls
+      const wrap = el("div", "r2-m-wrap");
+      wrap.setAttribute("role", "img");
+      wrap.setAttribute("aria-label", `The long Amazon page with the 14-participant heatmap; a path connects the center of mass of each of its ${N} screens.`);
+      const strip = el("div", "r2-m-strip");
+      const img = el("img");
+      Object.assign(img, { src: IMG.src, alt: "", width: IMG.w, height: IMG.h });
+      const layer = svg("svg", { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "none", "aria-hidden": "true" });
+      const path = svg("polyline", { points: pts.map(p => p.join(",")).join(" "), fill: "none", stroke: "#0A0A0A", "stroke-width": 2.5, "vector-effect": "non-scaling-stroke", pathLength: 1, class: "r2-m-path" });
+      layer.append(path);
+      // Ellipses so the dots stay round on the squeezed strip
+      const ry = 70 * (H / W) / (IMG.h / IMG.w);
+      const dots = pts.map(([x, y]) => {
+        const d = svg("ellipse", { cx: x, cy: y, rx: 70, ry, fill: "#E0352B", stroke: "#0A0A0A", "stroke-width": 3, "vector-effect": "non-scaling-stroke", class: "r2-m-dot" });
+        layer.append(d);
+        return d;
+      });
+      strip.append(img, layer);
+      const view = el("div", "r2-m-view");
+      view.setAttribute("aria-hidden", "true");
+      wrap.append(strip, view);
+
+      const read = el("div", "r2-m-read");
+      const no = el("div", "r2-m-no");
+      const xy = el("div", "r2-m-xy");
+      const block = (label, value) => { const d = el("div"); d.append(el("span", "k", null, label), value); return d; };
+      const rangeId = "r2-m-range";
+      const rangeLabel = el("label", "k", null, "Scroll the page");
+      rangeLabel.htmlFor = rangeId;
+      const range = el("input");
+      Object.assign(range, { type: "range", id: rangeId, min: 1, max: N, value: 1, step: 1 });
+      const chipsBox = el("div", "r2-m-chips");
+      chipsBox.setAttribute("role", "group");
+      chipsBox.setAttribute("aria-label", "Jump to a screen");
+      const chips = page.cm.map((_, i) => {
+        const b = el("button", "r2-m-chip", null, String(i + 1).padStart(2, "0"));
+        b.type = "button";
+        b.setAttribute("aria-label", `Screen ${i + 1}`);
+        chipsBox.append(b);
+        return b;
+      });
+      read.append(block("Screen", no), block("Center of mass on this screen", xy), rangeLabel, range, chipsBox);
+      stage.append(wrap, read);
+
+      let at = 1;
+      function place() {
+        const sh = strip.offsetHeight, wh = wrap.clientHeight;
+        if (!sh) return;
+        const scr = SH * SC / H * sh, top = (at - 1) * scr;
+        const off = Math.max(0, Math.min(sh - wh, top + scr / 2 - wh / 2));
+        strip.style.transform = `translateY(${-off}px)`;
+        view.style.transform = `translateY(${top - off}px)`;
+        view.style.height = `${scr}px`;
+      }
+      function show(n) {
+        at = n;
+        range.value = n;
+        range.setAttribute("aria-valuetext", `Screen ${n} of ${N}`);
+        no.textContent = `${String(n).padStart(2, "0")} / ${N}`;
+        const [x, y] = page.cm[n - 1];
+        xy.textContent = `x ${x} px · y ${y - (n - 1) * SH} px`;
+        path.style.strokeDashoffset = String(1 - (n - 1) / (N - 1));
+        dots.forEach((d, i) => d.classList.toggle("is-dim", i >= n));
+        chips.forEach((c, i) => {
+          c.classList.toggle("past", i < n - 1);
+          c.setAttribute("aria-pressed", String(i === n - 1));
+        });
+        place();
+      }
+
+      const setPlaying = on => {
+        playBtn.setAttribute("aria-pressed", String(on));
+        playBtn.textContent = on ? "Pause ❚❚" : "Play ▶";
+      };
+      const timeline = stepper(fig, N, reduced() ? 400 : 900, i => {
+        show(i + 1);
+        if (i === N - 1) setPlaying(false);
+      });
+      const stop = () => { timeline.stop(); setPlaying(false); };
+      const play = () => {
+        if (at >= N) show(1);
+        setPlaying(true);
+        timeline.play(at - 1);
+      };
+
+      playBtn.addEventListener("click", () => (playBtn.getAttribute("aria-pressed") === "true" ? stop() : play()));
+      range.addEventListener("input", () => { stop(); show(+range.value); });
+      chips.forEach((c, i) => c.addEventListener("click", () => { stop(); show(i + 1); }));
+      new ResizeObserver(place).observe(wrap);
+      img.addEventListener("load", place);
+
+      live(fig);
+      if (reduced()) { show(N); return; }
+      show(1);
+      onceInView(wrap, play, .5);
+    }).catch(() => fail(fig));
+  })();
 })();
