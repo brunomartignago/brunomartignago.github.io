@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sketch A2 · The engagement loop</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sketch.css" />
+<style>
+  svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .corner { position: absolute; font: 500 11px/1 var(--font-mono); }
+  .edge { position: absolute; font: 400 10px/1 var(--font-mono); color: #A39C95; }
+  .dot { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border: 2px solid #0A0A0A; border-radius: 50%; background: #FFF260; box-shadow: 2px 2px 0 0 #0A0A0A; }
+  .lap { position: absolute; right: 6%; top: 6%; font: 500 10px/1 var(--font-mono); color: #C9C2BA; }
+</style>
+</head>
+<body class="night">
+<main class="sheet">
+  <a class="back" href="index.html">← All sketches</a>
+  <p class="eyebrow">Sketch A2 · AI Orchestration · entry 01</p>
+  <h1>Every lap makes <mark>the profile richer</mark></h1>
+  <p class="idea">The triangle becomes a loop you can watch: a token travels Experience → Collection → Training and back, along Interaction, Transformation and Workflow. Each completed lap adds a ring of data to the Profile at the center, so “continuous engagement” reads as something that compounds, not three words on corners.</p>
+  <ul class="meta"><li><b>Replaces</b>engagement.png (and profile.png, which is the same drawing)</li><li><b>Real labels</b>Experience · Collection · Training · Workflow · Interaction · Transformation · Profile · Engagement</li><li><b>Illustrative</b>ring count per lap</li></ul>
+  <ul class="behave">
+    <li><b>Plays once in view:</b> one lap (~3s), each edge lighting as the token passes.</li>
+    <li><b>Reader drives:</b> “Run a lap” adds another ring (up to 5); “Reset”.</li>
+    <li><b>Reduced motion:</b> static, three rings, the full loop highlighted. No JS: engagement.png.</li>
+  </ul>
+
+  <div class="board">
+    <div class="panel">
+      <div class="k"><span>Start</span><span>lap 0</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 03 — Engagement loop</span><span class="btns"><span class="btn">Run a lap</span></span></div>
+        <div class="stage" style="--ar:1/1">
+          <svg viewBox="0 0 100 100"><polygon points="50,14 88,80 12,80" fill="#4A6380" stroke="#ECE6DF" stroke-width=".6" stroke-dasharray="2 1.5"/><circle cx="50" cy="56" r="11" fill="#9BD3FF"/></svg>
+          <span class="corner" style="left:41%;top:5%">Experience</span><span class="corner" style="right:3%;top:83%">Collection</span><span class="corner" style="left:3%;top:83%">Training</span>
+          <span class="dot" style="left:50%;top:14%"></span><span class="lap">lap 0</span>
+        </div>
+      </div>
+      <p class="cap">The profile starts small.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>Lap 1</span><span>token on Interaction</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 03 — Engagement loop</span><span class="btns"><span class="btn">Run a lap</span></span></div>
+        <div class="stage" style="--ar:1/1">
+          <svg viewBox="0 0 100 100"><polygon points="50,14 88,80 12,80" fill="#4A6380" stroke="#ECE6DF" stroke-width=".6" stroke-dasharray="2 1.5"/><line x1="50" y1="14" x2="74" y2="55" stroke="#FFF260" stroke-width="2.4"/><circle cx="50" cy="56" r="14" fill="none" stroke="#9BD3FF" stroke-width="2"/><circle cx="50" cy="56" r="11" fill="#9BD3FF"/></svg>
+          <span class="corner" style="left:41%;top:5%">Experience</span><span class="corner" style="right:3%;top:83%">Collection</span><span class="corner" style="left:3%;top:83%">Training</span>
+          <span class="edge" style="left:70%;top:30%">Interaction</span>
+          <span class="dot" style="left:74%;top:55%"></span><span class="lap">lap 1</span>
+        </div>
+      </div>
+      <p class="cap">Each edge lights as the token passes it.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>Lap 3</span><span>after “Run a lap” ×2</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 03 — Engagement loop</span><span class="btns"><span class="btn">Run a lap</span></span></div>
+        <div class="stage" style="--ar:1/1">
+          <svg viewBox="0 0 100 100"><polygon points="50,14 88,80 12,80" fill="#4A6380" stroke="#FFF260" stroke-width="1.6"/><circle cx="50" cy="56" r="20" fill="none" stroke="#9BD3FF" stroke-width="2"/><circle cx="50" cy="56" r="17" fill="none" stroke="#9BD3FF" stroke-width="2"/><circle cx="50" cy="56" r="14" fill="none" stroke="#9BD3FF" stroke-width="2"/><circle cx="50" cy="56" r="11" fill="#9BD3FF"/></svg>
+          <span class="corner" style="left:41%;top:5%">Experience</span><span class="corner" style="right:3%;top:83%">Collection</span><span class="corner" style="left:3%;top:83%">Training</span>
+          <span class="edge" style="left:40%;top:86%;color:#ECE6DF">Transformation</span><span class="edge" style="left:12%;top:40%">Workflow</span>
+          <span class="dot" style="left:50%;top:14%"></span><span class="lap">lap 3 · engagement ↑</span>
+        </div>
+      </div>
+      <p class="cap">Three rings: the profile has grown from three laps of engagement.</p>
+    </div>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sketch C2 · Cards that fit like Lego</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sketch.css" />
+<style>
+  .grid { position: absolute; inset: 6%; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 5px; }
+  .slot { border: 2px dashed #CFC7C0; border-radius: 6px; display: grid; place-items: center; font: 500 9px/1 var(--font-mono); color: #8A847E; }
+  .card { border: 2px solid #0A0A0A; border-radius: 6px; background: var(--c); box-shadow: 3px 3px 0 0 var(--cd); display: grid; place-items: center; font: 500 9px/1.2 var(--font-mono); color: #0A0A0A; text-align: center; }
+  .card.fall { transform: translate(4px, -14px); box-shadow: none; opacity: .7; }
+  .w1 { grid-column: span 1; } .w2 { grid-column: span 2; } .h1 { grid-row: span 1; } .h2 { grid-row: span 2; }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <a class="back" href="index.html">← All sketches</a>
+  <p class="eyebrow">Sketch C2 · Cockpit · entry 02</p>
+  <h1>Cards that fit <mark>like Lego</mark></h1>
+  <p class="idea">The dashboard grid starts as empty slots in the three sizes from the structure image. KPI cards drop into them one by one, each landing with a hard-shadow lift. “Rearrange” packs a different set of cards into a new layout that still fits perfectly, which is what “insert cards of diverse sizes and content and make them fit like Lego pieces” means.</p>
+  <ul class="meta"><li><b>Replaces</b>structure.png</li><li><b>Real values</b>card sizes 368 × 210 · 368 × 436 · 752 × 436 · card names from the dashboard</li><li><b>Illustrative</b>which cards go in which arrangement</li></ul>
+  <ul class="behave">
+    <li><b>Plays once in view:</b> slots appear, then cards drop in (staggered ~120ms).</li>
+    <li><b>Reader drives:</b> “Rearrange” (FLIP: cards slide to new slots); “Show sizes” overlays the slot dimensions.</li>
+    <li><b>Reduced motion:</b> static filled grid. No JS: structure.png.</li>
+  </ul>
+
+  <div class="board">
+    <div class="panel">
+      <div class="k"><span>Slots</span><span>three sizes</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 04 — Dashboard grid</span><span class="btns"><span class="btn on">Show sizes</span></span></div>
+        <div class="stage" style="--ar:4/3"><div class="grid">
+          <div class="slot w1 h2">368×436</div><div class="slot w1 h2">368×436</div><div class="slot w1 h2">368×436</div><div class="slot w1 h1">368×210</div><div class="slot w1 h1">368×210</div>
+          <div class="slot w1 h1">368×210</div><div class="slot w2 h2">752×436</div><div class="slot w1 h2">368×436</div><div class="slot w1 h1">368×210</div>
+        </div></div>
+      </div>
+      <p class="cap">A strict sizing format: three card sizes on one grid.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>Cards land</span><span>plays in view</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 04 — Dashboard grid</span><span class="btns"><span class="btn">Rearrange</span></span></div>
+        <div class="stage" style="--ar:4/3"><div class="grid">
+          <div class="card w1 h2" style="--c:#60C2FF;--cd:#2157A9">Site Search<br>Visits</div><div class="card w1 h2" style="--c:#FFF260;--cd:#A9A03E">Critical<br>Vuln. Count</div><div class="card w1 h2" style="--c:#FD93E2;--cd:#8B487A">Null<br>Results %</div><div class="card w1 h1" style="--c:#60FFA2;--cd:#318D57">CSAT</div><div class="card w1 h1" style="--c:#60E7FF;--cd:#348796">Avg Click Rank</div>
+          <div class="card w1 h1" style="--c:#FFB37A;--cd:#9A4F1C">1st Click CTR</div><div class="card w2 h2 fall" style="--c:#D9D1CA;--cd:#5B524B">Resolution Time</div><div class="slot w1 h2"></div><div class="slot w1 h1"></div>
+        </div></div>
+      </div>
+      <p class="cap">Cards drop into the slots that match their size.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>Rearranged</span><span>after “Rearrange”</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 04 — Dashboard grid</span><span class="btns"><span class="btn">Rearrange</span></span></div>
+        <div class="stage" style="--ar:4/3"><div class="grid">
+          <div class="card w2 h2" style="--c:#D9D1CA;--cd:#5B524B">Resolution Time</div><div class="card w1 h1" style="--c:#60FFA2;--cd:#318D57">CSAT</div><div class="card w1 h2" style="--c:#60C2FF;--cd:#2157A9">Site Search<br>Visits</div><div class="card w1 h1" style="--c:#60E7FF;--cd:#348796">Avg Click Rank</div><div class="card w1 h2" style="--c:#FD93E2;--cd:#8B487A">Null<br>Results %</div><div class="card w1 h1" style="--c:#FFB37A;--cd:#9A4F1C">1st Click CTR</div><div class="card w1 h2" style="--c:#FFF260;--cd:#A9A03E">Critical<br>Vuln. Count</div><div class="card w1 h1" style="--c:#60FFA2;--cd:#318D57">Site Searches</div><div class="card w1 h1" style="--c:#D9D1CA;--cd:#5B524B">Order Conv.</div><div class="card w1 h1" style="--c:#60C2FF;--cd:#2157A9">Layout Shift</div></div></div>
+      </div>
+      <p class="cap">A different mix, still a perfect fit.</p>
+    </div>
+  </div>
+
+
+</main>
+</body>
+</html>

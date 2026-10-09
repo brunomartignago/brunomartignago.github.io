@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sketch A4 · The profile that keeps changing</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sketch.css" />
+<style>
+  svg { position: absolute; left: 10%; top: 6%; width: 80%; height: 66%; overflow: visible; }
+  .axis { font: 500 4px/1 var(--font-mono); fill: #C9C2BA; }
+  .scrub { position: absolute; left: 8%; right: 8%; bottom: 14%; height: 2px; background: #6E7A8E; }
+  .scrub i { position: absolute; top: -6px; width: 14px; height: 14px; margin-left: -7px; border: 2px solid #0A0A0A; border-radius: 50%; background: #FFF260; }
+  .times { position: absolute; left: 8%; right: 8%; bottom: 5%; display: flex; justify-content: space-between; font: 500 10px/1 var(--font-mono); color: #A39C95; }
+  .ev { position: absolute; right: 5%; top: 7%; display: grid; gap: 5px; justify-items: end; }
+  .ev span { padding: 3px 6px; border: 2px solid #0A0A0A; border-radius: 6px; background: #FFFFFF; color: #0A0A0A; font: 500 9px/1 var(--font-mono); box-shadow: 2px 2px 0 0 #2157A9; }
+</style>
+</head>
+<body class="night">
+<main class="sheet">
+  <a class="back" href="index.html">← All sketches</a>
+  <p class="eyebrow">Sketch A4 · AI Orchestration · entry 02</p>
+  <h1>A profile that <mark>keeps changing</mark></h1>
+  <p class="idea">“We refer to the pattern as the amorphous profile because it continually evolves.” The figure draws the profile as a shape on the profile's own axes (Attributes, Density, History, Pattern, Dimensionality) and runs it through a day. As real-time signals arrive (location, time, a purchase), the shape changes, so the word “amorphous” is shown rather than explained.</p>
+  <ul class="meta"><li><b>Replaces</b>profile2.png and parts.png (its axes become the figure's axes)</li><li><b>Real values</b>the five axes · real-time signals named on the page (location, time)</li><li><b>Illustrative</b>the shape values and the times of day (marked in the figure)</li></ul>
+  <ul class="behave">
+    <li><b>Plays once in view:</b> morning → afternoon → evening (~1.5s each); signal chips pop in and the shape morphs (SVG points interpolate).</li>
+    <li><b>Reader drives:</b> a time scrubber (a real range input, keyboard-friendly).</li>
+    <li><b>Reduced motion:</b> static evening state, with the scrubber working. No JS: profile2.png.</li>
+  </ul>
+
+  <div class="board">
+    <div class="panel">
+      <div class="k"><span>8:30 AM</span><span>at home</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 05 — Amorphous profile</span><span>day ▸</span></div>
+        <div class="stage" style="--ar:1/1">
+          <svg viewBox="0 0 100 100"><g fill="none" stroke="#4A5466" stroke-width=".5"><polygon points="50,5 93,36 76,88 24,88 7,36"/><polygon points="50,27 72,43 63,69 37,69 28,43"/></g>
+            <polygon points="50,20 80,40 62,72 30,78 22,40" fill="rgba(96,194,255,.45)" stroke="#60C2FF" stroke-width="1.2"/>
+            <text class="axis" x="44" y="2">ATTRIBUTES</text><text class="axis" x="88" y="33">DENSITY</text><text class="axis" x="72" y="95">HISTORY</text><text class="axis" x="14" y="95">PATTERN</text><text class="axis" x="-14" y="33">DIMENSIONALITY</text></svg>
+          <div class="ev"><span>location · home</span></div>
+          <div class="scrub"><i style="left:5%"></i></div><div class="times"><span>8:30</span><span>13:30</span><span>20:32</span></div>
+        </div>
+      </div>
+      <p class="cap">Morning: one shape.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>1:30 PM</span><span>at work</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 05 — Amorphous profile</span><span>day ▸</span></div>
+        <div class="stage" style="--ar:1/1">
+          <svg viewBox="0 0 100 100"><g fill="none" stroke="#4A5466" stroke-width=".5"><polygon points="50,5 93,36 76,88 24,88 7,36"/><polygon points="50,27 72,43 63,69 37,69 28,43"/></g>
+            <polygon points="50,12 86,38 70,62 36,84 30,46" fill="rgba(96,194,255,.45)" stroke="#60C2FF" stroke-width="1.2"/>
+            <text class="axis" x="44" y="2">ATTRIBUTES</text><text class="axis" x="88" y="33">DENSITY</text><text class="axis" x="72" y="95">HISTORY</text><text class="axis" x="14" y="95">PATTERN</text><text class="axis" x="-14" y="33">DIMENSIONALITY</text></svg>
+          <div class="ev"><span>location · office</span><span>time · meetings</span></div>
+          <div class="scrub"><i style="left:50%"></i></div><div class="times"><span>8:30</span><span>13:30</span><span>20:32</span></div>
+        </div>
+      </div>
+      <p class="cap">Afternoon: new signals, a different shape.</p>
+    </div>
+    <div class="panel">
+      <div class="k"><span>8:32 PM</span><span>after a purchase</span></div>
+      <div class="frame">
+        <div class="bar"><span>Fig. 05 — Amorphous profile</span><span>day ▸</span></div>
+        <div class="stage" style="--ar:1/1">
+          <svg viewBox="0 0 100 100"><g fill="none" stroke="#4A5466" stroke-width=".5"><polygon points="50,5 93,36 76,88 24,88 7,36"/><polygon points="50,27 72,43 63,69 37,69 28,43"/></g>
+            <polygon points="50,24 78,34 72,82 26,70 12,38" fill="rgba(253,147,226,.4)" stroke="#FD93E2" stroke-width="1.2"/>
+            <text class="axis" x="44" y="2">ATTRIBUTES</text><text class="axis" x="88" y="33">DENSITY</text><text class="axis" x="72" y="95">HISTORY</text><text class="axis" x="14" y="95">PATTERN</text><text class="axis" x="-14" y="33">DIMENSIONALITY</text></svg>
+          <div class="ev"><span>location · home</span><span>purchase · monitor</span></div>
+          <div class="scrub"><i style="left:95%"></i></div><div class="times"><span>8:30</span><span>13:30</span><span>20:32</span></div>
+        </div>
+      </div>
+      <p class="cap">Evening: the history axis grows; it is never the same twice.</p>
+    </div>
+  </div>
+
+  <p class="note">profile.png is the same drawing as engagement.png (Fig. 03 on the page). I'd drop it from entry 02 and refer back to Fig. 03, or let sketch A2 cover both. Your call.</p>
+</main>
+</body>
+</html>
