@@ -1,187 +1,225 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Visual patterns in web page generation — Bruno Martignago</title>
   <meta name="description" content="A four-year research project into the pillars of web page structure: an element classification method, a template taxonomy and template summarization." />
 
+  <link rel="icon" href="../favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="../css/tokens.css" />
   <link rel="stylesheet" href="../css/layout.css" />
-  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/motion.css" />
   <link rel="stylesheet" href="../css/case.css" />
+  <link rel="stylesheet" href="../css/journal.css" />
+
+  <!-- Flags JS before first paint so pre-animation states never flash; without JS everything renders at rest -->
+  <script>
+    document.documentElement.classList.add("js");
+    addEventListener("load", () => { if (!window.Journal) document.documentElement.classList.remove("js"); });
+  </script>
+  <script src="../js/motion.js" defer></script>
+  <script src="../js/journal.js" defer></script>
 
   <!-- Page transitions: must run before first render, so no defer; wait for the hero media -->
   <link rel="expect" href="#case-hero-media" blocking="render" />
   <script src="../js/transitions.js"></script>
 </head>
 
-<body>
+<body class="journal case--research">
 
   <header class="site-header">
     <div class="header-inner">
-
       <a href="../index.html" class="brand">
-        <img 
-          src="../assets/images/logo.png" 
-          alt="Bruno Martignago logo"
-          class="brand-icon"
-        />
-        <span class="brand-name heading-body">
-        Bruno Martignago
-        <span class="brand-location">/ Visual patterns in web page generation</span>
-      </span>
+        <img src="../assets/images/logo.png" alt="Bruno Martignago logo" class="brand-icon" width="69" height="77" />
+        <span class="crumb">Bruno Martignago <span>/ Visual patterns in web page generation</span></span>
       </a>
-
-      <a 
-        href="../assets/Bruno-Martignago-Resume.pdf" 
-        class="header-btn"
-        download
-      >
-        Download my resume
-          <span class="header-btn-icon-wrapper">
-        <img
-          src="../assets/icons/download.png"
-          alt=""
-          class="header-icon header-icon-default"
-        />
-        <img
-          src="../assets/icons/download_white.png"
-          alt=""
-          class="header-icon header-icon-hover"
-        />
-       </span>
-      </a>
-
+      <span class="header-meta" data-read-left>24 min read</span>
     </div>
-</header>
+    <div class="header-progress" aria-hidden="true"></div>
+  </header>
 
-  <section class="case-hero">
-    <div class="case-hero-inner">
+  <main id="main">
 
-      <h1 class="case-title">
-        This is a new way to think about webpage structure.
-      </h1>
+    <section class="cover">
+      <div class="cover-text">
+        <p class="eyebrow rise" style="--d:0ms"><b>Case file 01</b> · Research · Part 1 of 2</p>
+        <h1 class="case-title rise" style="--d:80ms">This is a new way to think about <mark>webpage structure.</mark></h1>
+        <p class="lede rise" style="--d:200ms">A research project into the core pillars that constitute a web page, which would eventually pave the way for webpage and flow generation via AI training.</p>
+      </div>
 
-      <h2>01. Context</h2>
+      <aside class="index-card" data-reveal="lift" aria-label="Project facts">
+        <h2>Index card</h2>
+        <dl>
+          <dt>Role</dt><dd>Researcher &amp; designer</dd>
+          <dt>Studies</dt><dd>5 tests, 2022–2025. This case covers the first two, plus a smaller third.</dd>
+          <dt>Team</dt><dd>Bruno Martignago, Leonardo Souza</dd>
+          <dt>Methods</dt>
+          <dd>
+            <span class="jtags">
+              <span class="jtag jtag--yellow">Element classification</span>
+              <span class="jtag jtag--green">Template taxonomy</span>
+              <span class="jtag jtag--pink">Data analysis</span>
+              <span class="jtag jtag--blue">Benchmark</span>
+            </span>
+          </dd>
+          <dt>Read</dt><dd><span data-read-time>~24 min</span> · 7 entries</dd>
+        </dl>
+      </aside>
 
-      <p class="case-subtitle">
-        This is a research project I've been working on for the last four years. The focus was on understanding the core pillars that constitute a web page. This understanding would eventually pave the way for creating an algorithm for webpage and flow generation via AI training. Along the way, I've discovered some content design behaviors and developed new methods that enhance designers' comprehension of element placement and content strategy.
+      <figure class="fig fig--taped cover-fig rv">
+        <button type="button" class="fig-zoom">
+          <span class="frame">
+            <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+            <span class="sr-only">Enlarge figure: </span>
+            <img
+              src="../assets/images/cases/research1/hero.jpg"
+              alt="Grid of 27 summarized page templates built from colored section blocks"
+              width="576" height="212"
+              id="case-hero-media"
+              data-vt-hero
+            />
+          </span>
+        </button>
+        <figcaption><b>Fig. 01</b><span>Summarized templates of the pages analyzed in this research. Each color is a section type.</span></figcaption>
+      </figure>
+    </section>
 
-      </p>
-      <p class="case-subtitle">
+    <div class="journal-grid">
 
-        This is the first part of a large set of findings from 5 tests conducted from 2022 to 2025. This case focuses on results that address element placement and the development of a universal design-development taxonomy, enabling web templates that facilitate discovery research and speed it up.
+      <nav class="toc-nav" aria-label="Contents">
+        <details class="toc" open>
+          <summary>Contents</summary>
+          <ol>
+            <li><a href="#e1"><span>01</span>Context</a></li>
+            <li><a href="#e2"><span>02</span>Introduction</a></li>
+            <li><a href="#e3"><span>03</span>Research questions</a></li>
+            <li><a href="#e4"><span>04</span>The first study</a></li>
+            <li><a href="#e5"><span>05</span>The second study</a></li>
+            <li><a href="#e6"><span>06</span>Insights &amp; scaling</a></li>
+            <li><a href="#e7"><span>07</span>Building my own tool</a></li>
+          </ol>
+          <p class="toc-meta">Part 2 of this research: Cognitive Load Influence on Page Navigation.</p>
+        </details>
+      </nav>
 
-      </p>
-      <p class="case-subtitle">
+      <article class="entries">
 
-        The second part of this research can be found at this link or by navigating to the home page and clicking on the project "Cognitive Load Influence on Page Navigation."
-      </p>
+        <!-- 01 -->
+        <section class="entry" id="e1" aria-labelledby="e1-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">01</span><div><small>Entry 01</small><h2 id="e1-title">Context</h2></div></header>
+              <p class="rv">This is a research project I've been working on for the last four years. The focus was on understanding the core pillars that constitute a web page. This understanding would eventually pave the way for creating an algorithm for webpage and flow generation via AI training. Along the way, I've discovered some content design behaviors and developed new methods that enhance designers' comprehension of element placement and content strategy.</p>
+              <p class="rv">This is the first part of a large set of findings from 5 tests conducted from 2022 to 2025. This case focuses on results that address element placement and the development of a <mark class="hl">universal design-development taxonomy</mark>, enabling web templates that facilitate discovery research and speed it up.</p>
+            </div>
+            <aside class="mnote mnote--pink rv">
+              <span class="k">Part 2</span>
+              <p>The second part of this research is the project “Cognitive Load Influence on Page Navigation”. <a href="../index.html">Find it on the home page →</a></p>
+            </aside>
+          </div>
+        </section>
 
-      <img
-        src="../assets/images/cases/research1/hero.jpg"
-        alt="Grid of 27 summarized page templates built from colored section blocks"
-        class="case-hero-image reveal"
-        id="case-hero-media"
-        data-vt-hero
-        loading="lazy"
-      />
+        <!-- 02 -->
+        <section class="entry" id="e2" aria-labelledby="e2-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">02</span><div><small>Entry 02</small><h2 id="e2-title">Introduction</h2></div></header>
+              <p class="rv">For this project, I worked with a base definition, an axiom, that we will use throughout the entire study. It's important to have this definition made very early in the conversation, so all the knots are tied to this truth.</p>
+              <p class="rv">We will define a webpage as a visual structure that is designed from a combination of two pillars:</p>
+            </div>
+            <aside class="mnote rv">
+              <span class="k">Axiom</span>
+              <p>The base definition of a webpage that every part of this study is tied back to.</p>
+            </aside>
+          </div>
+          <div class="row">
+            <div class="main">
+              <div class="pair">
+                <div class="qcard qcard--blue" data-reveal="lift" style="--i:0"><span class="qn" aria-hidden="true">A</span><p>Graphic components</p><span class="sub">content</span></div>
+                <div class="qcard qcard--pink" data-reveal="lift" style="--i:1"><span class="qn" aria-hidden="true">B</span><p>Culture</p><span class="sub">user demographics</span></div>
+              </div>
 
-      <hr class="page-divider reveal" />
-    </div>
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/intro.png" alt="Diagram: a web page splits into two pillars, graphic components and culture" width="914" height="718" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 02</b><span>The two pillars that sustain the structure of a web page: graphic components and culture.</span></figcaption>
+              </figure>
 
-  </section>
+              <p class="rv">These pillars sustain the entire structure of a webpage and guide designers, developers, and product people in making decisions when building these solutions. One way of seeing this is by analyzing the product phases that happen when developing a digital solution:</p>
 
-  <section class="case-section reveal">
-    <div class="case-section-inner">
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/intro2.png" alt="Diagram of product phases: persona, interviews and user journey lead to design principles, design system and components, which lead to pages and flows" width="808" height="328" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 03</b><span>How the two pillars map to product phases: people, then the system, then pages and flows.</span></figcaption>
+              </figure>
 
-      <h2>02. Introduction</h2>
+              <p class="rv">To understand users and build a solution tailored to their needs, we need to conduct rounds of interviews, build artifacts, create personas, and narrate a story that integrates the product into these people's everyday lives. You can't talk about your audience without understanding their culture and how the product will impact their routine. Only after that can the team start incorporating company goals and elements to make the product appear a certain way. This is where design principles and a design system are really important for content to reach the target audience.</p>
+              <p class="rv"><mark class="hl">Only with the right combination of the user’s demographics and content that makes sense will the product succeed.</mark></p>
+            </div>
+          </div>
+        </section>
 
-      <p>
-         For this project, I worked with a base definition, an axiom, that we will use throughout the entire study. It's important to have this definition made very early in the conversation, so all the knots are tied to this truth.
-      </p>
+        <!-- 03 -->
+        <section class="entry" id="e3" aria-labelledby="e3-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">03</span><div><small>Entry 03</small><h2 id="e3-title">Research questions</h2></div></header>
+              <p class="rv">Let's look back at our axiom. We define a web page as a combination of content and culture. As part of the process, we want to better understand what makes people navigate the way they navigate, how they decide what to look at on a page, what is interesting, and what helps them find the information they're looking for. This is the part where AI-generated pages fail when exposed to users: <mark class="hl">they look good, but there's no appeal outside of the visual layer</mark>; it's a copy of many other websites available online. It doesn't take into account what that specific group of users needs to achieve their goals with the product.</p>
+              <p class="rv">The first step was understanding what could be collected, given the levels of variation, consistency, and availability, in line with the two pillars we defined. Overall, it's easier to map the aspects surrounding a web page's visual elements: the elements usually follow a set of rules for positioning and color, or they're part of a large design system that dictates the overall look and feel of the entire experience. The complex part was to normalize aspects related to culture and demographics, given the amount of variation, even when small tweaks are made within a given group.</p>
 
-      <p>
-        We will define a webpage as a visual structure that is designed from a combination of two pillars:
-      </p>
-        <ul>
-          <li> Graphic components (content) </li>
-          <li> Culture (user demographics) </li>
-        </ul>
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/research_questions.png" alt="Diagram comparing the two pillars: culture has high variation, depends on research and is hard to automate; content has low variation, is predictable and follows a set of rules" width="808" height="248" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 04</b><span>Culture varies a lot and depends on research. Content is predictable and follows a set of rules.</span></figcaption>
+              </figure>
+            </div>
+          </div>
+          <div class="row">
+            <div class="main">
+              <p class="rv">Users' demographics and culture are a highly volatile pillar and depend on a variety of factors, such as differences in regions, languages, beliefs, etc., so they require substantial research to understand and apply to product development. This makes it hard to predict. In this research, we will treat this pillar as a constant in our investigations. For each test, we will provide a set of pre-selected demographic information to be considered when testing specific websites.</p>
+              <p class="rv">On the other hand, the graphic elements and the overall content follow a set of rules, becoming more predictable and generating less variation. These elements were key to the first 3 tests we ran, during which we fully understood global positioning and information distribution using the methods developed throughout this project.</p>
+            </div>
+            <aside class="mnote mnote--blue rv">
+              <span class="k">Method note</span>
+              <p>Culture is treated as a constant: each test came with a set of pre-selected demographic information.</p>
+            </aside>
+          </div>
+          <div class="row">
+            <div class="main">
+              <p class="rv">With these considerations, I had two questions in mind that I wanted to understand with this research:</p>
+              <div class="pair">
+                <div class="qcard" data-reveal="lift" style="--i:0"><span class="qn" aria-hidden="true">Q1</span><p>If demographics are fixed, would it be possible to map patterns of visual elements on pages and flows?</p></div>
+                <div class="qcard" data-reveal="lift" style="--i:1"><span class="qn" aria-hidden="true">Q2</span><p>Is it possible to simplify web page structuring so it's easier to automate?</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-      <img
-        src="../assets/images/cases/research1/intro.png"
-        alt="Diagram: a web page splits into two pillars, graphic components and culture"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        These pillars sustain the entire structure of a webpage and guide designers, developers, and product people in making decisions when building these solutions. One way of seeing this is by analyzing the product phases that happen when developing a digital solution:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/intro2.png"
-        alt="Diagram of product phases: persona, interviews and user journey lead to design principles, design system and components, which lead to pages and flows"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-      
-      <p>
-        To understand users and build a solution tailored to their needs, we need to conduct rounds of interviews, build artifacts, create personas, and narrate a story that integrates the product into these people's everyday lives. You can't talk about your audience without understanding their culture and how the product will impact their routine. Only after that can the team start incorporating company goals and elements to make the product appear a certain way. This is where design principles and a design system are really important for content to reach the target audience.
-      </p>
-
-      <p>
-        Only with the right combination of the user’s demographics and content that makes sense will the product succeed.
-      </p>
-      <hr class="page-divider reveal" />
-    </div>
-  </section>
-
-  <section class="case-section reveal">
-    <div class="case-section-inner">
-
-      <h2>03. Research Questions</h2>
-
-      <p>
-        Let's look back at our axiom. We define a web page as a combination of content and culture. As part of the process, we want to better understand what makes people navigate the way they navigate, how they decide what to look on a page, what is interesting, what help them find the information they're looking for; because this is the part that AI generated pages fail when exposed to users: they look good, but there's no appeal outside of the visual layer, its a copy of many other websites available online. It doesn't take into account what that specific group of users needs to achieve their goals with the product.
-      </p>
-
-      <p>
-        The first step was understanding what could be collected, given the levels of variation, consistency, and availability, in line with the two pillars we defined. Overall, it's easier to map the aspects surrounding a web page's visual elements: the elements usually follow a set of rules for positioning and color, or they're part of a large design system that dictates the overall look and feel of the entire experience. The complex part was to normalize aspects related to culture and demographics, given the amount of variation, even when small tweaks are made within a given group.
-
-      <img
-        src="../assets/images/cases/research1/research_questions.png"
-        alt="Diagram comparing the two pillars: culture has high variation, depends on research and is hard to automate; content has low variation, is predictable and follows a set of rules"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        Users' demographics and culture are a highly volatile pillar and depend on a variety of factors, such as differences in regions, languages, beliefs, etc., so they require substantial research to understand and apply to product development. This makes it hard to predict. In this research, we will treat this pillar as a constant in our investigations. For each test, we will provide a set of pre-selected demographic information to be considered when testing specific websites.
-      </p>
-
-      <p>
-        On the other hand, the graphic elements and the overall content follow a set of rules, becoming more predictable and generating less variation. These elements were key to the first 3 tests we ran, during which we fully understood global positioning and information distribution using the methods developed throughout this project.
-      </p>
-
-      <p>
-        With these considerations, I had two questions in mind that I wanted to understand with this research:
-      </p>
-
-      <h3>
-        1. If demographics are fixed, would it be possible to map patterns of visual elements on pages and flows? 
-      </h3>
-      <h3>
-        2. Is it possible to simplify web page structuring so it's easier to automate?
-      </h3>
-
-      <hr class="page-divider reveal" />
-    </div>
-  </section>
-
-  <section class="case-section reveal">
+        <!-- Entries 04–07: not migrated yet (old markup, kept so the page stays complete) -->
+        <div class="legacy">
+<section id="e4" class="case-section reveal">
     <div class="case-section-inner">
 
       <h2>04. The first study</h2>
@@ -795,7 +833,7 @@
     </div>
   </section>
 
-  <section class="case-section">
+  <section id="e5" class="case-section">
     <div class="case-section-inner">
 
       <h2>05. The second study</h2>
@@ -1168,7 +1206,7 @@
     </div>
   </section>
 
-  <section class="case-section reveal">
+  <section id="e6" class="case-section reveal">
     <div class="case-section-inner">
 
       <h2>06. Insights and the scaling problem</h2>
@@ -1224,7 +1262,7 @@
     </div>
   </section>
 
-  <section class="case-section reveal">
+  <section id="e7" class="case-section reveal">
     <div class="case-section-inner">
 
       <h2>07. Building my own classification tool</h2>
@@ -1272,10 +1310,13 @@
 
     </div>
   </section>
+        </div>
 
+      </article>
+    </div>
+  </main>
 
-
-<script src="../js/reveal.js"></script>
-<script src="../js/lazyload.js"></script>
+  <script src="../js/reveal.js"></script>
+  <script src="../js/lazyload.js"></script>
 </body>
 </html>
