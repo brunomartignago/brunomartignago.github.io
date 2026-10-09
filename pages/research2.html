@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cognitive load influence on page navigation — Bruno Martignago</title>
+  <meta name="description" content="Part 2 of a research project on web page structure: we turned pages into physical objects, calculated their center of mass, and used eye tracking to see whether attention follows it." />
+
+  <link rel="icon" href="../favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/motion.css" />
+  <link rel="stylesheet" href="../css/journal.css" />
+  <link rel="stylesheet" href="../css/figures.css" />
+
+  <!-- Flags JS before first paint so pre-animation states never flash; without JS everything renders at rest -->
+  <script>
+    document.documentElement.classList.add("js");
+    addEventListener("load", () => { if (!window.Journal) document.documentElement.classList.remove("js"); });
+  </script>
+  <script src="../js/motion.js" defer></script>
+  <script src="../js/journal.js" defer></script>
+  <script src="../js/figures/core.js" defer></script>
+  <script src="../js/figures/research2.js" defer></script>
+
+  <!-- Page transitions: must run before first render, so no defer; wait for the hero media -->
+  <link rel="expect" href="#case-hero-media" blocking="render" />
+  <script src="../js/transitions.js"></script>
+</head>
+
+<body class="journal case--research2">
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <img src="../assets/images/logo.png" alt="Bruno Martignago logo" class="brand-icon" width="69" height="77" />
+        <span class="crumb">Bruno Martignago <span>/ Cognitive load influence on page navigation</span></span>
+      </a>
+      <span class="header-meta" data-read-left>10 min read</span>
+    </div>
+    <div class="header-progress" aria-hidden="true"></div>
+  </header>
+
+  <main id="main">
+
+    <section class="cover">
+      <div class="cover-text">
+        <p class="eyebrow rise" style="--d:0ms"><b>Case file 02</b> · Research · Part 2 of 2</p>
+        <h1 class="case-title rise" style="--d:80ms">A web page has weight, and our eyes <mark>feel its gravity.</mark></h1>
+        <p class="lede rise" style="--d:200ms">The third study of my research on web page structure. We turned pages into physical objects, calculated their center of mass, and used an eye tracker to see whether people's attention follows it.</p>
+      </div>
+
+      <aside class="index-card" data-reveal="lift" aria-label="Project facts">
+        <h2>Index card</h2>
+        <dl>
+          <dt>Role</dt><dd>Researcher &amp; designer</dd>
+          <dt>Study</dt><dd>Third round of tests, 2024</dd>
+          <dt>Sample</dt><dd>6 pages · 14 participants · 60 s per page · 51 local centers of mass</dd>
+          <dt>Research partner</dt><dd>Annamarie Huttunen, behavioral scientist</dd>
+          <dt>Tools</dt><dd>iMotions, density mapping</dd>
+          <dt>Methods</dt>
+          <dd>
+            <span class="jtags">
+              <span class="jtag jtag--cyan">Eye tracking</span>
+              <span class="jtag jtag--yellow">Density mapping</span>
+              <span class="jtag jtag--pink">Physics models</span>
+            </span>
+          </dd>
+          <dt>Read</dt><dd><span data-read-time>~10 min</span> · 9 entries</dd>
+        </dl>
+      </aside>
+
+      <figure class="fig fig--taped cover-fig rv">
+        <button type="button" class="fig-zoom">
+          <span class="frame">
+            <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+            <span class="sr-only">Enlarge figure: </span>
+            <img
+              src="../assets/images/cases/research2/lenovo_heat_0-20.jpg"
+              alt="Eye-tracking heatmap of the Lenovo cart page for the first 20 seconds, with two purple circles marking the center of mass of each screen"
+              width="900" height="922"
+              id="case-hero-media"
+              data-vt-hero
+            />
+          </span>
+        </button>
+        <figcaption><b>Fig. 01</b><span>Lenovo cart page, 0–20 s, 14 participants. The circles mark each screen's center of mass.</span></figcaption>
+      </figure>
+    </section>
+
+    <div class="journal-grid">
+
+      <nav class="toc-nav" aria-label="Contents">
+        <details class="toc" open>
+          <summary>Contents</summary>
+          <ol>
+            <li><a href="#e1"><span>01</span>Context</a></li>
+            <li><a href="#e2"><span>02</span>A page has weight</a></li>
+            <li><a href="#e3"><span>03</span>Center of mass 101</a></li>
+            <li><a href="#e4"><span>04</span>The eye-tracking study</a></li>
+            <li><a href="#e5"><span>05</span>Gravity</a></li>
+            <li><a href="#e6"><span>06</span>Movement</a></li>
+            <li><a href="#e7"><span>07</span>Assimilation span</a></li>
+            <li><a href="#e8"><span>08</span>Attractors</a></li>
+            <li><a href="#e9"><span>09</span>What's next</a></li>
+          </ol>
+          <p class="toc-meta">Part 1 of this research: <a href="research1.html">Visual patterns in web page generation</a>.</p>
+        </details>
+      </nav>
+
+      <article class="entries">
+
+        <!-- 01 -->
+        <section class="entry" id="e1" aria-labelledby="e1-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">01</span><div><small>Entry 01</small><h2 id="e1-title">Context</h2></div></header>
+              <p class="rv">This is the second part of a research project I've been working on since 2022. The first part, “Visual patterns in web page generation”, focused on what a page is made of. This one focuses on how people move through it.</p>
+              <p class="rv">Let's go back to our axiom. We defined a web page as the combination of two pillars: visuals and content on one side, demographics and culture on the other. They influence each other. From the first two studies, we can already understand the first pillar: elements have form, function and component, they follow rules, and pages can be summarized into templates. The second pillar is still too hard to put into metrics.</p>
+            </div>
+            <aside class="mnote mnote--pink rv">
+              <span class="k">Part 1</span>
+              <p>“Visual patterns in web page generation” covers studies 1 and 2, the Form, Function, Component method and template summarization. <a href="research1.html">Read Part 1 →</a></p>
+            </aside>
+          </div>
+
+          <div class="row">
+            <div class="main">
+              <p class="rv">We already know that the information on screen plays a big role in guiding us through the “flow” of navigation. <mark class="hl">But how, exactly?</mark></p>
+              <p class="rv">That is the question behind the third round of tests, which we ran in 2024. Two of the questions I listed at the very beginning of this research were still open:</p>
+              <div class="pair">
+                <div class="qcard qcard--blue" data-reveal="lift" style="--i:0"><span class="qn" aria-hidden="true">Q1</span><p>Does the position of an element on the page influence how people navigate it?</p></div>
+                <div class="qcard qcard--pink" data-reveal="lift" style="--i:1"><span class="qn" aria-hidden="true">Q2</span><p>Does cognitive load influence page perception?</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 02 -->
+        <section class="entry" id="e2" aria-labelledby="e2-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">02</span><div><small>Entry 02 · Hypothesis</small><h2 id="e2-title">A page has weight</h2></div></header>
+              <p class="rv">My hypothesis was simple to say and hard to test: people perceive a web page the way they perceive a physical object. <mark class="hl">Dense areas “weigh” more, and weight pulls attention.</mark></p>
+              <p class="rv">To test it, we needed to give a flat page a third dimension. We used the information density mapping algorithm (developed by my research partner, behavioral scientist Annamarie Huttunen, and adapted for this study in 2023) to do three things:</p>
+
+              <div class="specimen specimen--cyan" data-reveal="lift">
+                <header><h3>Information density mapping</h3><span>3 steps · 50 × 50 px cells</span></header>
+                <dl>
+                  <dt>Step 1</dt><dd>Detect feature points on a screenshot of the page. Every edge of text, image or icon becomes a point. On the Lenovo cart page, that is thousands of points.</dd>
+                  <dt>Step 2</dt><dd>Group those points into a grid of 50 × 50 px cells and count them. The count in each cell is its density.</dd>
+                  <dt>Step 3</dt><dd>Use that density as the Z axis. The page stops being a flat image and becomes a terrain, with peaks where information piles up and valleys where there is white space.</dd>
+                </dl>
+              </div>
+
+              <p class="rv">The same algorithm also returns a Cognitive Load Index (CLI) from 0 to 100. It combines three measures: how far the information clusters are from each other, how many clusters there are, and how far the whitespace ratio is from an optimal 15%. The Lenovo cart page, for example, scored a CLI of 59.2.</p>
+              <p class="rv"><mark class="hl">Once a page is a 3D object with density, it has a center of mass.</mark></p>
+            </div>
+            <aside class="mnote mnote--cyan rv">
+              <span class="k">Local vs global</span>
+              <p>We calculated the center of mass for the whole page (global) and for each 1920 × 1080 screen of it (local), because a visitor only ever sees one screen at a time.</p>
+            </aside>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-terrain">
+              <div class="frame cf r2-t">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 02 — Lenovo cart, 37 × 36 cells</span>
+                  <div class="cf-ctrls" role="group" aria-label="Steps">
+                    <button class="cf-btn" type="button" data-tstep="0" aria-pressed="true">1 · Page</button>
+                    <button class="cf-btn" type="button" data-tstep="1" aria-pressed="false">2 · Density</button>
+                    <button class="cf-btn" type="button" data-tstep="2" aria-pressed="false">3 · Terrain</button>
+                    <button class="cf-btn" type="button" data-tstep="3" aria-pressed="false">4 · Center of mass</button>
+                  </div>
+                </div>
+                <div class="cf-stage r2-t-stage" role="img" aria-label="The Lenovo cart page becomes a grid of information density, then a 3D terrain with peaks where information piles up, with its center of mass marked near the middle of the page.">
+                  <canvas aria-hidden="true"></canvas>
+                </div>
+                <p class="r2-t-cap" aria-live="polite"></p>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/research2/lenovo_page.jpg" alt="Screenshot of the Lenovo cart page" width="900" height="912" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 02</b><span>From screenshot to terrain. Real density data from the study: 5,520 feature points in 1,332 cells.</span></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 03 -->
+        <section class="entry" id="e3" aria-labelledby="e3-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">03</span><div><small>Entry 03 · Math</small><h2 id="e3-title">Center of mass 101</h2></div></header>
+              <p class="rv">This is an excuse for a mathematician to talk about math.</p>
+              <p class="rv">In a continuous system, the coordinates of the center of mass are the positions weighted by density, divided by the total mass:</p>
+              <div class="formula rv" role="math" aria-label="CM x equals the triple integral of x times rho of x, y, z, d V, divided by the triple integral of rho of x, y, z, d V">
+                <span>CM<sub>x</sub> = <span class="frac"><span>∭ x · ρ(x, y, z) dV</span><span>∭ ρ(x, y, z) dV</span></span></span>
+              </div>
+              <p class="rv">Our system is discrete: a grid of cells, each with its own mass (the density count). So the integrals become sums:</p>
+              <div class="formula rv" role="math" aria-label="CM x equals the sum of m i times x i, divided by the sum of m i. CM y equals the sum of m i times y i, divided by the sum of m i.">
+                <span>CM<sub>x</sub> = <span class="frac"><span>Σ m<sub>i</sub> x<sub>i</sub></span><span>Σ m<sub>i</sub></span></span></span>
+                <span>CM<sub>y</sub> = <span class="frac"><span>Σ m<sub>i</sub> y<sub>i</sub></span><span>Σ m<sub>i</sub></span></span></span>
+              </div>
+              <p class="rv">where m<sub>i</sub> is the mass at each point (x<sub>i</sub>, y<sub>i</sub>). In practice, the center of mass is <mark class="hl">the point where the page would balance</mark> if you printed it on a sheet of uneven thickness and held it on a fingertip.</p>
+              <p class="rv">We calculated 51 local centers of mass across the six pages: 16 for Amazon, 17 for HP, 10 for Dell, 4 for Steam, and 2 each for Lenovo and PlayStation.</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig main ifig rv" id="cf-balance">
+              <div class="frame cf r2-b">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 03 — Balance a page</span>
+                  <div class="cf-ctrls" role="group" aria-label="Presets">
+                    <button class="cf-btn" type="button" data-preset="layout" aria-pressed="true">Page layout</button>
+                    <button class="cf-btn" type="button" data-preset="two" aria-pressed="false">Two clusters</button>
+                    <button class="cf-btn" type="button" data-preset="clear" aria-pressed="false">Clear</button>
+                  </div>
+                </div>
+                <div class="cf-stage r2-b-stage"></div>
+              </div>
+              <div class="frame ifig-fallback">
+                <p>Interactive figure: a grid of 60 cells where each cell holds a mass from 0 to 3, with a red dot at the grid's center of mass. It needs JavaScript.</p>
+              </div>
+              <figcaption><b>Fig. 03</b><span>Click cells to add mass (1 → 2 → 3 → empty). “Two clusters” shows the case behind Entry 08: the balance point lands where nothing is.</span></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 04 -->
+        <section class="entry" id="e4" aria-labelledby="e4-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">04</span><div><small>Entry 04 · Method</small><h2 id="e4-title">The eye-tracking study</h2></div></header>
+              <p class="rv">With a center of mass for every screen, we could finally ask people's eyes whether it matters. The test worked like this:</p>
+
+              <div class="specimen specimen--yellow" data-reveal="lift">
+                <header><h3>Third round of tests</h3><span>2024 · 6 pages · 14 participants</span></header>
+                <dl>
+                  <dt>Step 1</dt><dd>We selected 6 random pages from the second round of tests: 2 pages from each category, 3 longer pages and 3 shorter ones.</dd>
+                  <dt>Step 2</dt><dd>We calculated all the local centers of mass for each screen (1920 × 1080 px).</dd>
+                  <dt>Step 3</dt><dd>We ran an eye-tracking test with no pre-determined tasks. People simply looked through each page, and we captured how they went over the information.</dd>
+                  <dt>Step 4</dt><dd>We compared the centers of mass with the test results.</dd>
+                </dl>
+              </div>
+
+              <p class="rv"><mark class="hl">No task was on purpose.</mark> A task tells people where to look. We wanted to see where the page itself takes them.</p>
+
+              <div class="jtable-wrap" data-reveal="lift">
+                <table class="jtable">
+                  <caption>The six pages</caption>
+                  <thead>
+                    <tr><th scope="col">Page</th><th scope="col">Category</th><th scope="col" class="num">Length</th><th scope="col" class="num">Screens (local CMs)</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row">HP</th><td>Item detail</td><td class="num">17,053 px</td><td class="num">17</td></tr>
+                    <tr><th scope="row">Amazon</th><td>Item detail</td><td class="num">16,123 px</td><td class="num">16</td></tr>
+                    <tr><th scope="row">Dell</th><td>Item list</td><td class="num">9,886 px</td><td class="num">10</td></tr>
+                    <tr><th scope="row">Steam</th><td>Item list</td><td class="num">4,138 px</td><td class="num">4</td></tr>
+                    <tr><th scope="row">Lenovo</th><td>Cart</td><td class="num">1,846 px</td><td class="num">2</td></tr>
+                    <tr><th scope="row">PlayStation</th><td>Cart</td><td class="num">1,709 px</td><td class="num">2</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="rv">We ran the test in iMotions with my research partner Annamarie Huttunen, who developed the density mapping and analysis, operated the software and collaborated on the findings. <mark class="hl">I had the theory; she had the tools.</mark> Each page was shown for 60 seconds, and each heatmap aggregates 14 participants recruited through UserTesting.com.</p>
+            </div>
+            <aside class="mnote mnote--blue rv">
+              <span class="k">Why these pages</span>
+              <p>They come from the 30-page sample of study 2, so every page already had its Form, Function, Component classification and summarized template.</p>
+            </aside>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-scale">
+              <div class="frame cf r2-s">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 04 — The six pages, to scale</span>
+                </div>
+                <div class="cf-stage r2-s-stage" role="img" aria-label="Six pages drawn to scale, from HP at 17,053 pixels to PlayStation at 1,709 pixels, each divided into screens with a red dot for every local center of mass."></div>
+              </div>
+              <div class="frame ifig-fallback">
+                <p>Interactive figure: the six pages drawn to scale, each split into 1920 × 1080 screens with a dot for every local center of mass. The table above lists the same pages.</p>
+              </div>
+              <figcaption><b>Fig. 04</b><span>Each band is one 1920 × 1080 screen; each dot is that screen's center of mass. 51 in total.</span></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 05 -->
+        <section class="entry" id="e5" aria-labelledby="e5-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">05</span><div><small>Entry 05 · Finding</small><h2 id="e5-title">Gravity</h2></div></header>
+              <p class="rv">The first and most important finding: <mark class="hl">people are drawn towards the center of mass.</mark> Overlaying the heatmaps with the local centers of mass, the hottest areas of attention cluster around the circle drawn at each screen's center of mass.</p>
+              <p class="rv">This was especially true in longer and more complicated pages. <mark class="hl">The more information a page carries, the stronger its pull.</mark> Behind each heatmap are two measures for every area of the page: how many times it was looked at, and when. Together they show fixation and looping around the centers of mass, which Entry 08 explores.</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig main ifig rv" id="cf-gravity">
+              <div class="frame cf r2-g">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 05 — Lenovo cart</span>
+                  <div class="cf-ctrls" role="group" aria-label="Layers">
+                    <button class="cf-btn" type="button" data-layer="page" aria-pressed="false">Page</button>
+                    <button class="cf-btn" type="button" data-layer="heat" aria-pressed="true">Heatmap</button>
+                    <button class="cf-btn" type="button" data-layer="cm" aria-pressed="true">Centers of mass</button>
+                  </div>
+                </div>
+                <div class="cf-stage r2-g-stage" role="img" aria-label="The Lenovo cart page with the eye-tracking heatmap of 14 participants and the centers of mass of its two screens drawn as circles; the hottest areas cluster around the circles.">
+                  <img src="../assets/images/cases/research2/lenovo_page.jpg" alt="" width="900" height="912" loading="lazy" />
+                  <img class="r2-g-heat" src="../assets/images/cases/research2/lenovo_heat_14p.jpg" alt="" width="900" height="929" loading="lazy" />
+                  <svg class="r2-g-cm" viewBox="0 0 1788 1812" preserveAspectRatio="none" aria-hidden="true"></svg>
+                </div>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/research2/lenovo_heat_14p.jpg" alt="Eye-tracking heatmap of 14 participants on the Lenovo cart page, with circles at the center of mass of each screen" width="900" height="929" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 05</b><span>14 participants. Circles: the local centers of mass of screens 1 and 2.</span></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 06 -->
+        <section class="entry" id="e6" aria-labelledby="e6-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">06</span><div><small>Entry 06 · Finding</small><h2 id="e6-title">Movement</h2></div></header>
+              <p class="rv">On long pages, the gaze doesn't scan evenly from top to bottom. It travels. Each screen has its own center of mass, and <mark class="hl">attention moves from one to the next, like stepping stones down the page.</mark></p>
+              <p class="rv">The arrows on Amazon, Dell and HP show the same behavior: a focal group forms around a screen's center, then the gaze drops to the next one.</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-move">
+              <div class="frame cf r2-m">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 06 — Amazon, 16,123 px</span>
+                  <div class="cf-ctrls"><button class="cf-btn" type="button" data-m-play aria-pressed="false">Play ▶</button></div>
+                </div>
+                <div class="cf-stage r2-m-stage"></div>
+              </div>
+              <div class="frame ifig-fallback">
+                <div class="r2-tall"><img src="../assets/images/cases/research2/amazon_heat_14p.jpg" alt="Eye-tracking heatmap of 14 participants on the full Amazon item detail page" width="360" height="3246" loading="lazy" /></div>
+              </div>
+              <figcaption><b>Fig. 06</b><span>Amazon heatmap (14 participants) with the path through its 16 local centers of mass.</span></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 07 -->
+        <section class="entry" id="e7" aria-labelledby="e7-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">07</span><div><small>Entry 07 · Finding</small><h2 id="e7-title">Assimilation span</h2></div></header>
+              <p class="rv">Short pages behave differently. In smaller pages, people start paying attention to the content only after realizing there isn't more of the page to explore. <mark class="hl">The time between their first observation and the read-through is what I call the assimilation span.</mark></p>
+              <p class="rv">The Lenovo cart page shows it clearly across 60 seconds:</p>
+              <ol class="rv">
+                <li>0–15 s: observing the top half, with 2 focal groups.</li>
+                <li>15–35 s: dissipation. The gaze spreads out to observe the bottom half.</li>
+                <li>35–60 s: assimilation. The focal groups come back, and this time people read the information.</li>
+              </ol>
+              <p class="rv">On a long page, the pattern never completes. People observe the top scroll section for the first 15 seconds, and from 15 to 60 seconds the gaze only dissipates. <mark class="hl">They never reach the point where they know they've seen it all.</mark></p>
+            </div>
+            <aside class="mnote mnote--pink rv">
+              <span class="k">Compare</span>
+              <p>The Lenovo heatmaps for 0–20 s and 40–60 s: same page, same people, two very different maps.</p>
+            </aside>
+          </div>
+
+          <div class="row">
+            <figure class="fig main ifig rv" id="cf-span">
+              <div class="frame cf r2-a">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 07 — Lenovo cart over 60 s</span>
+                  <div class="cf-ctrls"><button class="cf-btn" type="button" data-a-play aria-pressed="false">Play ▶</button></div>
+                </div>
+                <div class="cf-stage r2-a-stage" role="img" aria-label="Lenovo heatmaps: in the first 20 seconds attention sits on the top half; between 40 and 60 seconds it concentrates on reading the cart details.">
+                  <img src="../assets/images/cases/research2/lenovo_heat_0-20.jpg" alt="" width="900" height="922" loading="lazy" />
+                  <img class="r2-a-late" src="../assets/images/cases/research2/lenovo_heat_40-60.jpg" alt="" width="900" height="922" loading="lazy" />
+                </div>
+                <div class="r2-a-timeline">
+                  <div class="r2-a-phases" aria-hidden="true">
+                    <div class="ph1"><b>0–15 s · Scan</b>top half, 2 focal groups</div>
+                    <div class="ph2"><b>15–35 s · Dissipation</b>observing the bottom half</div>
+                    <div class="ph3"><b>35–60 s · Assimilation</b>focal groups reading</div>
+                  </div>
+                  <div class="r2-a-scrub">
+                    <input type="range" min="0" max="60" value="0" step="1" aria-label="Time in seconds" />
+                    <output>0 s</output>
+                  </div>
+                </div>
+                <p class="cf-note">Heatmaps exist for 0–20 s and 40–60 s; the middle phase blends the two.</p>
+              </div>
+              <div class="frame ifig-fallback">
+                <div class="r2-two">
+                  <img src="../assets/images/cases/research2/lenovo_heat_0-20.jpg" alt="Lenovo cart heatmap, 0 to 20 seconds: attention on the top half" width="900" height="922" loading="lazy" />
+                  <img src="../assets/images/cases/research2/lenovo_heat_40-60.jpg" alt="Lenovo cart heatmap, 40 to 60 seconds: attention on reading the cart details" width="900" height="922" loading="lazy" />
+                </div>
+              </div>
+              <figcaption><b>Fig. 07</b><span>Scrub the minute: scan, dissipation, then assimilation.</span></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 08 -->
+        <section class="entry" id="e8" aria-labelledby="e8-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">08</span><div><small>Entry 08 · Finding</small><h2 id="e8-title">Attractors</h2></div></header>
+              <p class="rv">Gravity explained where people look. It didn't explain how they move between those places. For that, I went back to physics, and then to chaos theory.</p>
+              <p class="rv">We mapped the order in which the gaze first entered each area of interest (AOI). Hit time is the average time that passed from the AOI start time until the gaze entered that AOI for the first time. The page was divided into a grid of 36 AOIs: columns A to F, rows 0 to 5, so B1 is column B, row 1. Looking at the first 18 AOIs, three things stood out:</p>
+              <ol class="rv">
+                <li>Clockwise motion around the center of mass.</li>
+                <li>Dissipation when the gaze sits between two centers of mass.</li>
+                <li>Focal groups in specific areas around each center of mass.</li>
+              </ol>
+              <p class="rv">The revisits told the same story. In the top 10 AOIs by number of revisits, the gaze cycles: people keep coming back to the same areas, and <mark class="hl">the number of revisits and the dwell time are directly proportional.</mark> There is one outlier: E1 has around 50% fewer revisits than B1, but the same dwell time.</p>
+              <p class="rv">This looks a lot like an attractor model. Think of a ball rolling over a surface with two wells. It orbits, crosses between them, and eventually settles in one. The Lorenz attractor is the famous example: a set of chaotic solutions where tiny changes in the starting point evolve into completely different trajectories. <mark class="hl">Our gaze paths share that shape:</mark> a few stable centers, constant orbiting, and paths that are never exactly the same twice.</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig main ifig rv" id="cf-wells">
+              <div class="frame cf r2-w">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 08 — Two centers of mass</span>
+                  <div class="cf-ctrls"><button class="cf-btn" type="button" data-w-drop>Drop a ball</button></div>
+                </div>
+                <div class="cf-stage r2-w-stage" role="img" aria-label="A curve with two wells labeled center of mass A and B. A ball dropped on the curve rolls, crosses the hump between the wells, and settles in one of them.">
+                  <canvas></canvas>
+                </div>
+                <div class="r2-w-ctrls">
+                  <label>Heavier center <input type="range" min="-10" max="10" value="0" step="1" data-w-tilt /></label>
+                  <output aria-live="polite">A and B balanced</output>
+                </div>
+              </div>
+              <div class="frame ifig-fallback">
+                <p>Interactive figure: a ball rolling over a curve with two wells, one for each center of mass. It needs JavaScript.</p>
+              </div>
+              <figcaption><b>Fig. 08</b><span>Drag the ball and let go. Where it settles depends on where it starts, and on which center is heavier.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="row">
+            <div class="fig-pair wide">
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research2/aoi_hit_times.jpg" alt="Lenovo cart page divided into a grid of 36 areas of interest, with the first 18 hits numbered in order" width="1000" height="1044" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 09</b><span>First 18 AOI hit times (ms).</span></figcaption>
+              </figure>
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research2/aoi_revisits.jpg" alt="Lenovo cart page grid of areas of interest with revisit counts and dwell percentages, the top 10 numbered" width="1000" height="1044" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 10</b><span>Top 10 AOIs by revisits and dwell time.</span></figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <!-- 09 -->
+        <section class="entry" id="e9" aria-labelledby="e9-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">09</span><div><small>Entry 09</small><h2 id="e9-title">What's next</h2></div></header>
+              <p class="rv">In all honesty, this is the beginning, not a conclusion. Six pages and 14 people are enough to see a pattern, not to prove a law. But the data is promising, and we are ready for bigger experiments.</p>
+              <p class="rv">There are great opportunities in studying the relationship between human gaze behavior and attractor models. If attention really behaves like mass and gravity, then a layout isn't only arranged. It is balanced, and its balance can be measured before anyone sees it.</p>
+              <p class="rv">That brings us back to where this whole research started. How does human behavior impact visual generation and navigation? Our main objective is to understand and capture enough data to create an AI that can generate great page and flow design: one that knows not only what goes on a page, but where people's eyes will go.</p>
+              <p class="rv">If this got you interested in the subject, please reach out. There are lots of opportunities to help in this research.</p>
+              <blockquote class="pull rv"><p>If attention behaves like gravity, a layout isn't only arranged. It's balanced.</p></blockquote>
+
+              <p class="sign-off rv">Thank you for reading</p>
+              <a class="next-back rv" href="research1.html"><span aria-hidden="true">←</span> Back to Part 1: Visual patterns in web page generation</a>
+              <a class="next" href="aiorc.html" data-reveal="lift">
+                <span><small>Next case file · 03</small><strong>AI Orchestration – Digital Twin</strong></span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+            <aside class="mnote mnote--cyan rv">
+              <span class="k">Thanks</span>
+              <p>Annamarie Huttunen (behavioral scientist and research partner) and Leonardo Souza (product designer).</p>
+            </aside>
+          </div>
+        </section>
+
+      </article>
+    </div>
+  </main>
+
+  <script src="../js/lazyload.js"></script>
+</body>
+</html>

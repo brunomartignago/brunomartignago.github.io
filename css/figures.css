@@ -1634,3 +1634,26 @@
     font-size: 13px;
   }
 }
+
+/* =================================================================
+   Research 2 · Cognitive load influence on page navigation
+   ================================================================= */
+
+/* Fallbacks: the full Amazon heatmap scrolls inside its frame; the two Lenovo maps sit side by side */
+.r2-tall {
+  max-height: 520px;
+  overflow-y: auto;
+  border-radius: 4px;
+}
+
+.r2-tall img {
+  display: block;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.r2-two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}

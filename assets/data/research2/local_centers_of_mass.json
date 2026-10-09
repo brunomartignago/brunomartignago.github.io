@@ -1,0 +1,260 @@
+{
+ "source": "XD summit test / cut_images / 'CM points for local scroll view.xlsx' (x_original, y_original page column)",
+ "units": "x: px in a 1920px-wide screen; y: px down the page in 1080px-per-screen units. Screenshots/heatmaps are 1788px wide: multiply by 1788/1920 to place points on them.",
+ "screen": [
+  1920,
+  1080
+ ],
+ "screenshot_width": 1788,
+ "participants": 14,
+ "seconds_per_page": 60,
+ "pages": {
+  "hp": {
+   "name": "HP",
+   "category": "Item detail",
+   "height_px": 17053,
+   "cm": [
+    [
+     1062,
+     390
+    ],
+    [
+     689,
+     1569
+    ],
+    [
+     873,
+     2538
+    ],
+    [
+     923,
+     3916
+    ],
+    [
+     822,
+     4830
+    ],
+    [
+     726,
+     6008
+    ],
+    [
+     853,
+     7175
+    ],
+    [
+     1022,
+     8039
+    ],
+    [
+     999,
+     9121
+    ],
+    [
+     970,
+     10234
+    ],
+    [
+     934,
+     11196
+    ],
+    [
+     896,
+     12284
+    ],
+    [
+     781,
+     13570
+    ],
+    [
+     1023,
+     14575
+    ],
+    [
+     705,
+     15456
+    ],
+    [
+     715,
+     16776
+    ],
+    [
+     652,
+     17765
+    ]
+   ]
+  },
+  "amazon": {
+   "name": "Amazon",
+   "category": "Item detail",
+   "height_px": 16123,
+   "cm": [
+    [
+     1076,
+     484
+    ],
+    [
+     802,
+     1729
+    ],
+    [
+     782,
+     2376
+    ],
+    [
+     988,
+     3577
+    ],
+    [
+     1086,
+     4938
+    ],
+    [
+     922,
+     5989
+    ],
+    [
+     932,
+     7220
+    ],
+    [
+     1038,
+     7811
+    ],
+    [
+     830,
+     9114
+    ],
+    [
+     954,
+     10244
+    ],
+    [
+     963,
+     11267
+    ],
+    [
+     926,
+     12367
+    ],
+    [
+     814,
+     13539
+    ],
+    [
+     931,
+     14410
+    ],
+    [
+     915,
+     15474
+    ],
+    [
+     939,
+     16702
+    ]
+   ]
+  },
+  "dell": {
+   "name": "Dell",
+   "category": "Item list",
+   "height_px": 9886,
+   "cm": [
+    [
+     971,
+     596
+    ],
+    [
+     1043,
+     1611
+    ],
+    [
+     1058,
+     2700
+    ],
+    [
+     1035,
+     3759
+    ],
+    [
+     1076,
+     4829
+    ],
+    [
+     1204,
+     5885
+    ],
+    [
+     990,
+     6948
+    ],
+    [
+     850,
+     8120
+    ],
+    [
+     749,
+     9142
+    ],
+    [
+     827,
+     10065
+    ]
+   ]
+  },
+  "steam": {
+   "name": "Steam",
+   "category": "Item list",
+   "height_px": 4138,
+   "cm": [
+    [
+     884,
+     641
+    ],
+    [
+     898,
+     1608
+    ],
+    [
+     919,
+     2811
+    ],
+    [
+     967,
+     3681
+    ]
+   ]
+  },
+  "lenovo": {
+   "name": "Lenovo",
+   "category": "Cart",
+   "height_px": 1846,
+   "cli": 59.2,
+   "cm": [
+    [
+     993,
+     531
+    ],
+    [
+     934,
+     1352
+    ]
+   ]
+  },
+  "playstation": {
+   "name": "PlayStation",
+   "category": "Cart",
+   "height_px": 1709,
+   "cm": [
+    [
+     972,
+     668
+    ],
+    [
+     632,
+     1617
+    ]
+   ]
+  }
+ }
+}
