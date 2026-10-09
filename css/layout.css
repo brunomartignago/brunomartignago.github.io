@@ -376,4 +376,36 @@ body {
   }
 }
 
+/* ========================= */
+/* PAGE TRANSITIONS          */
+/* ========================= */
 
+/* Cross-document View Transitions between the homepage and the case pages that load this file.
+   Browsers without support simply navigate. A clicked tile morphs into the case page's hero
+   media (names are set per navigation by js/transitions.js); everything else crossfades. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+::view-transition-group(case-hero) {
+  animation-duration: 520ms;
+  animation-timing-function: cubic-bezier(.22,1,.36,1);
+}
+
+/* Tile (4:3) and hero media (wide) have different shapes: crop instead of stretching */
+::view-transition-old(case-hero),
+::view-transition-new(case-hero) {
+  height: 100%;
+  object-fit: cover;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+}

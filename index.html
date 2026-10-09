@@ -27,6 +27,10 @@
 	<script src="js/motion.js" defer></script>
 	<script src="js/anatomy.js" defer></script>
 
+	<!-- Page transitions: must run before first render, so no defer; wait for the tiles to be parsed -->
+	<link rel="expect" href="#other-projects" blocking="render" />
+	<script src="js/transitions.js"></script>
+
 </head>
 
 <body>
@@ -304,7 +308,7 @@
   </div>
 </section>
 
-<section class="other-projects">
+<section class="other-projects" id="other-projects">
   <h2 class="body-heading">Other Projects</h2>
   <div class="other-projects-grid">
 
