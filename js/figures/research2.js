@@ -503,4 +503,65 @@
       onceInView(wrap, play, .5);
     }).catch(() => fail(fig));
   })();
+  /* ================= Fig 07 · Assimilation span ================= */
+  (() => {
+    const fig = document.getElementById("cf-span");
+    if (!fig) return;
+    const stage = fig.querySelector(".r2-a-stage");
+    const late = stage.querySelector(".r2-a-late");
+    const range = fig.querySelector(".r2-a-scrub input");
+    const out = fig.querySelector(".r2-a-scrub output");
+    const playBtn = fig.querySelector("[data-a-play]");
+    const phases = [...fig.querySelectorAll(".r2-a-phases > div")];
+    const { watchVisible } = window.Figures;
+    const NAMES = ["scan", "dissipation", "assimilation"];
+    const SPEED = 8; // seconds of study time per real second
+
+    // Heatmaps exist for 0–20 s and 40–60 s: hold the early map through the scan,
+    // blend across dissipation, hold the late map through assimilation
+    function set(t) {
+      range.value = Math.round(t);
+      out.textContent = `${Math.round(t)} s`;
+      late.style.opacity = t <= 15 ? 0 : t >= 35 ? 1 : (t - 15) / 20;
+      const ph = t < 15 ? 0 : t < 35 ? 1 : 2;
+      phases.forEach((p, i) => p.classList.toggle("on", i === ph));
+      range.setAttribute("aria-valuetext", `${Math.round(t)} seconds, ${NAMES[ph]}`);
+    }
+
+    let t = 0, raf = 0, playing = false, visible = false, last = 0;
+    const setPlaying = on => {
+      playing = on;
+      playBtn.setAttribute("aria-pressed", String(on));
+      playBtn.textContent = on ? "Pause ❚❚" : "Play ▶";
+    };
+    const frame = now => {
+      raf = 0;
+      if (!playing || !visible) return;
+      t = Math.min(60, t + (now - last) / 1000 * SPEED);
+      last = now;
+      set(t);
+      if (t >= 60) { setPlaying(false); return; }
+      raf = requestAnimationFrame(frame);
+    };
+    const run = () => {
+      if (raf || !playing || !visible) return;
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    };
+    const stop = () => { setPlaying(false); cancelAnimationFrame(raf); raf = 0; };
+    const play = () => {
+      if (t >= 60) t = 0;
+      setPlaying(true);
+      run();
+    };
+
+    watchVisible(fig, v => { visible = v; run(); }, .3);
+    playBtn.addEventListener("click", () => (playing ? stop() : play()));
+    range.addEventListener("input", () => { stop(); t = +range.value; set(t); });
+
+    live(fig);
+    if (reduced()) { t = 60; set(t); return; }
+    set(0);
+    onceInView(stage, play, .5);
+  })();
 })();
