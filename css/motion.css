@@ -1,0 +1,27 @@
+/* Motion: keyframes, reveal states and reduced-motion overrides.
+   "The shadow is the motion": elements start pressed (offset, no shadow) and lift into place.
+   Every pre-animation state is gated on html.js so content stays visible if JS fails,
+   and every animation lives inside prefers-reduced-motion: no-preference. */
+
+/* ---------- Keyframes ---------- */
+
+@keyframes lift {
+  from {
+    transform: translate(var(--shadow-offset), var(--shadow-offset));
+    box-shadow: 0 0 0 0 var(--lift-shadow, var(--text-primary));
+  }
+}
+
+/* ---------- Reveal: data-reveal="lift" ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal="lift"]:not(.is-in) {
+    transform: translate(var(--shadow-offset), var(--shadow-offset));
+    box-shadow: 0 0 0 0 var(--lift-shadow, var(--text-primary));
+  }
+
+  [data-reveal="lift"].is-in {
+    animation: lift 560ms var(--ease-land) backwards;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+}

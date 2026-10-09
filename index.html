@@ -11,11 +11,20 @@
 	<link rel="stylesheet" href="css/tokens.css" />
 	<link rel="stylesheet" href="css/layout.css" />
 	<link rel="stylesheet" href="css/components.css" />
+	<link rel="stylesheet" href="css/motion.css" />
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Black+Han+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Black+Han+Sans&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+
+	<!-- Flags JS before first paint so pre-animation states never flash; without JS everything renders at rest -->
+	<script>
+		document.documentElement.classList.add("js");
+		// If motion.js never loads, drop the flag so nothing stays in a pre-animation state
+		addEventListener("load", () => { if (!window.Motion) document.documentElement.classList.remove("js"); });
+	</script>
+	<script src="js/motion.js" defer></script>
 
 </head>
 
