@@ -1,0 +1,973 @@
+<title>Portfolio Motion Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:wght@400;500;600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Layout: Bruno's existing homepage (cream / white bands, 1200px column) re-built with the "shadow is the motion" system.
+   Single light theme on purpose: it mirrors the live brand, so every color is set explicitly. */
+:root {
+  color-scheme: light;
+  --bg-main: #FAF5F2;
+  --bg-accent: #FFFFFF;
+  --ink: #0A0A0A;
+  --ink-2: #333333;
+  --ink-3: #666666;
+  --line: #CFC7C0;
+  --wire: #ECE6E1;
+  --orange: #D7763D;  --orange-d: #8C4318;
+  --portrait-shadow: #CFA185;
+  --blue: #60C2FF;   --blue-d: #2157A9;
+  --cyan: #60E7FF;   --cyan-d: #348796;
+  --yellow: #FFF260; --yellow-d: #847E30;
+  --green: #60FFA2;  --green-d: #318D57;
+  --pink: #FD93E2;   --pink-d: #8B487A;
+  --peach: #FFB37A;  --peach-d: #9A4F1C;
+  --stone: #D9D1CA;  --stone-d: #5B524B;
+  --lab-bg: #FFFFFF;
+
+  --font-body: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Black Han Sans', 'Arial Black', Impact, system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --radius: 15px;
+  --shadow: 6px;
+  --dur-fast: 150ms; --dur-base: 300ms; --dur-slow: 600ms;
+  --ease-out: cubic-bezier(.22,1,.36,1);
+  --ease-land: cubic-bezier(.34,1.56,.64,1);
+}
+html { overflow-x: clip; }
+body {
+  margin: 0;
+  background: var(--bg-main);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: clip;
+}
+a { color: inherit; }
+section, header .header-inner { padding-inline: clamp(16px, 4vw, 32px); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--bg-main);
+  border-bottom: 3px solid transparent;
+  transition: border-color var(--dur-base) var(--ease-out);
+}
+.header-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding-block: 20px;
+  transition: padding var(--dur-base) var(--ease-out);
+}
+.brand { display: flex; align-items: center; gap: 14px; text-decoration: none; min-width: 0; }
+.brand img { width: 52px; height: 58px; transition: width var(--dur-base) var(--ease-out), height var(--dur-base) var(--ease-out); }
+.brand-name { font-weight: 500; white-space: nowrap; }
+.brand-loc { color: var(--ink-3); font-weight: 400; margin-left: 4px; }
+.header-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 14px; border-radius: var(--radius);
+  font-weight: 500; text-decoration: none; white-space: nowrap;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.header-btn:hover { background: var(--ink); color: #FFFFFF; }
+.header-btn svg { width: 20px; height: 20px; }
+.progress {
+  position: absolute; left: 0; right: 0; bottom: -3px; height: 3px;
+  background: var(--orange); transform-origin: 0 50%; transform: scaleX(var(--p, 0));
+}
+.site-header.compact { border-bottom-color: var(--ink); }
+.site-header.compact .header-inner { padding-block: 8px; }
+.site-header.compact .brand img { width: 34px; height: 38px; }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; padding-block: 64px 88px; }
+.hero-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center;
+}
+.hero-content { min-width: 0; }
+.hero-sub { font-size: clamp(18px, 2vw, 24px); color: var(--ink-3); line-height: 1.3; margin: 0 0 14px; }
+.hello { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 46px; height: auto; flex: none; filter: drop-shadow(3px 3px 0 var(--portrait-shadow)); }
+.show-portrait .avatar { display: none; }
+.hero-title {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(32px, 4.6vw, 54px); line-height: 1.32; letter-spacing: .005em;
+  margin: 0 0 20px;
+}
+.line { display: block; overflow: hidden; padding: .16em .4em .24em .2em; margin: -.16em -.4em -.24em -.2em; }
+.line > span { display: inline-block; }
+/* Highlight boxes: real padding inside so the letters breathe */
+.hl { position: relative; display: inline-block; padding: .14em .3em .08em; margin: .07em .12em .07em 0; line-height: 1; z-index: 0; }
+.hl::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--hl); border: 3px solid var(--ink); border-radius: 14px;
+  box-shadow: 5px 5px 0 0 var(--hl-d);
+}
+.hl-y { --hl: var(--yellow); --hl-d: #A9A03E; }
+.hl-c { --hl: var(--cyan); --hl-d: var(--cyan-d); }
+.hero-actions { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 16px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 14px;
+  padding: 14px 18px; font: 500 16px/1 var(--font-body); color: var(--ink); text-decoration: none;
+  border: 3px solid var(--ink); border-radius: var(--radius);
+  background: var(--btn-bg, transparent);
+  box-shadow: var(--shadow) var(--shadow) 0 0 var(--btn-sh, var(--ink));
+  transition: transform var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  cursor: pointer;
+}
+.btn:hover { transform: translate(2px,2px); box-shadow: 4px 4px 0 0 var(--btn-sh, var(--ink)); }
+.btn:active { transform: translate(6px,6px); box-shadow: 0 0 0 0 var(--btn-sh, var(--ink)); }
+.btn:focus-visible, .header-btn:focus-visible, .card a:focus-visible, .lab button:focus-visible, .seg input:focus-visible + span { outline: 3px solid var(--blue-d); outline-offset: 3px; }
+.btn svg { width: 22px; height: 22px; flex: none; }
+.btn-blue { --btn-bg: var(--blue); --btn-sh: var(--blue-d); }
+.btn-cyan { --btn-bg: var(--cyan); --btn-sh: var(--cyan-d); }
+.btn-yellow { --btn-bg: var(--yellow); --btn-sh: var(--yellow-d); }
+.btn-cream { --btn-bg: var(--bg-main); --btn-sh: var(--ink); }
+
+/* ---------- Hero visual stage ---------- */
+.stage { perspective: 1000px; display: flex; justify-content: flex-end; min-width: 0; }
+.tilt { width: 100%; max-width: 480px; transform-style: preserve-3d; will-change: transform; --sx: 8px; --sy: 8px; }
+.portrait { display: block; width: 100%; max-width: 440px; margin-left: auto; height: auto; filter: drop-shadow(var(--sx) var(--sy) 0 var(--portrait-shadow)); }
+
+.viz {
+  background: #FFFFFF; border: 3px solid var(--ink); border-radius: var(--radius);
+  box-shadow: var(--sx) var(--sy) 0 0 var(--ink);
+  overflow: hidden;
+}
+.viz-bar {
+  display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+  border-bottom: 3px solid var(--ink); background: var(--bg-main);
+  font: 500 12px/1 var(--font-mono);
+}
+.viz-dots { display: flex; gap: 5px; }
+.viz-dots i { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--ink); background: var(--d); }
+.viz-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.viz-chip {
+  padding: 4px 8px; border: 2px solid var(--ink); border-radius: 8px; background: var(--chip, var(--wire));
+  box-shadow: 2px 2px 0 0 var(--ink); text-transform: uppercase; letter-spacing: .05em; font-size: 10px; white-space: nowrap;
+  transition: background var(--dur-base);
+}
+.viz-body { position: relative; aspect-ratio: 5 / 4; overflow: hidden; background: #FFFFFF; }
+.viz-foot {
+  display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px;
+  border-top: 3px solid var(--ink); font: 500 11px/1.3 var(--font-mono); color: var(--ink-2); background: var(--bg-main);
+}
+.viz-foot span:last-child { text-align: right; }
+
+/* Shared wireframe pieces */
+.w { position: absolute; border-radius: 6px; }
+
+/* Variant A — page anatomy */
+.ae {
+  position: absolute; border-radius: 6px; background: var(--wire); border: 2px solid var(--line);
+  transition: background 450ms var(--ease-out), border-color 450ms, box-shadow 450ms var(--ease-land), transform 450ms var(--ease-land), opacity 300ms;
+}
+.ae.enter { opacity: 0; transform: translate(4px, 4px); }
+.ae .box { position: absolute; inset: -5px; border: 2px dashed var(--cd); border-radius: 9px; opacity: 0; transform: scale(1.08); transition: opacity 220ms, transform 300ms var(--ease-land); }
+.ae .lbl {
+  position: absolute; left: 4px; top: 4px; padding: 2px 5px; border-radius: 4px;
+  background: var(--cd); color: #FFFFFF; font: 500 9px/1.2 var(--font-mono); letter-spacing: .06em;
+  opacity: 0; transform: translateY(-3px); transition: opacity 220ms, transform 300ms var(--ease-out); white-space: nowrap;
+}
+.ae.det .box, .ae.det .lbl { opacity: 1; transform: none; }
+.ae.cls { background: var(--c); border-color: var(--ink); box-shadow: 3px 3px 0 0 var(--cd); transform: translate(-1px,-1px); }
+.ae.cls .box { opacity: 0; }
+.ae.out { opacity: 0; transform: translate(4px, 4px); box-shadow: none; }
+.scan { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--blue-d); opacity: 0; pointer-events: none; }
+.scan::before { content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 46px; background: linear-gradient(to bottom, rgba(96,194,255,0), rgba(96,194,255,.22)); }
+.scan.on { opacity: 1; }
+
+/* Variant B — attention map */
+.heat { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.gaze-path { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.fix {
+  position: absolute; display: grid; place-items: center; border-radius: 50%;
+  border: 2px solid var(--ink); background: rgba(255,255,255,.88);
+  font: 500 10px/1 var(--font-mono); color: var(--ink);
+  transform: translate(-50%, -50%) scale(1); transition: transform 380ms var(--ease-land), opacity 300ms;
+  box-shadow: 2px 2px 0 0 var(--ink);
+}
+.fix.enter { transform: translate(-50%, -50%) scale(0); }
+.fix.out { opacity: 0; }
+.live-hint { position: absolute; right: 8px; bottom: 8px; font: 500 10px/1 var(--font-mono); background: var(--ink); color: var(--bg-main); padding: 5px 7px; border-radius: 6px; pointer-events: none; transition: opacity 300ms; }
+
+/* Variant C — prompt to interface */
+.prompt {
+  position: absolute; left: 4%; right: 4%; top: 4%; height: 12%;
+  display: flex; align-items: center; gap: 8px; padding: 0 12px;
+  border: 2px solid var(--ink); border-radius: 10px; background: var(--bg-main);
+  font: 500 12px/1.2 var(--font-mono); box-shadow: 3px 3px 0 0 var(--ink); overflow: hidden;
+}
+.prompt b { color: var(--orange); font-weight: 500; }
+.prompt .typed { white-space: nowrap; overflow: hidden; text-overflow: clip; min-width: 0; }
+.caret { width: 7px; height: 14px; background: var(--ink); flex: none; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.pc {
+  position: absolute; border: 2px solid var(--ink); border-radius: 6px; background: var(--c, #FFFFFF);
+  box-shadow: 3px 3px 0 0 var(--cd, var(--ink));
+  transition: transform 420ms var(--ease-land), box-shadow 420ms var(--ease-land), opacity 260ms;
+}
+.pl { position: absolute; background: var(--ink); border-radius: 3px; transition: transform 420ms var(--ease-out), opacity 260ms; transform-origin: 0 50%; }
+.pc.enter { opacity: 0; transform: translate(4px,4px); box-shadow: 0 0 0 0 var(--cd, var(--ink)); }
+.pl.enter { opacity: 0; transform: scaleX(0); }
+.bar { transform-origin: 50% 100%; }
+.bar.enter { transform: scaleY(0); opacity: 1; }
+.pc.out, .pl.out { opacity: 0; transform: translate(3px, 3px); }
+
+/* ---------- Sections ---------- */
+.services { background: var(--bg-accent); padding-block: 64px 80px; text-align: center; }
+.sec-title { font-size: 24px; font-weight: 600; margin: 0 0 48px; text-wrap: balance; }
+.grid3 { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; text-align: left; }
+.card {
+  display: flex; flex-direction: column; gap: 12px; padding: 24px; min-width: 0;
+  border: 3px solid var(--ink); border-radius: var(--radius);
+  background: var(--card-bg); box-shadow: var(--shadow) var(--shadow) 0 0 var(--card-sh);
+  transition: transform var(--dur-base) var(--ease-land), box-shadow var(--dur-base) var(--ease-land);
+}
+.card:hover { transform: translate(-2px,-2px); box-shadow: 9px 9px 0 0 var(--card-sh); }
+.card-label { font-size: 14px; color: var(--ink-3); }
+.card h3 { font-size: 20px; font-weight: 600; margin: 0; }
+.card p { margin: 0; color: var(--ink-2); }
+.card a { margin-top: auto; padding-top: 8px; font-size: 20px; font-weight: 600; text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.c1 { --card-bg: #FAFAF2; --card-sh: #C4CF85; }
+.c2 { --card-bg: #F2F6FA; --card-sh: #85A3CF; }
+.c3 { --card-bg: #FAF2FA; --card-sh: #CF85AE; }
+
+.featured { padding-block: 72px; }
+.project { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.project-content { min-width: 0; }
+.tags { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+.tag {
+  display: inline-flex; padding: 6px 12px; font-size: 14px; font-weight: 500;
+  border: 2px solid var(--ink); border-radius: var(--radius);
+  background: var(--tag-bg); box-shadow: 4px 4px 0 0 var(--tag-sh);
+  transform: rotate(var(--rot, 0deg));
+}
+.t-yellow { --tag-bg: var(--yellow); --tag-sh: #A9A03E; }
+.t-green { --tag-bg: var(--green); --tag-sh: var(--green-d); }
+.project h3 { font-size: 22px; font-weight: 600; margin: 0 0 12px; text-wrap: balance; }
+.project p { color: var(--ink-2); margin: 0 0 20px; max-width: 56ch; }
+.project .cta { font-weight: 600; text-decoration: none; }
+.project .cta:hover { text-decoration: underline; }
+.diagram { width: 100%; max-width: 560px; height: auto; display: block; justify-self: end; cursor: pointer; }
+.d-stroke { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.d-block { transform-box: fill-box; transform-origin: 50% 0; }
+
+/* ---------- Footer ---------- */
+.footer { position: relative; background: var(--orange); padding-block: 80px 88px; text-align: center; }
+.footer-kicker { color: #FFFFFF; font-size: clamp(18px, 2vw, 22px); font-weight: 500; margin: 0 0 6px; }
+.talk {
+  font-family: var(--font-display); font-weight: 400; line-height: 1;
+  font-size: clamp(56px, 10.5vw, 136px); letter-spacing: .01em;
+  color: var(--bg-main); margin: 0 0 14px;
+  display: flex; justify-content: center; flex-wrap: wrap; column-gap: .06em;
+}
+.talk .wd { display: inline-flex; white-space: nowrap; }
+.talk .wd + .wd { margin-left: .22em; }
+.talk .ch {
+  display: inline-block; text-shadow: .045em .045em 0 var(--ink);
+  transition: transform 260ms var(--ease-land), text-shadow 260ms var(--ease-land);
+}
+.talk .ch:hover { transform: translate(-.015em, -.015em); text-shadow: .065em .065em 0 var(--ink); }
+.footer-sub { color: #FFFFFF; font-size: clamp(18px, 2vw, 22px); margin: 0 0 36px; }
+.footer-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; }
+.mag { display: inline-block; transition: transform 400ms var(--ease-land); }
+
+/* ---------- Annotations (prototype only) ---------- */
+.note {
+  position: absolute; z-index: 5; top: 14px; left: clamp(16px, 4vw, 32px);
+  font: 500 11px/1 var(--font-mono); letter-spacing: .04em; text-transform: uppercase;
+  background: var(--ink); color: var(--bg-main); padding: 6px 8px; border-radius: 6px;
+  pointer-events: none;
+}
+.note.on-dark { background: var(--bg-main); color: var(--ink); }
+.rel { position: relative; }
+.no-notes .note { display: none; }
+
+/* ---------- Motion lab panel (prototype only) ---------- */
+.lab {
+  position: fixed; z-index: 50; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: min(300px, calc(100vw - 32px));
+  background: var(--lab-bg); color: var(--ink);
+  border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 6px 6px 0 0 var(--ink);
+  font-size: 14px;
+}
+.lab summary { list-style: none; cursor: pointer; padding: 10px 14px; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; display: flex; justify-content: space-between; align-items: center; }
+.lab summary::-webkit-details-marker { display: none; }
+.lab summary::after { content: "+"; font-size: 16px; }
+.lab[open] summary::after { content: "–"; }
+.lab-body { padding: 12px 14px 14px; display: grid; gap: 10px; border-top: 2px solid var(--ink); }
+.lab-h { font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 0; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; border: 0; padding: 0; margin: 0; }
+.seg label { cursor: pointer; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span {
+  display: block; text-align: center; padding: 8px 6px; font-size: 13px; font-weight: 500;
+  border: 2px solid var(--ink); border-radius: 10px; background: #FFFFFF; box-shadow: 3px 3px 0 0 var(--ink);
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast), background var(--dur-fast);
+}
+.seg input:checked + span { background: var(--cyan); transform: translate(3px,3px); box-shadow: 0 0 0 0 var(--ink); }
+.lab-row { display: flex; gap: 8px; }
+.lab button {
+  flex: 1; font: 500 13px/1 var(--font-body); color: var(--ink);
+  padding: 10px 8px; border: 2px solid var(--ink); border-radius: 10px; background: var(--yellow);
+  box-shadow: 3px 3px 0 0 var(--ink); cursor: pointer; transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+}
+.lab button + button { background: var(--green); }
+.lab button:active { transform: translate(3px,3px); box-shadow: 0 0 0 0 var(--ink); }
+.tog { display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; }
+.tog input { width: 18px; height: 18px; accent-color: var(--ink); }
+.lab hr { border: 0; border-top: 2px dashed var(--line); margin: 2px 0; width: 100%; }
+
+/* ================= MOTION ================= */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.rm) .intro .line > span { animation: rise 700ms var(--ease-out) backwards; animation-delay: calc(120ms + var(--i) * 120ms); }
+  html:not(.rm) .intro .hl::before { animation: wipe 520ms var(--ease-out) backwards; animation-delay: calc(560ms + var(--i) * 140ms); }
+  html:not(.rm) .intro .fade { animation: fadeUp 600ms var(--ease-out) backwards; animation-delay: var(--d, 0ms); }
+  html:not(.rm) .intro .stamp { animation: stamp 650ms var(--ease-land) backwards; animation-delay: 200ms; }
+
+  html.js:not(.rm) .lift:not(.in) { transform: translate(var(--shadow), var(--shadow)); box-shadow: 0 0 0 0 var(--card-sh); }
+  html:not(.rm) .lift.in { animation: lift 560ms var(--ease-land) backwards; animation-delay: calc(var(--i, 0) * 90ms); }
+
+  html:not(.rm) .slide.in { animation: slideIn 800ms var(--ease-out) backwards; }
+  html:not(.rm) .in .tag { animation: slap 520ms var(--ease-land) backwards; animation-delay: calc(350ms + var(--i) * 120ms); }
+
+  html:not(.rm) .diagram.draw .d-stroke { animation: draw 900ms var(--ease-out) backwards; animation-delay: var(--d, 0ms); }
+  html:not(.rm) .diagram.draw .d-fill { animation: fillIn 400ms ease backwards; animation-delay: var(--d, 0ms); }
+  html:not(.rm) .diagram.draw .d-block { animation: grow 420ms var(--ease-land) backwards; animation-delay: var(--d, 0ms); }
+
+  html:not(.rm) .talk.in .ch { animation: letterLift 560ms var(--ease-land) backwards; animation-delay: calc(var(--i) * 55ms); }
+}
+@keyframes rise { from { transform: translateY(115%); } }
+@keyframes wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } }
+@keyframes stamp { from { transform: scale(1.06); opacity: 0; } 60% { opacity: 1; } }
+@keyframes lift { from { transform: translate(var(--shadow), var(--shadow)); box-shadow: 0 0 0 0 var(--card-sh); } }
+@keyframes slideIn { from { opacity: 0; transform: translateX(60px) rotate(3deg); } }
+@keyframes slap { from { opacity: 0; transform: scale(1.35) rotate(0deg); box-shadow: 0 0 0 0 var(--tag-sh); } }
+@keyframes draw { from { stroke-dashoffset: 1; } }
+@keyframes fillIn { from { opacity: 0; } }
+@keyframes grow { from { transform: scaleY(0); } }
+@keyframes letterLift { from { transform: translate(.045em, .045em); text-shadow: 0 0 0 var(--ink); } }
+
+.rm .caret { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .caret { animation: none; }
+  .card, .btn, .mag, .ae, .pc, .pl, .fix, .talk .ch { transition: none; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .stage { justify-content: center; }
+  .tilt { max-width: 460px; }
+  .project { grid-template-columns: 1fr; gap: 36px; }
+  .diagram { justify-self: center; }
+  .brand-loc { display: none; }
+}
+@media (max-width: 520px) {
+  .header-btn span { display: none; }
+  .brand-name { font-size: 15px; }
+  .hero-actions .btn { flex: 1 1 100%; }
+  .viz-title { font-size: 11px; }
+  .ae .lbl { font-size: 8px; padding: 1px 4px; }
+  .prompt { font-size: 10.5px; }
+}
+</style>
+
+<header class="site-header" id="header">
+  <div class="header-inner">
+    <a class="brand" href="https://brunomartignago.github.io/" target="_blank" rel="noopener">
+      <img src="logo.png" alt="Bruno Martignago logo" width="69" height="77">
+      <span class="brand-name">Bruno Martignago<span class="brand-loc">- São Paulo, Brazil</span></span>
+    </a>
+    <a class="header-btn" href="https://brunomartignago.github.io/assets/Bruno-Martignago-Resume.pdf" target="_blank" rel="noopener">
+      <span>Download my resume</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></svg>
+    </a>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<section class="hero" id="hero">
+  <span class="note" id="heroNote">Hero option A · page anatomy</span>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="hero-sub hello fade" style="--d:0ms"><img class="avatar" src="portrait.png" alt="" width="516" height="523">Hey! I'm Bruno. Since 2019 I build</p>
+      <h1 class="hero-title">
+        <span class="line"><span style="--i:0">INNOVATION THROUGH</span></span>
+        <span class="line"><span style="--i:1"><span class="hl hl-y" style="--i:0">DESIGN</span> AND <span class="hl hl-c" style="--i:1">RESEARCH.</span></span></span>
+      </h1>
+      <p class="hero-sub fade" style="--d:700ms">Here you can see some of my favourite pieces from it.</p>
+      <div class="hero-actions fade" style="--d:850ms">
+        <a class="btn btn-blue" href="mailto:bruno_martignago@hotmail.com">Email me
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        </a>
+        <a class="btn btn-cyan" href="https://www.linkedin.com/in/bruno-martignago/" target="_blank" rel="noopener">Let's connect
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="4" fill="currentColor"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 10v7" stroke="#60E7FF" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="tilt" id="tilt">
+        <div class="stamp" id="visual"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services rel">
+  <span class="note">Lift reveal + hover lift</span>
+  <h2 class="sec-title">How I can help you</h2>
+  <div class="grid3">
+    <article class="card c1 lift" style="--i:0">
+      <span class="card-label">Product Design</span>
+      <h3>Web &amp; Mobile Product Design</h3>
+      <p>I design user-centered digital products for web and mobile, from early ideas to high-fidelity, build-ready interfaces.</p>
+      <p>I work in Figma to create flows, prototypes, and polished UI, collaborating closely with developers to ensure designs scale well and translate smoothly into code.</p>
+      <a href="mailto:bruno_martignago@hotmail.com">Get a quote →</a>
+    </article>
+    <article class="card c2 lift" style="--i:1">
+      <span class="card-label">Research</span>
+      <h3>Research &amp; Concept Design</h3>
+      <p>I help teams clarify complex problems through research, systems thinking, and concept exploration.</p>
+      <p>Using discovery workshops, user research, and journey mapping, I turn ambiguity into clear product directions aligned with user needs and business goals.</p>
+      <a href="https://www.linkedin.com/in/bruno-martignago/" target="_blank" rel="noopener">Let’s talk →</a>
+    </article>
+    <article class="card c3 lift" style="--i:2">
+      <span class="card-label">Artificial Intelligence</span>
+      <h3>AI Literacy &amp; Corporate Training</h3>
+      <p>Hands-on workshops that take design and product teams from "what is AI?" to building with it.</p>
+      <p>Covering LLMs, prompt engineering, RAGs, AI agents, and AI-native design tools like Figma Make — delivered as single lectures or full workshop series, in English or Portuguese.</p>
+      <a href="https://brunomartignago.github.io/pages/ai-mentorship.html" target="_blank" rel="noopener">See the program →</a>
+    </article>
+  </div>
+</section>
+
+<section class="featured rel">
+  <span class="note">Tag slap + animated diagram (hover to replay)</span>
+  <h2 class="sec-title" style="text-align:center">Featured Projects</h2>
+  <div class="project" id="project">
+    <div class="project-content">
+      <div class="tags">
+        <span class="tag t-yellow" style="--i:0">Research</span>
+        <span class="tag t-green" style="--i:1">User Interface</span>
+      </div>
+      <h3>Visual patterns in web page generation</h3>
+      <p>I’ve built a method for element classification and web page summarization that allows designers to do faster benchmark research and centralize web taxonomy into an easy-to-follow map structure.</p>
+      <a class="cta" href="https://brunomartignago.github.io/pages/research1.html" target="_blank" rel="noopener">See full research →</a>
+    </div>
+
+    <svg class="diagram slide" id="diagram" viewBox="0 0 796 600" role="img" aria-label="Diagram: a web page wireframe is classified into two color-coded layout templates">
+      <rect width="796" height="600" rx="16" fill="#EFDFC9"/>
+      <rect class="d-fill" x="100" y="179" width="231" height="241" fill="#666666" style="--d:500ms"/>
+      <g fill="none" stroke="#A8A8A8" stroke-width="1.5">
+        <rect class="d-stroke" pathLength="1" x="100" y="179" width="231" height="241" style="--d:0ms"/>
+        <path class="d-stroke" pathLength="1" d="M100 197H331M100 209H331M100 302H331M100 397H331" style="--d:150ms"/>
+        <path class="d-stroke" pathLength="1" d="M216 209V302M274 209V302" style="--d:300ms"/>
+        <path class="d-stroke" pathLength="1" d="M274 218H331M274 228H331M274 238H331M274 248H331M274 258H331M274 268H331M274 278H331M274 288H331" stroke-width="1" style="--d:420ms" opacity=".6"/>
+      </g>
+      <g fill="none" stroke="#5A5A5A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path class="d-stroke" pathLength="1" d="M348 295 446 197" style="--d:850ms"/>
+        <path class="d-stroke" pathLength="1" d="M348 295 446 392" style="--d:850ms"/>
+        <path class="d-stroke" pathLength="1" d="M432 197H446V211" style="--d:1150ms"/>
+        <path class="d-stroke" pathLength="1" d="M432 392H446V378" style="--d:1150ms"/>
+      </g>
+      <g>
+        <rect class="d-block" x="464" y="41" width="231" height="17" fill="#9A9A9A" style="--d:1250ms"/>
+        <rect class="d-block" x="464" y="58" width="231" height="12" fill="#5C2A7A" style="--d:1330ms"/>
+        <rect class="d-block" x="464" y="70" width="174" height="94" fill="#BB6720" style="--d:1410ms"/>
+        <rect class="d-block" x="638" y="70" width="57" height="94" fill="#1C3397" style="--d:1490ms"/>
+        <rect class="d-block" x="464" y="164" width="231" height="94" fill="#BA2121" style="--d:1570ms"/>
+        <rect class="d-block" x="464" y="258" width="231" height="23" fill="#1E0A28" style="--d:1650ms"/>
+      </g>
+      <g>
+        <rect class="d-block" x="464" y="319" width="231" height="17" fill="#9A9A9A" style="--d:1350ms"/>
+        <rect class="d-block" x="464" y="336" width="231" height="12" fill="#5C2A7A" style="--d:1430ms"/>
+        <rect class="d-block" x="464" y="348" width="116" height="94" fill="#BB6720" style="--d:1510ms"/>
+        <rect class="d-block" x="580" y="348" width="115" height="94" fill="#BBA027" style="--d:1590ms"/>
+        <rect class="d-block" x="464" y="442" width="231" height="94" fill="#BA2121" style="--d:1670ms"/>
+        <rect class="d-block" x="464" y="536" width="231" height="23" fill="#1E0A28" style="--d:1750ms"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section class="footer" id="footer">
+  <span class="note on-dark">Footer · letter lift + magnetic buttons</span>
+  <p class="footer-kicker">Thank you for visiting!</p>
+  <h2 class="talk" id="talk" aria-label="Let's talk"></h2>
+  <p class="footer-sub">Reach out and let’s chat.</p>
+  <div class="footer-actions">
+    <span class="mag"><a class="btn btn-yellow" href="mailto:bruno_martignago@hotmail.com">Email me
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+    </a></span>
+    <span class="mag"><a class="btn btn-cream" href="https://www.linkedin.com/in/bruno-martignago/" target="_blank" rel="noopener">Let's connect →</a></span>
+  </div>
+</section>
+
+<details class="lab" id="lab" open>
+  <summary>Motion lab</summary>
+  <div class="lab-body">
+    <p class="lab-h">Hero visual</p>
+    <fieldset class="seg" id="variantSeg">
+      <legend class="lab-h" hidden>Hero visual</legend>
+      <label><input type="radio" name="variant" id="vA" value="anatomy" checked><span>A · Anatomy</span></label>
+      <label><input type="radio" name="variant" id="vB" value="gaze"><span>B · Gaze map</span></label>
+      <label><input type="radio" name="variant" id="vC" value="prompt"><span>C · Prompt</span></label>
+      <label><input type="radio" name="variant" id="vD" value="portrait"><span>D · Portrait</span></label>
+    </fieldset>
+    <hr>
+    <div class="lab-row">
+      <button type="button" id="replayIntro">Replay intro</button>
+      <button type="button" id="replayAll">Replay scroll</button>
+    </div>
+    <label class="tog" for="optTilt">Visual tilt <input type="checkbox" id="optTilt" checked></label>
+    <label class="tog" for="optNotes">Feature labels <input type="checkbox" id="optNotes" checked></label>
+    <label class="tog" for="optRm">Simulate reduced motion <input type="checkbox" id="optRm"></label>
+  </div>
+</details>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  root.classList.add('js');
+  const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const fine = matchMedia('(hover: hover) and (pointer: fine)');
+  const reduced = () => mqReduce.matches || root.classList.contains('rm');
+  const $ = id => document.getElementById(id);
+  const h = (tag, cls, style, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (style) e.setAttribute('style', style); if (html != null) e.innerHTML = html; return e; };
+  const pct = (x, y, w, hh) => `left:${x}%;top:${y}%;width:${w}%;height:${hh}%;`;
+  const opts = { tilt: true };
+
+  /* ================= Hero visuals ================= */
+  const CAT = {
+    nav:    { c: 'var(--blue)',   cd: 'var(--blue-d)',   l: 'NAV' },
+    hero:   { c: 'var(--yellow)', cd: 'var(--yellow-d)', l: 'HERO' },
+    media:  { c: 'var(--pink)',   cd: 'var(--pink-d)',   l: 'MEDIA' },
+    card:   { c: 'var(--green)',  cd: 'var(--green-d)',  l: 'CARD' },
+    text:   { c: 'var(--cyan)',   cd: 'var(--cyan-d)',   l: 'TEXT' },
+    cta:    { c: 'var(--peach)',  cd: 'var(--peach-d)',  l: 'CTA' },
+    footer: { c: 'var(--stone)',  cd: 'var(--stone-d)',  l: 'FOOTER' },
+  };
+
+  function shell(title, chip) {
+    const v = h('div', 'viz');
+    v.innerHTML = `<div class="viz-bar"><span class="viz-dots"><i style="--d:#FD93E2"></i><i style="--d:#FFF260"></i><i style="--d:#60FFA2"></i></span><span class="viz-title">${title}</span><span class="viz-chip">${chip}</span></div><div class="viz-body"></div><div class="viz-foot"><span></span><span></span></div>`;
+    return { el: v, body: v.querySelector('.viz-body'), chip: v.querySelector('.viz-chip'), foot: v.querySelectorAll('.viz-foot span') };
+  }
+  function setChip(s, text, color) { s.chip.textContent = text; s.chip.style.setProperty('--chip', color || 'var(--wire)'); }
+
+  // cancellable timeline helpers
+  function makeRun() {
+    const run = { stop: false, timers: [], rafs: [] };
+    run.sleep = ms => new Promise(r => { run.timers.push(setTimeout(r, ms)); });
+    run.cancel = () => { run.stop = true; run.timers.forEach(clearTimeout); run.rafs.forEach(cancelAnimationFrame); };
+    return run;
+  }
+
+  /* ---- A · Page anatomy: the classification method, live ---- */
+  const LAYOUTS = [
+    { name: 'landing page', els: [
+      ['nav', 4, 4, 92, 8], ['hero', 4, 16, 55, 31], ['media', 62, 16, 34, 31],
+      ['card', 4, 51, 29, 22], ['card', 35.5, 51, 29, 22], ['card', 67, 51, 29, 22],
+      ['text', 4, 77, 58, 8], ['cta', 66, 77, 30, 8], ['footer', 4, 89, 92, 7] ] },
+    { name: 'product page', els: [
+      ['nav', 4, 4, 92, 8], ['media', 4, 16, 46, 50], ['text', 54, 16, 42, 10], ['cta', 54, 30, 22, 8],
+      ['text', 54, 42, 42, 24], ['card', 4, 70, 21.5, 15], ['card', 27.5, 70, 21.5, 15], ['card', 51, 70, 21.5, 15], ['card', 74.5, 70, 21.5, 15],
+      ['footer', 4, 89, 92, 7] ] },
+    { name: 'dashboard', els: [
+      ['nav', 4, 4, 19, 92], ['hero', 26, 4, 70, 9], ['card', 26, 17, 22, 17], ['card', 50, 17, 22, 17], ['card', 74, 17, 22, 17],
+      ['media', 26, 38, 70, 31], ['text', 26, 73, 46, 23], ['cta', 75, 73, 21, 9], ['footer', 75, 86, 21, 10] ] },
+  ];
+
+  function anatomy(container) {
+    const s = shell('page-anatomy · classifier', 'idle');
+    container.append(s.el);
+    const scan = h('div', 'scan'); s.body.append(scan);
+    const run = makeRun();
+
+    function build(layout, entering) {
+      return layout.els.map(([type, x, y, w, hh], i) => {
+        const c = CAT[type];
+        const e = h('div', 'ae' + (entering ? ' enter' : ''), pct(x, y, w, hh) + `--c:${c.c};--cd:${c.cd};`);
+        e.append(h('span', 'box'), h('span', 'lbl', null, c.l));
+        e.dataset.mid = y + hh / 2;
+        s.body.insertBefore(e, scan);
+        return e;
+      });
+    }
+    function summary(layout) {
+      const classes = new Set(layout.els.map(e => e[0])).size;
+      return `${layout.els.length} elements · ${classes} classes`;
+    }
+
+    if (reduced()) {
+      const L = LAYOUTS[0]; build(L, false).forEach(e => e.classList.add('cls', 'det'));
+      setChip(s, 'classified', 'var(--green)'); s.foot[0].textContent = 'sample 01 · ' + L.name; s.foot[1].textContent = summary(L);
+      return { el: s.el, cancel() {} };
+    }
+
+    (async () => {
+      let n = 0;
+      while (!run.stop) {
+        const L = LAYOUTS[n % LAYOUTS.length];
+        s.foot[0].textContent = `sample ${String(n % LAYOUTS.length + 1).padStart(2, '0')} · ${L.name}`;
+        s.foot[1].textContent = '— elements';
+        setChip(s, 'loading');
+        const els = build(L, true);
+        await run.sleep(40);
+        els.forEach((e, i) => run.timers.push(setTimeout(() => e.classList.remove('enter'), i * 60)));
+        await run.sleep(900); if (run.stop) return;
+
+        // scan sweep
+        setChip(s, 'scanning', 'var(--cyan)');
+        scan.classList.add('on');
+        const dur = 1700, t0 = performance.now();
+        await new Promise(res => {
+          const f = now => {
+            if (run.stop) return res();
+            const p = Math.min(1, (now - t0) / dur), y = p * 100;
+            scan.style.top = y + '%';
+            els.forEach(e => { if (+e.dataset.mid <= y) e.classList.add('det'); });
+            s.foot[1].textContent = `${els.filter(e => e.classList.contains('det')).length} elements`;
+            if (p < 1) run.rafs.push(requestAnimationFrame(f)); else res();
+          };
+          run.rafs.push(requestAnimationFrame(f));
+        });
+        scan.classList.remove('on'); if (run.stop) return;
+
+        // classify
+        await run.sleep(250);
+        setChip(s, 'classified', 'var(--green)');
+        els.forEach((e, i) => run.timers.push(setTimeout(() => e.classList.add('cls'), i * 70)));
+        s.foot[1].textContent = summary(L);
+        await run.sleep(2600); if (run.stop) return;
+
+        els.forEach((e, i) => run.timers.push(setTimeout(() => e.classList.add('out'), i * 35)));
+        await run.sleep(650);
+        els.forEach(e => e.remove());
+        n++;
+      }
+    })();
+    return { el: s.el, cancel: run.cancel };
+  }
+
+  /* ---- B · Attention map: eye-tracking style scanpath + heatmap ---- */
+  const PATHS = [
+    { name: 'F-pattern', pts: [[12,21,300],[34,21,220],[56,21,180],[12,31,260],[30,31,200],[12,47,320],[24,54,180],[12,62,240],[22,70,200],[76,30,360],[72,82,260],[42,84,220]] },
+    { name: 'Z-pattern', pts: [[10,9,220],[48,9,180],[88,9,260],[66,30,240],[40,46,300],[18,62,260],[14,82,240],[46,84,200],[80,82,320],[78,62,220]] },
+  ];
+  const STOPS = [[0,[33,87,169,0]],[.18,[96,194,255,.45]],[.42,[96,255,162,.6]],[.68,[255,242,96,.72]],[1,[226,74,46,.82]]];
+  const LUT = (() => { const t = new Uint8ClampedArray(256 * 4); for (let i = 0; i < 256; i++) { const v = i / 255; let a = STOPS[0], b = STOPS[STOPS.length - 1]; for (let k = 0; k < STOPS.length - 1; k++) if (v >= STOPS[k][0] && v <= STOPS[k + 1][0]) { a = STOPS[k]; b = STOPS[k + 1]; break; } const f = (v - a[0]) / ((b[0] - a[0]) || 1); for (let c = 0; c < 4; c++) { const val = a[1][c] + (b[1][c] - a[1][c]) * f; t[i * 4 + c] = c === 3 ? val * 255 : val; } } return t; })();
+
+  function gaze(container) {
+    const s = shell('attention-map · session', 'replay');
+    container.append(s.el);
+    const B = s.body;
+    // static wireframe
+    [['w', 4, 4, 92, 7, 'var(--wire)'], ['w', 8, 18, 50, 6, '#C9C1BA'], ['w', 8, 28, 38, 6, '#C9C1BA'], ['w', 64, 18, 32, 28, 'var(--wire)'],
+     ['w', 8, 44, 48, 3, '#DDD6D0'], ['w', 8, 50, 44, 3, '#DDD6D0'], ['w', 8, 56, 46, 3, '#DDD6D0'], ['w', 8, 62, 30, 3, '#DDD6D0'],
+     ['w', 8, 69, 18, 7, '#BFE6FF'], ['w', 4, 80, 29, 14, 'var(--wire)'], ['w', 35.5, 80, 29, 14, 'var(--wire)'], ['w', 67, 80, 29, 14, 'var(--wire)']]
+      .forEach(([c, x, y, w, hh, bg]) => B.append(h('div', c, pct(x, y, w, hh) + `background:${bg};`)));
+    const GW = 100, GH = 80;
+    const cv = h('canvas', 'heat'); cv.width = GW; cv.height = GH; B.append(cv);
+    const ctx = cv.getContext('2d'); const img = ctx.createImageData(GW, GH);
+    const field = new Float32Array(GW * GH);
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'gaze-path'); svg.setAttribute('viewBox', '0 0 100 100'); svg.setAttribute('preserveAspectRatio', 'none');
+    const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    poly.setAttribute('fill', 'none'); poly.setAttribute('stroke', '#0A0A0A'); poly.setAttribute('stroke-width', '1.5'); poly.setAttribute('stroke-dasharray', '4 3'); poly.setAttribute('vector-effect', 'non-scaling-stroke');
+    svg.append(poly); B.append(svg);
+    const hint = h('div', 'live-hint', null, 'hover to become the participant'); B.append(hint);
+    const run = makeRun();
+    let fixes = [], pts = [], live = false, dirty = true, pending = [];
+
+    function addHeat(xp, yp, amt) {
+      const cx = xp / 100 * GW, cy = yp / 100 * GH, r = 9;
+      for (let y = Math.max(0, Math.floor(cy - r)); y < Math.min(GH, cy + r); y++)
+        for (let x = Math.max(0, Math.floor(cx - r)); x < Math.min(GW, cx + r); x++) {
+          const d2 = ((x - cx) ** 2 + (y - cy) ** 2) / (r * r);
+          if (d2 < 1) field[y * GW + x] = Math.min(1.4, field[y * GW + x] + amt * Math.exp(-d2 * 3.2));
+        }
+      dirty = true;
+    }
+    function paint() {
+      for (let i = 0; i < field.length; i++) { const v = Math.min(255, (field[i] / 1.1 * 255) | 0); img.data.set(LUT.subarray(v * 4, v * 4 + 4), i * 4); }
+      ctx.putImageData(img, 0, 0); dirty = false;
+    }
+    function addFix(x, y, dur) {
+      const size = Math.round(16 + dur / 22);
+      const f = h('div', 'fix' + (reduced() ? '' : ' enter'), `left:${x}%;top:${y}%;width:${size}px;height:${size}px;`, String(fixes.length + 1));
+      B.insertBefore(f, hint); fixes.push({ el: f, dur }); pts.push([x, y]);
+      poly.setAttribute('points', pts.map(p => p.join(',')).join(' '));
+      if (!reduced()) requestAnimationFrame(() => requestAnimationFrame(() => f.classList.remove('enter')));
+      const mean = Math.round(fixes.reduce((a, b) => a + b.dur, 0) / fixes.length);
+      s.foot[1].textContent = `${String(fixes.length).padStart(2, '0')} fixations · ${mean}ms mean`;
+    }
+    function reset() {
+      fixes.forEach(f => f.el.remove()); fixes = []; pts = []; pending = [];
+      poly.setAttribute('points', ''); field.fill(0); dirty = true;
+      s.foot[1].textContent = '00 fixations';
+    }
+
+    if (reduced()) {
+      const P = PATHS[0];
+      P.pts.forEach(([x, y, d]) => { addHeat(x, y, d / 260); addFix(x, y, d); });
+      paint(); hint.hidden = true;
+      setChip(s, 'replay', 'var(--yellow)'); s.foot[0].textContent = 'participant 01 · ' + P.name;
+      return { el: s.el, cancel() {} };
+    }
+
+    // frame loop: heat accrual + live gaze
+    let last = performance.now(), pointer = null, dwellStart = 0, dwellPos = null;
+    const frame = now => {
+      if (run.stop) return;
+      const dt = Math.min(50, now - last); last = now;
+      pending = pending.filter(p => { const a = Math.min(p.left, dt / p.dur * p.amt); addHeat(p.x, p.y, a); p.left -= a; return p.left > 0.001; });
+      if (live && pointer) {
+        addHeat(pointer[0], pointer[1], dt * 0.0018);
+        if (dwellPos && Math.hypot(pointer[0] - dwellPos[0], pointer[1] - dwellPos[1]) < 3.5) {
+          if (now - dwellStart > 320 && !dwellPos.placed) { dwellPos.placed = true; addFix(pointer[0], pointer[1], Math.round(now - dwellStart)); if (fixes.length > 18) { const o = fixes.shift(); o.el.remove(); pts.shift(); fixes.forEach((f, i) => f.el.textContent = i + 1); poly.setAttribute('points', pts.map(p => p.join(',')).join(' ')); } }
+        } else { dwellPos = [...pointer]; dwellStart = now; }
+      }
+      if (dirty) paint();
+      run.rafs.push(requestAnimationFrame(frame));
+    };
+    run.rafs.push(requestAnimationFrame(frame));
+
+    let autoToken = 0;
+    async function autoplay() {
+      const my = ++autoToken; let n = 0;
+      while (!run.stop && my === autoToken) {
+        const P = PATHS[n % PATHS.length];
+        reset(); setChip(s, 'replay', 'var(--yellow)');
+        s.foot[0].textContent = `participant ${String(n % PATHS.length + 1).padStart(2, '0')} · ${P.name}`;
+        await run.sleep(500);
+        for (const [x, y, d] of P.pts) {
+          if (run.stop || my !== autoToken) return;
+          addFix(x, y, d); pending.push({ x, y, amt: d / 260, left: d / 260, dur: d * 1.6 });
+          await run.sleep(d + 160);
+        }
+        await run.sleep(2600);
+        if (run.stop || my !== autoToken) return;
+        fixes.forEach(f => f.el.classList.add('out'));
+        await run.sleep(400); n++;
+      }
+    }
+    autoplay();
+
+    let resumeT;
+    B.addEventListener('pointerenter', () => {
+      if (!fine.matches) return;
+      clearTimeout(resumeT); autoToken++; live = true; reset();
+      setChip(s, 'live · you', 'var(--pink)'); s.foot[0].textContent = 'participant · you'; hint.style.opacity = 0;
+    });
+    B.addEventListener('pointermove', ev => {
+      if (!live) return;
+      const r = B.getBoundingClientRect();
+      pointer = [(ev.clientX - r.left) / r.width * 100, (ev.clientY - r.top) / r.height * 100];
+    });
+    B.addEventListener('pointerleave', () => {
+      if (!live) return;
+      live = false; pointer = null; hint.style.opacity = 1;
+      setChip(s, 'paused', 'var(--wire)');
+      resumeT = setTimeout(() => { if (!run.stop) autoplay(); }, 2200); run.timers.push(resumeT);
+    });
+    return { el: s.el, cancel: () => { autoToken++; run.cancel(); } };
+  }
+
+  /* ---- C · Prompt to interface ---- */
+  const PROMPTS = [
+    { text: 'a dashboard for a family task manager', parts: [
+      ['pc', 4, 20, 20, 76, 'var(--blue)', 'var(--blue-d)'], ['pl', 8, 26, 12, 3], ['pl', 8, 33, 9, 2.5], ['pl', 8, 39, 11, 2.5],
+      ['pc', 28, 20, 21, 20, 'var(--yellow)', 'var(--yellow-d)'], ['pc', 51.5, 20, 21, 20, 'var(--green)', 'var(--green-d)'], ['pc', 75, 20, 21, 20, 'var(--pink)', 'var(--pink-d)'],
+      ['pc', 28, 45, 68, 13, '#FFFFFF'], ['pc', 28, 61, 68, 13, '#FFFFFF'], ['pc', 28, 77, 68, 13, '#FFFFFF'],
+      ['pl', 33, 50, 30, 3], ['pl', 33, 66, 38, 3], ['pl', 33, 82, 24, 3] ] },
+    { text: 'a landing page for an AI workshop', parts: [
+      ['pc', 4, 20, 92, 9, '#FFFFFF'], ['pl', 7, 23.5, 12, 2.5],
+      ['pl', 4, 35, 58, 6], ['pl', 4, 44, 44, 6], ['pl', 4, 54, 50, 2.5], ['pl', 4, 59, 40, 2.5],
+      ['pc', 4, 66, 20, 9, 'var(--blue)', 'var(--blue-d)'], ['pc', 27, 66, 20, 9, 'var(--cyan)', 'var(--cyan-d)'],
+      ['pc', 66, 34, 30, 41, 'var(--pink)', 'var(--pink-d)'],
+      ['pc', 4, 81, 29, 14, 'var(--green)', 'var(--green-d)'], ['pc', 35.5, 81, 29, 14, 'var(--yellow)', 'var(--yellow-d)'], ['pc', 67, 81, 29, 14, 'var(--peach)', 'var(--peach-d)'] ] },
+    { text: 'a research summary on cognitive load', parts: [
+      ['pl', 4, 22, 54, 5], ['pc', 66, 21, 14, 7, 'var(--yellow)', 'var(--yellow-d)'], ['pc', 82, 21, 14, 7, 'var(--pink)', 'var(--pink-d)'],
+      ['pc', 4, 33, 92, 38, '#FFFFFF'],
+      ['bar', 12, 46, 10, 21, 'var(--blue)', 'var(--blue-d)'], ['bar', 27, 38, 10, 29, 'var(--cyan)', 'var(--cyan-d)'], ['bar', 42, 52, 10, 15, 'var(--green)', 'var(--green-d)'], ['bar', 57, 42, 10, 25, 'var(--yellow)', 'var(--yellow-d)'], ['bar', 72, 56, 10, 11, 'var(--pink)', 'var(--pink-d)'],
+      ['pl', 4, 77, 88, 2.5], ['pl', 4, 83, 80, 2.5], ['pl', 4, 89, 60, 2.5] ] },
+  ];
+
+  function prompt(container) {
+    const s = shell('make · interface', 'ready');
+    container.append(s.el);
+    const bar = h('div', 'prompt', null, '<b>›</b><span class="typed"></span><span class="caret"></span>');
+    s.body.append(bar);
+    const typed = bar.querySelector('.typed');
+    const run = makeRun();
+    function build(P, entering) {
+      return P.parts.map(([kind, x, y, w, hh, c, cd]) => {
+        const cls = kind === 'bar' ? 'pc bar' : kind;
+        const e = h('div', cls + (entering ? ' enter' : ''), pct(x, y, w, hh) + (c ? `--c:${c};` : '') + (cd ? `--cd:${cd};` : ''));
+        s.body.append(e); return e;
+      });
+    }
+    if (reduced()) {
+      typed.textContent = PROMPTS[0].text; build(PROMPTS[0], false);
+      setChip(s, 'done', 'var(--green)'); s.foot[0].textContent = 'prompt 1 / 3'; s.foot[1].textContent = `${PROMPTS[0].parts.length} components`;
+      return { el: s.el, cancel() {} };
+    }
+    (async () => {
+      let n = 0;
+      while (!run.stop) {
+        const P = PROMPTS[n % PROMPTS.length];
+        s.foot[0].textContent = `prompt ${n % PROMPTS.length + 1} / ${PROMPTS.length}`; s.foot[1].textContent = '0 components';
+        setChip(s, 'typing', 'var(--yellow)');
+        for (let i = 1; i <= P.text.length; i++) { if (run.stop) return; typed.textContent = P.text.slice(0, i); await run.sleep(32 + Math.random() * 40); }
+        await run.sleep(350); if (run.stop) return;
+        setChip(s, 'generating', 'var(--cyan)');
+        const els = build(P, true);
+        await run.sleep(30);
+        for (let i = 0; i < els.length; i++) { if (run.stop) return; els[i].classList.remove('enter'); s.foot[1].textContent = `${i + 1} components`; await run.sleep(110); }
+        setChip(s, 'done', 'var(--green)');
+        await run.sleep(2400); if (run.stop) return;
+        els.forEach((e, i) => run.timers.push(setTimeout(() => e.classList.add('out'), i * 30)));
+        for (let i = P.text.length; i >= 0; i -= 2) { if (run.stop) return; typed.textContent = P.text.slice(0, i); await run.sleep(12); }
+        await run.sleep(250); els.forEach(e => e.remove()); n++;
+      }
+    })();
+    return { el: s.el, cancel: run.cancel };
+  }
+
+  /* ---- D · Portrait ---- */
+  function portrait(container) {
+    const img = h('img', 'portrait'); img.src = 'portrait.png'; img.alt = 'Bruno Martignago portrait'; img.width = 516; img.height = 523;
+    container.append(img); return { el: img, cancel() {} };
+  }
+
+  const VARIANTS = {
+    anatomy: { fn: anatomy, note: 'Hero option A · page anatomy (your classification method, live)' },
+    gaze: { fn: gaze, note: 'Hero option B · attention map (hover to become the participant)' },
+    prompt: { fn: prompt, note: 'Hero option C · prompt to interface' },
+    portrait: { fn: portrait, note: 'Hero option D · original portrait' },
+  };
+  const visual = $('visual');
+  let current = null, currentKey = 'anatomy';
+  function mount(key) {
+    if (current) current.cancel();
+    visual.innerHTML = '';
+    currentKey = key;
+    current = VARIANTS[key].fn(visual);
+    $('heroNote').textContent = VARIANTS[key].note;
+    root.classList.toggle('show-portrait', key === 'portrait');
+  }
+
+  /* ---------- Intro ---------- */
+  function playIntro() {
+    document.body.classList.remove('intro');
+    void document.body.offsetWidth;
+    document.body.classList.add('intro');
+  }
+
+  /* ---------- Header compaction + progress ---------- */
+  const header = $('header'), barEl = $('progress');
+  function onScroll() {
+    const y = scrollY;
+    header.classList.toggle('compact', y > 80);
+    const max = document.documentElement.scrollHeight - innerHeight;
+    barEl.style.setProperty('--p', max > 0 ? Math.min(1, y / max).toFixed(4) : 0);
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- Footer headline letters ---------- */
+  const talk = $('talk');
+  let li = 0;
+  "LET'S TALK".split(' ').forEach(word => {
+    const wd = h('span', 'wd'); wd.setAttribute('aria-hidden', 'true');
+    [...word].forEach(ch => { const s = h('span', 'ch', `--i:${li++}`); s.textContent = ch; wd.append(s); });
+    talk.append(wd);
+  });
+
+  /* ---------- Scroll reveals ---------- */
+  const diagram = $('diagram'), project = $('project');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      if (e.target === project) drawDiagram();
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.2 });
+  const revealTargets = () => [...document.querySelectorAll('.lift'), project, diagram, talk];
+  revealTargets().forEach(el => io.observe(el));
+
+  function drawDiagram() {
+    diagram.classList.remove('draw');
+    void diagram.getBoundingClientRect();
+    diagram.classList.add('draw');
+  }
+  diagram.addEventListener('mouseenter', () => { if (diagram.classList.contains('in')) drawDiagram(); });
+  diagram.addEventListener('click', drawDiagram);
+  document.querySelectorAll('.tag').forEach(t => t.style.setProperty('--rot', (Math.random() * 6 - 3).toFixed(1) + 'deg'));
+
+  /* ---------- Visual tilt + light-source shadow ---------- */
+  const tilt = (() => {
+    const hero = $('hero'), el = $('tilt');
+    let tx = 0, ty = 0, x = 0, y = 0;
+    hero.addEventListener('pointermove', ev => {
+      if (!fine.matches || !opts.tilt || reduced()) return;
+      const r = el.getBoundingClientRect(), hr = hero.getBoundingClientRect();
+      tx = Math.max(-1, Math.min(1, (ev.clientX - (r.left + r.width / 2)) / (hr.width / 2)));
+      ty = Math.max(-1, Math.min(1, (ev.clientY - (r.top + r.height / 2)) / (hr.height / 2)));
+    });
+    hero.addEventListener('pointerleave', () => { tx = 0; ty = 0; });
+    return {
+      tick() {
+        if (reduced() || !opts.tilt) { tx = ty = 0; }
+        x += (tx - x) * 0.1; y += (ty - y) * 0.1;
+        const amt = currentKey === 'portrait' ? 7 : 4;
+        const base = currentKey === 'portrait' ? 10 : 8;
+        el.style.transform = `rotateY(${(x * amt).toFixed(2)}deg) rotateX(${(-y * amt).toFixed(2)}deg)`;
+        el.style.setProperty('--sx', (base - x * 5).toFixed(1) + 'px');
+        el.style.setProperty('--sy', (base - y * 5).toFixed(1) + 'px');
+      }
+    };
+  })();
+
+  /* ---------- Magnetic footer buttons ---------- */
+  const footer = $('footer');
+  const mags = [...document.querySelectorAll('.mag')];
+  footer.addEventListener('pointermove', ev => {
+    if (!fine.matches || reduced()) return;
+    mags.forEach(m => {
+      const r = m.getBoundingClientRect();
+      const dx = ev.clientX - (r.left + r.width / 2), dy = ev.clientY - (r.top + r.height / 2);
+      const d = Math.hypot(dx, dy), reach = 160;
+      if (d < reach) { const f = (1 - d / reach) * 0.35; m.style.transform = `translate(${Math.max(-8, Math.min(8, dx * f))}px, ${Math.max(-8, Math.min(8, dy * f))}px)`; }
+      else m.style.transform = '';
+    });
+  });
+  footer.addEventListener('pointerleave', () => mags.forEach(m => m.style.transform = ''));
+
+  /* ---------- Loop ---------- */
+  function loop() { tilt.tick(); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+
+  /* ---------- Lab controls ---------- */
+  document.querySelectorAll('input[name="variant"]').forEach(r => r.addEventListener('change', e => { mount(e.target.value); playIntro(); }));
+  $('replayIntro').addEventListener('click', () => { scrollTo({ top: 0, behavior: reduced() ? 'auto' : 'smooth' }); mount(currentKey); playIntro(); });
+  $('replayAll').addEventListener('click', () => { revealTargets().forEach(el => { el.classList.remove('in', 'draw'); io.observe(el); }); });
+  $('optTilt').addEventListener('change', e => { opts.tilt = e.target.checked; });
+  $('optNotes').addEventListener('change', e => root.classList.toggle('no-notes', !e.target.checked));
+  $('optRm').addEventListener('change', e => { root.classList.toggle('rm', e.target.checked); mount(currentKey); });
+  if (innerWidth < 640) $('lab').open = false;
+
+  mount('anatomy');
+  playIntro();
+})();
+</script>
