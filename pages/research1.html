@@ -3,17 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Case Study – Project Name</title>
+  <title>Visual patterns in web page generation — Bruno Martignago</title>
+  <meta name="description" content="A four-year research project into the pillars of web page structure: an element classification method, a template taxonomy and template summarization." />
 
   <link rel="stylesheet" href="../css/tokens.css" />
   <link rel="stylesheet" href="../css/layout.css" />
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/case.css" />
+
+  <!-- Page transitions: must run before first render, so no defer; wait for the hero media -->
+  <link rel="expect" href="#case-hero-media" blocking="render" />
+  <script src="../js/transitions.js"></script>
 </head>
 
-<body style="background-color: #FFFFFF;">
+<body>
 
-  <header class="site-header" style="background-color: #FFFFFF;">
+  <header class="site-header">
     <div class="header-inner">
 
       <a href="../index.html" class="brand">
@@ -76,8 +81,10 @@
 
       <img
         src="../assets/images/cases/research1/hero.jpg"
-        alt="Project hero visual"
+        alt="Grid of 27 summarized page templates built from colored section blocks"
         class="case-hero-image reveal"
+        id="case-hero-media"
+        data-vt-hero
         loading="lazy"
       />
 
@@ -105,7 +112,7 @@
 
       <img
         src="../assets/images/cases/research1/intro.png"
-        alt="Introduction image"
+        alt="Diagram: a web page splits into two pillars, graphic components and culture"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -116,7 +123,7 @@
 
       <img
         src="../assets/images/cases/research1/intro2.png"
-        alt="Introduction image"
+        alt="Diagram of product phases: persona, interviews and user journey lead to design principles, design system and components, which lead to pages and flows"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -146,7 +153,7 @@
 
       <img
         src="../assets/images/cases/research1/research_questions.png"
-        alt="Introduction image"
+        alt="Diagram comparing the two pillars: culture has high variation, depends on research and is hard to automate; content has low variation, is predictable and follows a set of rules"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -268,7 +275,7 @@
 
       <img
         src="../assets/images/cases/research1/test1.jpg"
-        alt="test 1 images"
+        alt="Two news pages from the first test, covered in colored blocks that classify each element"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -301,7 +308,7 @@
 
     <img
       src="../assets/images/cases/research1/test1_results.jpg"
-      alt="test 1 results"
+      alt="Charts from the first test: median and variation of total information by content type, totals by UX valuation and site, and totals by site and page type"
       class="case-hero-image reveal"
       loading="lazy"
     />
@@ -466,7 +473,7 @@
 
       <img
         src="../assets/images/cases/research1/template_tax_1.jpg"
-        alt="template taxonomy exploration"
+        alt="Dell and Lenovo item detail pages side by side: 1788 × 18482 px and 1788 × 14463 px"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -477,7 +484,7 @@
 
       <img
         src="../assets/images/cases/research1/template_tax_2.jpg"
-        alt="template taxonomy exploration"
+        alt="Two Dell item detail pages for similar laptops: 1788 × 18482 px and 1788 × 19432 px"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -530,7 +537,7 @@
 
       <img
         src="../assets/images/cases/research1/headers.jpg"
-        alt="header examples"
+        alt="Header examples from Dell, Amazon, Vox and AmCharts, each outlined"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -572,7 +579,7 @@
 
       <img
         src="../assets/images/cases/research1/subheaders.jpg"
-        alt="subheader examples"
+        alt="Subheader examples from Americanas, Apple, Mercado Livre and Steam, each outlined"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -614,7 +621,7 @@
 
       <img
         src="../assets/images/cases/research1/footers.jpg"
-        alt="footer examples"
+        alt="Footer examples from Dell, Booking, Disney and Cinemark, each outlined"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -650,7 +657,7 @@
 
       <img
         src="../assets/images/cases/research1/overlays.jpg"
-        alt="overlay examples"
+        alt="Overlay examples from Udemy, American Airlines, Dell and iFood, each outlined"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -692,7 +699,7 @@
 
       <img
         src="../assets/images/cases/research1/columns_2.png"
-        alt="column examples"
+        alt="Column examples outlined on a Mercado Livre item list page and an Amazon cart page"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -779,7 +786,7 @@
 
       <img
         src="../assets/images/cases/research1/nomenclature.jpg"
-        alt="nomenclature examples"
+        alt="Mercado Livre item list and Amazon cart pages with sections labeled column 0, column 1, menu and panel"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -819,7 +826,7 @@
 
       <img
         src="../assets/images/cases/research1/study2.png"
-        alt="example of scraping from study 2"
+        alt="A Dell page from the second study with every element covered by a labeled classification box"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -881,7 +888,7 @@
 
       <img
         src="../assets/images/cases/research1/study2_table.png"
-        alt="table scraped in study 2"
+        alt="Spreadsheet from the second study listing each element's site, page, template section, function, form, component, size and share of the page"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -952,7 +959,7 @@
 
       <img
         src="../assets/images/cases/research1/form_function.jpeg"
-        alt="form function distribuition"
+        alt="Sankey chart of how element functions distribute across the forms typo, space, image and icon"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -975,7 +982,7 @@
 
       <img
         src="../assets/images/cases/research1/template.jpg"
-        alt="template example"
+        alt="A PlayStation cart page next to its template version made of colored section blocks"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1007,7 +1014,7 @@
 
       <img
         src="../assets/images/cases/research1/summarized_template.jpg"
-        alt="summarized template example"
+        alt="A PlayStation cart page next to its summarized template"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1018,7 +1025,7 @@
 
       <img
         src="../assets/images/cases/research1/template_tax_3.jpg"
-        alt="website comparison"
+        alt="Amazon, Americanas and Dell item detail pages at very different lengths"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1029,7 +1036,7 @@
 
       <img
         src="../assets/images/cases/research1/template_tax_4.jpeg"
-        alt="template website comparison"
+        alt="Summarized templates of the Amazon, Americanas and Dell item detail pages, with a color legend for each section type"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1063,7 +1070,7 @@
 
       <img
         src="../assets/images/cases/research1/stacked_templates.jpeg"
-        alt="stacked templates"
+        alt="Stacked view of all item detail templates, and the same view with the recurring section lines highlighted"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1078,7 +1085,7 @@
 
       <img
         src="../assets/images/cases/research1/item_detail_incidence.jpeg"
-        alt="item detail template incidence"
+        alt="Highlighted stack of item detail templates and its two variations: two columns, or one column with a right panel"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1093,7 +1100,7 @@
 
       <img
         src="../assets/images/cases/research1/item_list_incidence.jpeg"
-        alt="item list template incidence"
+        alt="Merged item list templates, the item list archetype, and its single template incidence"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1104,7 +1111,7 @@
 
       <img
         src="../assets/images/cases/research1/cart_incidence.jpeg"
-        alt="cart template incidence"
+        alt="Merged cart templates, the cart archetype, and its four template incidences"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1115,7 +1122,7 @@
 
       <img
         src="../assets/images/cases/research1/item_list_elements.jpeg"
-        alt="cart template incidence"
+        alt="Item list archetype holding 42.38% of all information, with element breakdowns for the left panel, top column and bottom column"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1130,7 +1137,7 @@
 
       <img
         src="../assets/images/cases/research1/item_detail_elements.jpeg"
-        alt="cart template incidence"
+        alt="Item detail archetype holding 33.13% of all information, with element breakdowns for its top-left and lower columns"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1145,7 +1152,7 @@
 
       <img
         src="../assets/images/cases/research1/cart_elements.jpeg"
-        alt="cart template incidence"
+        alt="Cart archetype holding 24.49% of all information, with the bottom column split between blank space and cards"
         class="case-hero-image reveal"
         loading="lazy"
       />
@@ -1235,7 +1242,7 @@
       </p>
 
       <div class="video-placeholder" data-video-src="../assets/images/cases/research1/image_categorization.mp4">
-        <img src="../assets/images/cases/research1/video_thumb.png" alt="Video preview">
+        <img src="../assets/images/cases/research1/video_thumb.png" alt="Play video: demo of the annotation tool classifying elements on a web page">
         <button class="video-play">▶</button>
       </div>
 

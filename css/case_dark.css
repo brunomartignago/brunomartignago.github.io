@@ -1,3 +1,13 @@
+/* Dark case background (was inline on aiorc.html until it moves to the journal Night edition) */
+body,
+.site-header {
+  background-color: #374152;
+}
+
+.site-header .brand-location {
+  color: #FFFFFF;
+}
+
 /* ========================= */
 /* CASE BASE */
 /* ========================= */
