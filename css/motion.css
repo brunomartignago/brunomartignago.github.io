@@ -12,6 +12,38 @@
   }
 }
 
+@keyframes rise {
+  from { transform: translateY(115%); }
+}
+
+@keyframes wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
+/* ---------- Hero intro (on load, done in ~1.35s) ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js .hero-line > span {
+    animation: rise 700ms var(--ease-out) backwards;
+    animation-delay: calc(120ms + var(--i, 0) * 120ms);
+  }
+
+  html.js .hl::before {
+    animation: wipe 520ms var(--ease-out) backwards;
+    animation-delay: calc(560ms + var(--i, 0) * 140ms);
+  }
+
+  html.js .hero-fade {
+    animation: fadeUp 500ms var(--ease-out) backwards;
+    animation-delay: var(--d, 0ms);
+  }
+}
+
 /* ---------- Reveal: data-reveal="lift" ---------- */
 
 @media (prefers-reduced-motion: no-preference) {

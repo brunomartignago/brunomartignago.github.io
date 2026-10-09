@@ -213,9 +213,8 @@ body {
     text-align: center;
   }
 
-  .hero-title {
-    font-size: 36px;
-    line-height: 44px;
+  .hero-hello {
+    justify-content: center;
   }
 
   .hero-image {
