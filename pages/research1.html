@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../css/layout.css" />
   <link rel="stylesheet" href="../css/motion.css" />
   <link rel="stylesheet" href="../css/journal.css" />
+  <link rel="stylesheet" href="../css/figures.css" />
 
   <!-- Flags JS before first paint so pre-animation states never flash; without JS everything renders at rest -->
   <script>
@@ -25,6 +26,7 @@
   </script>
   <script src="../js/motion.js" defer></script>
   <script src="../js/journal.js" defer></script>
+  <script src="../js/figures/research1.js" defer></script>
 
   <!-- Page transitions: must run before first render, so no defer; wait for the hero media -->
   <link rel="expect" href="#case-hero-media" blocking="render" />
@@ -145,29 +147,85 @@
                 <div class="qcard qcard--pink" data-reveal="lift" style="--i:1"><span class="qn" aria-hidden="true">B</span><p>Culture</p><span class="sub">user demographics</span></div>
               </div>
 
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/research1/intro.png" alt="Diagram: a web page splits into two pillars, graphic components and culture" width="914" height="718" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 02</b><span>The two pillars that sustain the structure of a web page: graphic components and culture.</span></figcaption>
-              </figure>
+              </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-layers">
+              <div class="frame cf cf-a">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 02 — Two pillars</span>
+                  <div class="cf-ctrls"><button class="cf-btn" type="button" data-a-toggle aria-pressed="false">Explode layers</button></div>
+                </div>
+                <div class="cf-stage" role="img" aria-label="Animated diagram: a web page separates into two layers. The bottom layer holds graphic components such as navigation, hero, cards and footer. The top layer holds cultural traits such as language, currency, age range and local holidays.">
+                  <div class="cf-a-lbl top" aria-hidden="true"><strong>Culture</strong><span>user demographics · varies a lot · needs research</span></div>
+                  <div class="cf-a-iso" aria-hidden="true">
+                    <div class="cf-a-layer cf-a-content"></div>
+                    <div class="cf-a-layer cf-a-culture"></div>
+                  </div>
+                  <div class="cf-a-lbl bot" aria-hidden="true"><strong>Graphic components</strong><span>content · follows a set of rules</span></div>
+                  <div class="cf-a-eq" aria-hidden="true">= a web page<span>both layers, assembled</span></div>
+                </div>
+                <p class="cf-note">Culture traits shown are illustrative examples.</p>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/research1/intro.png" alt="Diagram: a web page splits into two pillars, graphic components and culture" width="914" height="718" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 02</b><span>The two pillars that sustain the structure of a web page: graphic components and culture.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="row">
+            <div class="main">
 
               <p class="rv">These pillars sustain the entire structure of a webpage and guide designers, developers, and product people in making decisions when building these solutions. One way of seeing this is by analyzing the product phases that happen when developing a digital solution:</p>
 
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/research1/intro2.png" alt="Diagram of product phases: persona, interviews and user journey lead to design principles, design system and components, which lead to pages and flows" width="808" height="328" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 03</b><span>How the two pillars map to product phases: people, then the system, then pages and flows.</span></figcaption>
-              </figure>
+              </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-phases">
+              <div class="frame cf cf-b">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 03 — Product phases</span>
+                  <div class="cf-ctrls"><button class="cf-btn" type="button" data-b-replay>Replay</button></div>
+                </div>
+                <div class="cf-stage" role="img" aria-label="Animated diagram in three stages. Stage one, understand people: persona, interviews, user journey. Stage two, define the system: design principles, design system, components. Stage three, build: pages and flows assembled from the components.">
+                  <div class="cf-b-station cf-b-st1" data-b-step aria-hidden="true">
+                    <h3><small>01 · Culture</small>Understand people</h3>
+                    <div class="cf-b-chips">
+                      <span class="cf-b-chip cf-b-pink"><i></i>Persona</span>
+                      <span class="cf-b-chip cf-b-pink"><i style="--shape:3px"></i>Interviews</span>
+                      <span class="cf-b-chip cf-b-pink"><i style="--shape:0"></i>User journey</span>
+                    </div>
+                  </div>
+                  <div class="cf-b-pipe" data-b-step aria-hidden="true"><svg viewBox="0 0 56 24"><path pathLength="1" d="M4 12H50M42 5l8 7-8 7"/></svg><span class="cf-b-token" style="--tc:#FD93E2"></span></div>
+                  <div class="cf-b-station cf-b-st2" data-b-step aria-hidden="true">
+                    <h3><small>02 · Content</small>Define the system</h3>
+                    <div class="cf-b-chips">
+                      <span class="cf-b-chip cf-b-blue"><i></i>Design principles</span>
+                      <span class="cf-b-chip cf-b-blue"><i style="--shape:3px"></i>Design system</span>
+                      <span class="cf-b-chip cf-b-blue"><i style="--shape:0"></i>Components</span>
+                    </div>
+                  </div>
+                  <div class="cf-b-pipe" data-b-step aria-hidden="true"><svg viewBox="0 0 56 24"><path pathLength="1" d="M4 12H50M42 5l8 7-8 7"/></svg><span class="cf-b-token" style="--tc:#60C2FF"></span></div>
+                  <div class="cf-b-station cf-b-st3" data-b-step aria-hidden="true">
+                    <h3><small>03 · Product</small>Pages &amp; flows</h3>
+                    <div class="cf-b-mini"></div>
+                    <div class="cf-b-flows"><span class="fp"></span><span class="ar">→</span><span class="fp"></span><span class="ar">→</span><span class="fp"></span></div>
+                  </div>
+                </div>
+                <div class="cf-b-steps" aria-hidden="true"><span>Culture first</span><span>then content</span><span>then pages</span></div>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/research1/intro2.png" alt="Diagram of product phases: persona, interviews and user journey lead to design principles, design system and components, which lead to pages and flows" width="808" height="328" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 03</b><span>How the two pillars map to product phases: people, then the system, then pages and flows.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="row">
+            <div class="main">
 
               <p class="rv">To understand users and build a solution tailored to their needs, we need to conduct rounds of interviews, build artifacts, create personas, and narrate a story that integrates the product into these people's everyday lives. You can't talk about your audience without understanding their culture and how the product will impact their routine. Only after that can the team start incorporating company goals and elements to make the product appear a certain way. This is where design principles and a design system are really important for content to reach the target audience.</p>
               <p class="rv"><mark class="hl">Only with the right combination of the user’s demographics and content that makes sense will the product succeed.</mark></p>
@@ -183,17 +241,42 @@
               <p class="rv">Let's look back at our axiom. We define a web page as a combination of content and culture. As part of the process, we want to better understand what makes people navigate the way they navigate, how they decide what to look at on a page, what is interesting, and what helps them find the information they're looking for. This is the part where AI-generated pages fail when exposed to users: <mark class="hl">they look good, but there's no appeal outside of the visual layer</mark>; it's a copy of many other websites available online. It doesn't take into account what that specific group of users needs to achieve their goals with the product.</p>
               <p class="rv">The first step was understanding what could be collected, given the levels of variation, consistency, and availability, in line with the two pillars we defined. Overall, it's easier to map the aspects surrounding a web page's visual elements: the elements usually follow a set of rules for positioning and color, or they're part of a large design system that dictates the overall look and feel of the entire experience. The complex part was to normalize aspects related to culture and demographics, given the amount of variation, even when small tweaks are made within a given group.</p>
 
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/research1/research_questions.png" alt="Diagram comparing the two pillars: culture has high variation, depends on research and is hard to automate; content has low variation, is predictable and follows a set of rules" width="808" height="248" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 04</b><span>Culture varies a lot and depends on research. Content is predictable and follows a set of rules.</span></figcaption>
-              </figure>
-            </div>
+              </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-variation">
+              <div class="frame cf cf-c">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 04 — Variation vs rules · <span data-c-sample>sample 01</span></span>
+                  <div class="cf-ctrls">
+                    <button class="cf-btn" type="button" data-c-next>New sample ↻</button>
+                    <button class="cf-btn" type="button" data-c-rules aria-pressed="false">Show the rules</button>
+                  </div>
+                </div>
+                <div class="cf-stage">
+                  <div class="cf-c-panel cf-c-culture">
+                    <h3>Culture</h3>
+                    <p class="cf-c-sub">user demographics</p>
+                    <div class="cf-c-field cf-c-field--culture" role="img" aria-label="Cultural traits such as language, region, age and currency scattered at random; every sample looks completely different."></div>
+                    <div class="cf-c-meter"><div class="row-l"><span>Predictability</span><span>low</span></div><div class="bar"><div class="fill" data-c-fill="culture" style="--mc:#FD93E2;--w:.18"></div></div></div>
+                    <div class="cf-c-facts"><span style="--fc:#FFD8F4">high variation</span><span style="--fc:#FFD8F4">research dependent</span><span style="--fc:#FFD8F4">hard to automate</span></div>
+                  </div>
+                  <div class="cf-c-panel cf-c-content">
+                    <h3>Content</h3>
+                    <p class="cf-c-sub">graphic components</p>
+                    <div class="cf-c-field cf-c-field--content" role="img" aria-label="A page wireframe whose content changes every sample, while the header, footer and grid alignment stay the same."><div class="cf-c-grid"></div></div>
+                    <div class="cf-c-meter"><div class="row-l"><span>Predictability</span><span>high</span></div><div class="bar"><div class="fill" data-c-fill="content" style="--mc:#60C2FF;--w:.9"></div></div></div>
+                    <div class="cf-c-facts"><span style="--fc:#D6EEFF">low variation</span><span style="--fc:#D6EEFF">predictable</span><span style="--fc:#D6EEFF">follows a set of rules</span></div>
+                  </div>
+                </div>
+                <p class="cf-note">Illustrative. The meters show the idea, not measured values.</p>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/research1/research_questions.png" alt="Diagram comparing the two pillars: culture has high variation, depends on research and is hard to automate; content has low variation, is predictable and follows a set of rules" width="808" height="248" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 04</b><span>Culture varies a lot and depends on research. Content is predictable and follows a set of rules.</span></figcaption>
+            </figure>
           </div>
           <div class="row">
             <div class="main">
@@ -670,6 +753,39 @@
                 <p class="see">See also: Template archetype · Template incident</p>
               </article>
 
+              </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-summary">
+              <div class="frame cf cf-d st-raw">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 19 — Summarizing two item-detail pages</span>
+                  <div class="cf-ctrls" role="group" aria-label="Steps">
+                    <button class="cf-btn" type="button" data-step="0" aria-pressed="true">1 · Raw</button>
+                    <button class="cf-btn" type="button" data-step="1" aria-pressed="false">2 · Segment</button>
+                    <button class="cf-btn" type="button" data-step="2" aria-pressed="false">3 · Summarize</button>
+                    <button class="cf-btn" type="button" data-step="3" aria-pressed="false">4 · Stack</button>
+                  </div>
+                </div>
+                <div class="cf-stage" role="img" aria-label="Two long Dell item-detail pages, 18,482 and 19,432 pixels tall, are segmented into sections, summarized into equal-size colored templates, and stacked to show their shared structure.">
+                  <div class="cf-d-cap" aria-live="polite"></div>
+                </div>
+                <div class="cf-d-legend" aria-hidden="true">
+                  <span><i style="background-color:#9A9A9A"></i>Header</span><span><i style="background-color:#5C2A7A"></i>Subheader</span><span><i style="background-color:#BB6720"></i>Column 1</span><span><i style="background-color:#1C3397"></i>Panel</span><span><i style="background-color:#BA2121"></i>Column 0</span><span><i style="background-color:#1E0A28"></i>Footer</span>
+                </div>
+                <p class="cf-note">Page heights are the real Dell item-detail pages from the study; section proportions are illustrative.</p>
+              </div>
+              <div class="frame ifig-fallback">
+                <p>This interactive figure needs JavaScript. Figs. 20 and 23 show the same method as static images.</p>
+              </div>
+              <figcaption><b>Fig. 19</b><span>Template summarization: pages of different sizes become comparable, same-size templates.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="row">
+            <div class="main">
+
               <p class="rv">We can now apply this method to the previous template:</p>
 
               <figure class="fig rv">
@@ -680,7 +796,7 @@
                     <img src="../assets/images/cases/research1/summarized_template.jpg" alt="A PlayStation cart page next to its summarized template" width="1320" height="612" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 19</b><span>The PlayStation cart page and its summarized template.</span></figcaption>
+                <figcaption><b>Fig. 20</b><span>The PlayStation cart page and its summarized template.</span></figcaption>
               </figure>
 
               <p class="rv">With summarized templates, we can now compare pages that differ in content but share a similar structure. Look at this example comparing three item detail pages from different websites (Amazon, Americanas, and Dell):</p>
@@ -693,7 +809,7 @@
                     <img src="../assets/images/cases/research1/template_tax_3.jpg" alt="Amazon, Americanas and Dell item detail pages at very different lengths" width="1320" height="743" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 20</b><span>Item detail pages from Amazon, Americanas and Dell.</span></figcaption>
+                <figcaption><b>Fig. 21</b><span>Item detail pages from Amazon, Americanas and Dell.</span></figcaption>
               </figure>
 
               <p class="rv">We can see significant variation in size, content, and placement across pages, even though they serve the same function. But let's compare their summarized templates:</p>
@@ -706,7 +822,7 @@
                     <img src="../assets/images/cases/research1/template_tax_4.jpeg" alt="Summarized templates of the Amazon, Americanas and Dell item detail pages, with a color legend for each section type" width="1600" height="900" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 21</b><span>The same three pages as summarized templates.</span></figcaption>
+                <figcaption><b>Fig. 22</b><span>The same three pages as summarized templates.</span></figcaption>
               </figure>
 
               <p class="rv">As we can see in the image, even though the pages are considerably different in their original format, the summarized template shows some similar elements between them. More than the basic structure, a section with one column and a variation between a second column, a panel, or both, and a section with a single column. Structurally, the Amazon page is the most different, having a third content section with a menu and a column.</p>
@@ -729,7 +845,7 @@
                     <img src="../assets/images/cases/research1/stacked_templates.jpeg" alt="Stacked view of all item detail templates, and the same view with the recurring section lines highlighted" width="1600" height="900" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 22</b><span>Stacked item detail templates, then the same stack with its variations highlighted.</span></figcaption>
+                <figcaption><b>Fig. 23</b><span>Stacked item detail templates, then the same stack with its variations highlighted.</span></figcaption>
               </figure>
 
               <article class="defn" data-reveal="lift" aria-labelledby="def9">
@@ -754,7 +870,7 @@
                     <img src="../assets/images/cases/research1/item_detail_incidence.jpeg" alt="Highlighted stack of item detail templates and its two variations: two columns, or one column with a right panel" width="1600" height="900" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 23</b><span>Item detail template incidences: two columns, or one column and a right panel.</span></figcaption>
+                <figcaption><b>Fig. 24</b><span>Item detail template incidences: two columns, or one column and a right panel.</span></figcaption>
               </figure>
 
               <p class="rv">Since the overlap occurred between a second column and a panel on the right, the two summarized template types that best represent this type of page are the ones above.</p>
@@ -768,7 +884,7 @@
                     <img src="../assets/images/cases/research1/item_list_incidence.jpeg" alt="Merged item list templates, the item list archetype, and its single template incidence" width="1600" height="900" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 24</b><span>Item list pages: one archetype, one incidence.</span></figcaption>
+                <figcaption><b>Fig. 25</b><span>Item list pages: one archetype, one incidence.</span></figcaption>
               </figure>
 
               <p class="rv">The cart page had the most variation. In total, there were 4 incidences in our sample, stemming from the overall structure of the top half of the page: the presence or absence of a subheader and the number of panels/columns per page.</p>
@@ -781,7 +897,7 @@
                     <img src="../assets/images/cases/research1/cart_incidence.jpeg" alt="Merged cart templates, the cart archetype, and its four template incidences" width="1600" height="900" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 25</b><span>Cart pages: the archetype and its four incidences.</span></figcaption>
+                <figcaption><b>Fig. 26</b><span>Cart pages: the archetype and its four incidences.</span></figcaption>
               </figure>
 
               <p class="rv">Now, let's use these templates to see how the elements are distributed in each page type.</p>
@@ -802,7 +918,7 @@
                     <img src="../assets/images/cases/research1/item_list_elements.jpeg" alt="Item list archetype holding 42.38% of all information, with element breakdowns for the left panel, top column and bottom column" width="1600" height="715" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 26</b><span>Element distribution on the item list archetype.</span></figcaption>
+                <figcaption><b>Fig. 27</b><span>Element distribution on the item list archetype.</span></figcaption>
               </figure>
 
               <p class="rv">The most interesting fact we found while analyzing the data is that this set of pages accounts for 42.38% of all the information collected, making it the most overloaded page and suggesting that the information distribution is quite unequal across pages.</p>
@@ -818,7 +934,7 @@
                     <img src="../assets/images/cases/research1/item_detail_elements.jpeg" alt="Item detail archetype holding 33.13% of all information, with element breakdowns for its top-left and lower columns" width="1600" height="697" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 27</b><span>Element distribution on the item detail archetype.</span></figcaption>
+                <figcaption><b>Fig. 28</b><span>Element distribution on the item detail archetype.</span></figcaption>
               </figure>
 
               <p class="rv">Analyzing the item detail page, the first thing worth noting is that it accounts for 33.13% of the total information collected, making it well-balanced compared to the other two pages.</p>
@@ -834,7 +950,7 @@
                     <img src="../assets/images/cases/research1/cart_elements.jpeg" alt="Cart archetype holding 24.49% of all information, with the bottom column split between blank space and cards" width="1600" height="766" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 28</b><span>Element distribution on the cart archetype.</span></figcaption>
+                <figcaption><b>Fig. 29</b><span>Element distribution on the cart archetype.</span></figcaption>
               </figure>
 
               <p class="rv">The last page analyzed was the cart page. As shown in the image, this page accounts for 24.49% of the total information, making it the emptiest of the three (with more white space).</p>
@@ -901,7 +1017,7 @@
                     <button type="button" class="video-play" aria-label="Play video">▶</button>
                   </div>
                 </span>
-                <figcaption><b>Fig. 29</b><span>Demo of the tool I developed for the classification step.</span></figcaption>
+                <figcaption><b>Fig. 30</b><span>Demo of the tool I developed for the classification step.</span></figcaption>
               </figure>
 
               <p class="rv">This tool was built with speed in mind, so when exporting the information, it generates a JSON file with a structure that facilitates data analysis later.</p>
