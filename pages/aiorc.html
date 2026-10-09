@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../css/layout.css" />
   <link rel="stylesheet" href="../css/motion.css" />
   <link rel="stylesheet" href="../css/journal.css" />
+  <link rel="stylesheet" href="../css/figures.css" />
 
   <!-- Flags JS before first paint so pre-animation states never flash; without JS everything renders at rest -->
   <script>
@@ -25,6 +26,8 @@
   </script>
   <script src="../js/motion.js" defer></script>
   <script src="../js/journal.js" defer></script>
+  <script src="../js/figures/core.js" defer></script>
+  <script src="../js/figures/aiorc.js" defer></script>
 
   <!-- Page transitions: must run before first render, so no defer; wait for the hero media -->
   <link rel="expect" href="#case-hero-media" blocking="render" />
@@ -106,17 +109,45 @@
           </div>
 
           <div class="row">
+            <figure class="fig wide ifig rv" id="cf-search">
+              <div class="frame cf cf-s ph-0">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 02 — How people search</span>
+                  <div class="cf-ctrls" role="group" aria-label="Moment">
+                    <button class="cf-btn" type="button" data-phase="0" aria-pressed="true">Past</button>
+                    <button class="cf-btn" type="button" data-phase="1" aria-pressed="false">Present</button>
+                    <button class="cf-btn" type="button" data-phase="2" aria-pressed="false">Future</button>
+                  </div>
+                </div>
+                <div class="cf-stage">
+                  <div class="cf-s-win" role="img" aria-label="One search window in three moments. Past: a keyword search with 1,000,000 results to scan. Present: a conversation that filters the results down. Future: nothing is typed and three options arrive, ranked good, better and best.">
+                    <div class="cf-s-search" aria-hidden="true">⌕ Search</div>
+                    <div class="cf-s-count" aria-hidden="true">1,000,000 results</div>
+                    <div class="cf-s-list" aria-hidden="true"><i class="cf-s-row"></i><i class="cf-s-row"></i><i class="cf-s-row"></i><i class="cf-s-row"></i><i class="cf-s-row"></i><i class="cf-s-row"></i><i class="cf-s-row"></i><i class="cf-s-row"></i></div>
+                    <div class="cf-s-bub ai" style="top:8%" aria-hidden="true">How can I help you?</div>
+                    <div class="cf-s-bub me" style="top:21%" aria-hidden="true">How do I add a user?</div>
+                    <div class="cf-s-offer o1" style="left:6%;--c:#D9D1CA;--cd:#5B524B" aria-hidden="true"><b>Good</b><i></i><em style="top:64%"></em><em style="top:74%"></em></div>
+                    <div class="cf-s-offer o2" style="left:36.5%;--c:#FFF260;--cd:#A9A03E" aria-hidden="true"><b>Better</b><i></i><em style="top:64%"></em><em style="top:74%"></em></div>
+                    <div class="cf-s-offer o3" style="left:67%;--c:#60FFA2;--cd:#318D57" aria-hidden="true"><b>Best</b><i></i><em style="top:64%"></em><em style="top:74%"></em></div>
+                  </div>
+                  <div class="cf-side">
+                    <small data-s-when>Past</small>
+                    <h3 data-s-title>Keyword Search</h3>
+                    <p data-s-text>Requires the user to be able to know how to find relevant information.</p>
+                    <div class="cf-tags" data-s-tags><span>Keywords &amp; Tags</span><span>SEO</span></div>
+                    <div class="cf-meter">Effort on the person · illustrative<div class="bar"><div class="fill" data-s-effort style="--mc:#FFB37A;--w:.92"></div></div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/aiorc/ui_phases.png" alt="Three phases of search: past, keyword search; present, filtering through conversation; future, autonomous delivery" width="1288" height="555" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 02</b><span>Three key moments in how people search for information: past, present and future.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="row">
             <div class="main">
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/aiorc/ui_phases.png" alt="Three phases of search: past, keyword search; present, filtering through conversation; future, autonomous delivery" width="1288" height="555" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 02</b><span>Three key moments in how people search for information: past, present and future.</span></figcaption>
-              </figure>
 
               <p class="rv">The pace of technological advancements is rapidly increasing, offering incredibly innovative solutions that can achieve tasks that once required a large team - take for example LLMs, video generation, personalized recommendation, no-code application, etc.</p>
 
@@ -135,29 +166,98 @@
             <div class="main">
               <p class="rv">To build the future of connection, we need to <mark class="hl">redefine how browser navigation works</mark>, bringing other systems closer to it.</p>
 
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/aiorc/engagement.png" alt="Engagement triangle with the profile at its center: Experience, Collection and Training at the corners, linked by Workflow, Interaction and Transformation" width="1081" height="782" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 03</b><span>The engagement loop: experience, collection and training around the profile.</span></figcaption>
-              </figure>
+              </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-loop">
+              <div class="frame cf cf-l">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 03 — Engagement loop</span>
+                  <div class="cf-ctrls">
+                    <button class="cf-btn" type="button" data-l-run>Run a lap</button>
+                    <button class="cf-btn" type="button" data-l-reset>Reset</button>
+                  </div>
+                </div>
+                <div class="cf-stage">
+                  <svg class="cf-l-svg" viewBox="0 0 100 92" role="img" aria-label="Animated loop: a token travels from Experience to Collection to Training and back, along Interaction, Transformation and Workflow. Each completed lap adds a ring of data to the profile at the center.">
+                    <polygon points="50,12 88,78 12,78" fill="#4A6380" />
+                    <g fill="none" stroke="#ECE6DF" stroke-width=".5" stroke-dasharray="1.6 1.2">
+                      <path d="M50 12 L88 78" /><path d="M88 78 L12 78" /><path d="M12 78 L50 12" />
+                    </g>
+                    <g fill="none" stroke="#FFF260" stroke-width="1.8" stroke-linecap="round">
+                      <path data-l-edge pathLength="1" d="M50 12 L88 78" style="stroke-dasharray:1;stroke-dashoffset:1" />
+                      <path data-l-edge pathLength="1" d="M88 78 L12 78" style="stroke-dasharray:1;stroke-dashoffset:1" />
+                      <path data-l-edge pathLength="1" d="M12 78 L50 12" style="stroke-dasharray:1;stroke-dashoffset:1" />
+                    </g>
+                    <g data-l-rings></g>
+                    <circle cx="50" cy="54" r="11" fill="#9BD3FF" />
+                    <text x="50" y="55.4" text-anchor="middle" style="fill:#0A0A0A;font-size:3.6px">PROFILE</text>
+                    <text x="50" y="72.5" text-anchor="middle" class="edge-lbl">Engagement</text>
+                    <text x="50" y="7" text-anchor="middle">Experience</text>
+                    <text x="98" y="87" text-anchor="end">Collection</text>
+                    <text x="2" y="87">Training</text>
+                    <text x="73" y="42" class="edge-lbl">Interaction</text>
+                    <text x="50" y="84" text-anchor="middle" class="edge-lbl">Transformation</text>
+                    <text x="27" y="42" text-anchor="end" class="edge-lbl">Workflow</text>
+                    <circle data-l-token cx="50" cy="12" r="2.6" fill="#FFF260" stroke="#0A0A0A" stroke-width=".8" />
+                  </svg>
+                  <div class="cf-side">
+                    <small>Laps</small>
+                    <div class="cf-l-lap" data-l-lap aria-live="polite">0</div>
+                    <p>Experience → Collection → Training, along Interaction, Transformation and Workflow. Each completed lap adds a ring of data to the profile.</p>
+                  </div>
+                </div>
+                <p class="cf-note">Illustrative: one ring per lap shows the idea, not measured data.</p>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/aiorc/engagement.png" alt="Engagement triangle with the profile at its center: Experience, Collection and Training at the corners, linked by Workflow, Interaction and Transformation" width="1081" height="782" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 03</b><span>The engagement loop: experience, collection and training around the profile.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="row">
+            <div class="main">
 
               <blockquote class="pull rv"><p>Data is key – now, every interaction is a transaction.</p></blockquote>
 
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/aiorc/data_structure.png" alt="Data structure: person, place and thing connect to typology, purchasing, social and surfing data" width="760" height="1106" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 04</b><span>Data structure: person, place and thing.</span></figcaption>
-              </figure>
+              </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-density">
+              <div class="frame cf cf-dd">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 04 — Data density · <span data-dd-count>0 of 4 sources</span></span>
+                </div>
+                <div class="cf-stage">
+                  <div class="cf-dd-srcs" role="group" aria-label="Data sources">
+                    <button class="cf-dd-src" type="button" data-src aria-pressed="false" style="--c:#8EA6D4">Typology</button>
+                    <button class="cf-dd-src" type="button" data-src aria-pressed="false" style="--c:#8EA6D4">Purchasing</button>
+                    <button class="cf-dd-src" type="button" data-src aria-pressed="false" style="--c:#A7DCC0">Social</button>
+                    <button class="cf-dd-src" type="button" data-src aria-pressed="false" style="--c:#5AA9D6">Surfing</button>
+                  </div>
+                  <svg class="cf-dd-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                    <line x1="0" y1="12.5" x2="100" y2="50" /><line x1="0" y1="37.5" x2="100" y2="50" /><line x1="0" y1="62.5" x2="100" y2="50" /><line x1="0" y1="87.5" x2="100" y2="50" />
+                  </svg>
+                  <div class="cf-dd-person" role="img" aria-label="A person's profile that comes into sharper focus as more data sources are combined, while the ability to engage grows faster with each source.">
+                    <div class="cf-dd-orb blur"></div>
+                    <div class="cf-dd-orb sharp"></div>
+                    <span aria-hidden="true">PERSON</span>
+                  </div>
+                  <div class="cf-meter">Ability to engage · illustrative<div class="bar"><div class="fill" data-dd-meter style="--mc:#60FFA2;--w:0"></div></div></div>
+                </div>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/aiorc/data_structure.png" alt="Data structure: person, place and thing connect to typology, purchasing, social and surfing data" width="760" height="1106" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 04</b><span>Every data source has value; combined, the picture of the customer sharpens much faster.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="row">
+            <div class="main">
 
               <ul class="rv">
                 <li>All data, our own and our competitors, equate to an understanding of our customers’ needs.</li>
@@ -182,44 +282,47 @@
                 <p>The pattern profile at the center of the system. We refer to the pattern as the amorphous profile because it continually evolves.</p>
               </article>
 
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/aiorc/profile.png" alt="The profile at the center of the engagement triangle of experience, collection and training" width="600" height="434" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 05</b><span>The profile at the center of the system.</span></figcaption>
-              </figure>
 
               <p class="rv">At the center of the system are the pattern profiles. Patterns are derived from baselines in the system, which are used to compare and match against new data. Based on the match percentage, the system determines which course of action to take.</p>
               <p class="rv">These patterns can reside at various levels within the organization, including corporate, user, and workflow levels. In user patterns, patterns are continually informed by historical behavior, data from other patterns with attributes (people like me), or even, sometimes, a base set of rules (roles &amp; permissions), and real-time interaction with the system (e.g., location, time).</p>
 
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/aiorc/profile2.png" alt="The amorphous profile: purchasing, social, surfing and other streams of a person's behavioral data feed an analysis, across time and location" width="1642" height="780" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 06</b><span>Streams of behavioral data, across time and location, feed the profile.</span></figcaption>
-              </figure>
-
               <p class="rv">Generating a profile consists of 6 core parts.</p>
+              </div>
+          </div>
 
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/aiorc/parts.png" alt="Profile attributes drawn as radar charts: attributes, density, history, pattern and dimensionality, with a preset control" width="1096" height="379" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 07</b><span>The core parts of a profile.</span></figcaption>
-              </figure>
-            </div>
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-profile">
+              <div class="frame cf cf-p">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 05 — The amorphous profile</span>
+                </div>
+                <div class="cf-stage">
+                  <div>
+                    <svg class="cf-p-svg" viewBox="-36 -8 172 112" role="img" aria-label="A profile drawn as a shape on five axes: attributes, density, history, pattern and dimensionality. Through the day, as new real-time signals arrive, the shape keeps changing.">
+                      <g data-p-grid></g>
+                      <polygon data-p-shape fill="rgba(96,194,255,.4)" stroke="#60C2FF" stroke-width="1.2" stroke-linejoin="round" />
+                    </svg>
+                    <div class="cf-p-time">
+                      <label for="cf-p-range">Time of day · illustrative</label>
+                      <input id="cf-p-range" type="range" min="0" max="100" value="0" data-p-time />
+                      <div class="ticks" aria-hidden="true"><span>08:30</span><span>14:30</span><span>20:32</span></div>
+                    </div>
+                  </div>
+                  <div class="cf-side">
+                    <small>Real-time signals</small>
+                    <div class="cf-p-signals" data-p-signals aria-live="polite"></div>
+                    <small>Preset</small>
+                    <div class="cf-p-preset" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                    <p style="margin-top:12px">Patterns are informed by history, by people like me, by rules and by real-time interaction, so the profile is never the same twice.</p>
+                  </div>
+                </div>
+                <p class="cf-note">Illustrative: shapes, times and signals show the idea, not measured values.</p>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/aiorc/profile2.png" alt="The amorphous profile: purchasing, social, surfing and other streams of a person's behavioral data feed an analysis, across time and location" width="1642" height="780" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 05</b><span>The amorphous profile: its parts reshape as new signals arrive.</span></figcaption>
+            </figure>
           </div>
 
           <div class="row">
@@ -254,7 +357,7 @@
                     <img src="../assets/images/cases/aiorc/digital_twin_1.png" alt="A digital human advisor welcomes the user beside a panel of product, subscription and service suggestions" width="1920" height="1080" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 08</b><span>Connected engagement: the digital human welcomes the user.</span></figcaption>
+                <figcaption><b>Fig. 06</b><span>Connected engagement: the digital human welcomes the user.</span></figcaption>
               </figure>
 
               <div class="sub-entry rv"><small>Core element</small><h3>Personalized Digital Advisor</h3></div>
@@ -270,7 +373,7 @@
                     <img src="../assets/images/cases/aiorc/digital_twin_2.png" alt="Three-panel design: the stage with the digital human, the canvas with results, and a panel that slides open with details" width="2164" height="442" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 09</b><span>The stage, the canvas and the panel.</span></figcaption>
+                <figcaption><b>Fig. 07</b><span>The stage, the canvas and the panel.</span></figcaption>
               </figure>
 
               <div class="sub-entry rv"><small>Core element</small><h3>Virtual Explainer</h3></div>
@@ -283,7 +386,7 @@
                     <img src="../assets/images/cases/aiorc/digital_twin_3.png" alt="A browse laptops page with the AI advisor offering help in a popover" width="1920" height="1080" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 10</b><span>The virtual explainer offering help while browsing.</span></figcaption>
+                <figcaption><b>Fig. 08</b><span>The virtual explainer offering help while browsing.</span></figcaption>
               </figure>
               <p class="rv">For sales agents, the AI assistant even gives additional help. If a user requests further assistance or a subject is better handled by a human, the AI can identify which sales agent is responsible for that user and trigger a notification so the human agent can get in touch with the user when help is needed.</p>
               <figure class="fig rv">
@@ -294,7 +397,7 @@
                     <img src="../assets/images/cases/aiorc/digital_twin_4.png" alt="A sales agent's view with a notification that a customer asked for help during the purchase" width="803" height="692" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 11</b><span>The responsible sales agent is notified when a user needs help.</span></figcaption>
+                <figcaption><b>Fig. 09</b><span>The responsible sales agent is notified when a user needs help.</span></figcaption>
               </figure>
 
               <div class="sub-entry rv"><small>Core element</small><h3>Evolving experience</h3></div>
@@ -307,7 +410,7 @@
                     <img src="../assets/images/cases/aiorc/digital_twin_5.png" alt="The assistant adapting through the day for three different users at 8:30 AM, 1:30 PM and 8:32 PM" width="2173" height="1270" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 12</b><span>The experience adapting to different users through the day.</span></figcaption>
+                <figcaption><b>Fig. 10</b><span>The experience adapting to different users through the day.</span></figcaption>
               </figure>
             </div>
           </div>
@@ -330,7 +433,7 @@
                     <img src="../assets/images/cases/aiorc/featured1.png" alt="The advisor answering a request for a laptop that can run SolidWorks with two recommended laptops" width="1920" height="1080" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 13</b><span>Recommendations for a laptop that can run SolidWorks.</span></figcaption>
+                <figcaption><b>Fig. 11</b><span>Recommendations for a laptop that can run SolidWorks.</span></figcaption>
               </figure>
               <p class="rv">As you navigate and request specific products or services, the assistant will cross-reference the information it has about you and find the best match between your profile and what you’re looking for.</p>
               <p class="rv">In order to convey that information in a good way to the user, metrics will be displayed - and note that those metrics will be chosen depending on the context of the request, so for example, if the user is requesting a laptop to run SolidWorks (which requires a lot of GPU power), it will give you metrics about rendering and stability.</p>
@@ -342,7 +445,7 @@
                     <img src="../assets/images/cases/aiorc/featured2.png" alt="A recommended laptop with SolidWorks metrics for 3D render speed and GPU stability, next to its spec sheet" width="876" height="722" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 14</b><span>Context-specific metrics: rendering speed and GPU stability.</span></figcaption>
+                <figcaption><b>Fig. 12</b><span>Context-specific metrics: rendering speed and GPU stability.</span></figcaption>
               </figure>
 
               <div class="sub-entry rv"><small>Feature</small><h3>Collaborative workspace</h3></div>
@@ -355,7 +458,7 @@
                     <img src="../assets/images/cases/aiorc/featured3.png" alt="Collaborative workspace with six numbered areas: product view, interactive space, configuration panel, AI agent panel, video meeting and chat" width="1920" height="1080" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 15</b><span>The collaborative workspace and its six areas.</span></figcaption>
+                <figcaption><b>Fig. 13</b><span>The collaborative workspace and its six areas.</span></figcaption>
               </figure>
               <div class="specimen" data-reveal="lift">
                 <header><h3>Collaborative workspace</h3><span>6 areas</span></header>
@@ -379,7 +482,7 @@
                     <img src="../assets/images/cases/aiorc/featured4.png" alt="User thermometer: a sales agent's customer list highlights a customer who needs help, then shows the help request" width="1752" height="692" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 16</b><span>The user thermometer flags a customer who needs help.</span></figcaption>
+                <figcaption><b>Fig. 14</b><span>The user thermometer flags a customer who needs help.</span></figcaption>
               </figure>
 
               <div class="sub-entry rv"><small>Feature</small><h3>Digital Advisor Log</h3></div>
@@ -392,7 +495,7 @@
                     <img src="../assets/images/cases/aiorc/featured5.png" alt="Digital advisor log beside the workspace, numbered for request processing, product recommendation and action line summary" width="1920" height="1080" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 17</b><span>The digital advisor log beside the collaborative workspace.</span></figcaption>
+                <figcaption><b>Fig. 15</b><span>The digital advisor log beside the collaborative workspace.</span></figcaption>
               </figure>
               <div class="specimen" data-reveal="lift">
                 <header><h3>Digital Advisor Log</h3><span>3 steps</span></header>

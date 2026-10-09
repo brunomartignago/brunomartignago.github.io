@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../css/layout.css" />
   <link rel="stylesheet" href="../css/motion.css" />
   <link rel="stylesheet" href="../css/journal.css" />
+  <link rel="stylesheet" href="../css/figures.css" />
 
   <!-- Flags JS before first paint so pre-animation states never flash; without JS everything renders at rest -->
   <script>
@@ -25,6 +26,8 @@
   </script>
   <script src="../js/motion.js" defer></script>
   <script src="../js/journal.js" defer></script>
+  <script src="../js/figures/core.js" defer></script>
+  <script src="../js/figures/cockpit.js" defer></script>
 
   <!-- Page transitions: must run before first render, so no defer; wait for the hero media -->
   <link rel="expect" href="#case-hero-media" blocking="render" />
@@ -130,30 +133,76 @@
                 <div class="qcard qcard--green" data-reveal="lift" style="--i:2"><span class="qn" aria-hidden="true">3</span><p>Extra information</p><span class="sub">Key for providing users with details about the visualization and highlighting insights and trends.</span></div>
               </div>
 
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/cockpit/card.png" alt="A KPI card with its heading outlined in red, its elements in blue and its extra information in green" width="766" height="512" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 03</b><span>Anatomy of a KPI card: heading (red), elements (blue) and extra information (green).</span></figcaption>
-              </figure>
+              </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-card">
+              <div class="frame cf cf-k">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 03 — Anatomy of a KPI card</span>
+                  <div class="cf-ctrls"><button class="cf-btn" type="button" data-k-toggle aria-pressed="false">Explode card</button></div>
+                </div>
+                <div class="cf-stage">
+                  <div class="cf-k-rows" role="img" aria-label="The Site Search Visits KPI card, 178,318 visits, separates into its three parts: the heading with the title and actions, the elements with the number and weekly trend chart, and the extra information with an insight.">
+                    <div class="cf-k-outline" aria-hidden="true"></div>
+                    <div class="cf-k-part cf-k-p1" style="--c:#FD93E2;--cd:#8B487A" aria-hidden="true">
+                      <span class="cf-k-skin"></span><span class="cf-k-tag">1 · Heading</span>
+                      <div class="cf-k-title">Site Search Visits <span>⧉ ☰</span></div>
+                      <p class="cf-k-sub">Shows how many visits from users who went to dell.com and visited search</p>
+                      <p class="cf-k-sub">Informs about the customer engagement with Dell.com search</p>
+                    </div>
+                    <div class="cf-k-part cf-k-p2" style="--c:#60C2FF;--cd:#2157A9" aria-hidden="true">
+                      <span class="cf-k-skin"></span><span class="cf-k-tag">2 · Elements</span>
+                      <div class="cf-k-big">178,318</div>
+                      <div class="cf-k-avg">Avg | 179,289 IB | 200K goal</div>
+                      <svg class="cf-k-chart" viewBox="0 0 200 60" preserveAspectRatio="none">
+                        <g stroke="#E3E3E3" stroke-width="1"><line x1="0" y1="10" x2="200" y2="10" /><line x1="0" y1="32" x2="200" y2="32" /><line x1="0" y1="50" x2="200" y2="50" /></g>
+                        <polyline points="4,10 44,44 86,30 128,42 170,16 196,52" fill="none" stroke="#2157A9" stroke-width="2" vector-effect="non-scaling-stroke" />
+                      </svg>
+                    </div>
+                    <div class="cf-k-part cf-k-p3" style="--c:#60FFA2;--cd:#318D57" aria-hidden="true">
+                      <span class="cf-k-skin"></span><span class="cf-k-tag">3 · Extra information</span>
+                      <p class="cf-k-sub"><b>Insight:</b> Shows how many visits from users who went to dell.com and visited search</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/cockpit/card.png" alt="A KPI card with its heading outlined in red, its elements in blue and its extra information in green" width="766" height="512" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 03</b><span>Anatomy of a KPI card: heading, elements and extra information.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="row">
+            <div class="main">
 
               <p class="rv">Building the cards this way and following a strict sizing format allowed us to create a highly interactive dashboard where you can insert cards of diverse sizes and content and <mark class="hl">make them fit like Lego pieces</mark>.</p>
 
-              <figure class="fig rv">
-                <button type="button" class="fig-zoom">
-                  <span class="frame">
-                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
-                    <span class="sr-only">Enlarge figure: </span>
-                    <img src="../assets/images/cases/cockpit/structure.png" alt="Dashboard grid of card slots sized 368 × 210, 368 × 436 and 752 × 436" width="1552" height="920" loading="lazy" />
-                  </span>
-                </button>
-                <figcaption><b>Fig. 04</b><span>The dashboard structure: card slots in fixed sizes that fit together.</span></figcaption>
-              </figure>
-            </div>
+              </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-grid">
+              <div class="frame cf cf-g">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 04 — The dashboard grid</span>
+                  <div class="cf-ctrls">
+                    <button class="cf-btn" type="button" data-g-rearrange>Rearrange</button>
+                    <button class="cf-btn" type="button" data-g-sizes aria-pressed="false">Show sizes</button>
+                  </div>
+                </div>
+                <div class="cf-stage">
+                  <div class="cf-g-grid" role="img" aria-label="A four-column dashboard grid filled with KPI cards in three fixed sizes: 368 by 210, 368 by 436 and 752 by 436. Rearranging packs the same cards into a different layout that still fits exactly."></div>
+                </div>
+                <p class="cf-note">Card sizes are the real slot sizes (368 × 210, 368 × 436, 752 × 436); card values come from the dashboard.</p>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/cockpit/structure.png" alt="Dashboard grid of card slots sized 368 × 210, 368 × 436 and 752 × 436" width="1552" height="920" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 04</b><span>The dashboard structure: cards in fixed sizes that fit together like Lego pieces.</span></figcaption>
+            </figure>
           </div>
         </section>
 
@@ -162,6 +211,38 @@
           <div class="row">
             <div class="main">
               <header class="entry-head rv"><span class="entry-num" aria-hidden="true">03</span><div><small>Entry 03</small><h2 id="e3-title">Visualization modes</h2></div></header>
+              </div>
+          </div>
+
+          <div class="row">
+            <figure class="fig wide ifig rv" id="cf-modes">
+              <div class="frame cf cf-v mode-detailed">
+                <div class="cf-bar">
+                  <span class="cf-label">Fig. 05 — One dashboard, three modes</span>
+                  <div class="cf-ctrls" role="group" aria-label="Visualization mode">
+                    <button class="cf-btn" type="button" data-mode="detailed" aria-pressed="true">Detailed</button>
+                    <button class="cf-btn" type="button" data-mode="compact" aria-pressed="false">Compact</button>
+                    <button class="cf-btn" type="button" data-mode="slide" aria-pressed="false">Slide show</button>
+                  </div>
+                </div>
+                <div class="cf-stage">
+                  <div class="cf-v-dash" role="region" aria-label="Dashboard preview">
+                    <button class="cf-btn cf-v-nav" type="button" data-v-prev aria-label="Previous card">‹</button>
+                    <button class="cf-btn cf-v-nav" type="button" data-v-next aria-label="Next card">›</button>
+                  </div>
+                  <p class="cf-v-count" data-v-count aria-live="polite">1 / 8</p>
+                </div>
+                <p class="cf-note">Card values come from the dashboard screenshots below; the sparklines are illustrative.</p>
+              </div>
+              <div class="frame ifig-fallback">
+                <img src="../assets/images/cases/cockpit/detailed.png" alt="Search KPI Performance dashboard in detailed view: large cards with descriptions and insights" width="1920" height="1080" loading="lazy" />
+              </div>
+              <figcaption><b>Fig. 05</b><span>The same cards in the three visualization modes.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="row">
+            <div class="main">
 
               <div class="sub-entry rv"><small>Mode 1 · default</small><h3>Detailed view</h3></div>
               <p class="rv">Default view. It has bigger cards with accessible extra information to help users understand the meaning and insights of the charts.</p>
@@ -173,7 +254,7 @@
                     <img src="../assets/images/cases/cockpit/detailed.png" alt="Search KPI Performance dashboard in detailed view: large cards with descriptions and insights" width="1920" height="1080" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 05</b><span>Detailed view.</span></figcaption>
+                <figcaption><b>Fig. 06</b><span>Detailed view.</span></figcaption>
               </figure>
 
               <div class="sub-entry rv"><small>Mode 2</small><h3>Compact view</h3></div>
@@ -186,7 +267,7 @@
                     <img src="../assets/images/cases/cockpit/compact.png" alt="The same dashboard in compact view, showing more, smaller cards at once" width="1920" height="1080" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 06</b><span>Compact view.</span></figcaption>
+                <figcaption><b>Fig. 07</b><span>Compact view.</span></figcaption>
               </figure>
 
               <div class="sub-entry rv"><small>Mode 3</small><h3>Slide show view</h3></div>
@@ -199,7 +280,7 @@
                     <img src="../assets/images/cases/cockpit/slide.png" alt="Slide show view showing one card at a time, card 1 of 8" width="1920" height="1080" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 07</b><span>Slide show view.</span></figcaption>
+                <figcaption><b>Fig. 08</b><span>Slide show view.</span></figcaption>
               </figure>
             </div>
           </div>
@@ -220,7 +301,7 @@
                     <button type="button" class="video-play" aria-label="Play video">▶</button>
                   </div>
                 </span>
-                <figcaption><b>Fig. 08</b><span>Viewing, creating and comparing pins.</span></figcaption>
+                <figcaption><b>Fig. 09</b><span>Viewing, creating and comparing pins.</span></figcaption>
               </figure>
               <p class="rv"><mark class="hl">Pins are a pivot point of this project.</mark> You can mark specific points on the charts and interact with them. This allows users to analyze data, understand graph behavior, and expand insight gathering by building charts with pin data.</p>
               <p class="rv">In this demo, we showcase how you can view specific pins by clicking on items within the right menu, create new pins by selecting which point in which chart you want to add a pin and adding the name and description to it, and how you can use existing pins to create tables to compare pin values. This feature allows users to select existing pins, choose the comparison type (difference, sum, etc.), and create a table that can be viewed and shared with anyone.</p>
@@ -235,7 +316,7 @@
                     <img src="../assets/images/cases/cockpit/alert1.png" alt="Dashboard with the alerts panel open, listing an alert on a weekly trend chart" width="1920" height="1080" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 09</b><span>The alerts panel.</span></figcaption>
+                <figcaption><b>Fig. 10</b><span>The alerts panel.</span></figcaption>
               </figure>
               <figure class="fig rv">
                 <button type="button" class="fig-zoom">
@@ -245,7 +326,7 @@
                     <img src="../assets/images/cases/cockpit/alert2.png" alt="Add new alert form with a 90% marker value and the threshold line drawn on the chart" width="1516" height="898" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 10</b><span>Adding an alert: the threshold becomes a horizontal line on the chart.</span></figcaption>
+                <figcaption><b>Fig. 11</b><span>Adding an alert: the threshold becomes a horizontal line on the chart.</span></figcaption>
               </figure>
               <p class="rv">Alerts work like a threshold value you can add to a chart to mark a value on the Y axis, creating a horizontal line throughout the visual. If the chart exceeds or falls below this value, a notification is sent to the people you list when creating the alert. This allows users to monitor behaviors and trends on specific KPIs and metrics.</p>
 
@@ -259,7 +340,7 @@
                     <img src="../assets/images/cases/cockpit/event1.png" alt="Dashboard with the events panel open, listing a feature launch event" width="1920" height="1080" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 11</b><span>The events panel.</span></figcaption>
+                <figcaption><b>Fig. 12</b><span>The events panel.</span></figcaption>
               </figure>
               <figure class="fig rv">
                 <button type="button" class="fig-zoom">
@@ -269,7 +350,7 @@
                     <img src="../assets/images/cases/cockpit/event2.png" alt="Add new event form with the event drawn as a vertical line on the chart" width="1516" height="898" loading="lazy" />
                   </span>
                 </button>
-                <figcaption><b>Fig. 12</b><span>Adding an event: a vertical line on the chart.</span></figcaption>
+                <figcaption><b>Fig. 13</b><span>Adding an event: a vertical line on the chart.</span></figcaption>
               </figure>
               <p class="rv">Events mark a value on the X axis, creating a vertical line on the chart. This allows users to follow behaviors and trends starting from certain points in time and/or checkpoints. This becomes valuable when comparing sets of data in different years. You can set up events to control the time frame and use pins to generate tables for value comparison.</p>
 
@@ -282,7 +363,7 @@
                     <button type="button" class="video-play" aria-label="Play video">▶</button>
                   </div>
                 </span>
-                <figcaption><b>Fig. 13</b><span>Creating a KPI card.</span></figcaption>
+                <figcaption><b>Fig. 14</b><span>Creating a KPI card.</span></figcaption>
               </figure>
 
               <div class="sub-entry rv"><small>How-to</small><h3>Creating and sourcing elements</h3></div>
@@ -294,7 +375,7 @@
                     <button type="button" class="video-play" aria-label="Play video">▶</button>
                   </div>
                 </span>
-                <figcaption><b>Fig. 14</b><span>Creating and sourcing an element.</span></figcaption>
+                <figcaption><b>Fig. 15</b><span>Creating and sourcing an element.</span></figcaption>
               </figure>
 
               <p class="sign-off rv">Thank you for reading</p>
