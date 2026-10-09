@@ -13,6 +13,7 @@
   /* Typography */
   --font-body: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: 'Black Han Sans', system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
   /* Font weights */
   --weight-regular: 400;
@@ -29,6 +30,14 @@
   /* Radius */
   --radius-sm: 15px;
   --radius-lg: 30px;
+
+  /* Motion */
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 600ms;
+  --ease-out: cubic-bezier(.22,1,.36,1);
+  --ease-land: cubic-bezier(.34,1.56,.64,1);   /* small overshoot for "landing" */
+  --shadow-offset: 6px;
 }
 
 .brand {

@@ -5,15 +5,32 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>Bruno Martignago — Product Designer</title>
 
-	<link rel="stylesheet" href="css/reset.css" />
+	<link rel="icon" href="favicon.ico" sizes="any" />
+	<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
 	<link rel="stylesheet" href="css/tokens.css" />
 	<link rel="stylesheet" href="css/layout.css" />
 	<link rel="stylesheet" href="css/components.css" />
+	<link rel="stylesheet" href="css/motion.css" />
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Black+Han+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Black+Han+Sans&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+
+	<!-- Flags JS before first paint so pre-animation states never flash; without JS everything renders at rest -->
+	<script>
+		document.documentElement.classList.add("js");
+		// If motion.js never loads, drop the flag so nothing stays in a pre-animation state
+		addEventListener("load", () => { if (!window.Motion) document.documentElement.classList.remove("js"); });
+	</script>
+	<script src="js/motion.js" defer></script>
+	<script src="js/anatomy.js" defer></script>
+	<script src="js/gaze.js" defer></script>
+
+	<!-- Page transitions: must run before first render, so no defer; wait for the tiles to be parsed -->
+	<link rel="expect" href="#other-projects" blocking="render" />
+	<script src="js/transitions.js"></script>
 
 </head>
 
@@ -39,7 +56,7 @@
       class="header-btn"
       download
     >
-      Download my resume
+      <span class="header-btn-label">Download my resume</span>
         <span class="header-btn-icon-wrapper">
 			<img
 				src="assets/icons/download.png"
@@ -55,6 +72,7 @@
     </a>
 
   </div>
+  <div class="header-progress" aria-hidden="true"></div>
 </header>
 
 
@@ -62,20 +80,21 @@
   <div class="hero-inner">
 
     <div class="hero-content">
-		<p class="hero-subtitle">
+		<p class="hero-subtitle hero-hello hero-fade" style="--d:0ms">
+	    	<img src="assets/images/avatar_hex.png" alt="" class="hero-avatar" width="144" height="146" />
 	    	Hey! I'm Bruno. Since 2019 I build
 	    </p>
 
 		<h1 class="hero-title">
-	    	INNOVATION THROUGH<br \>
-	    	DESIGN AND RESEARCH.
+	    	<span class="hero-line"><span style="--i:0">INNOVATION THROUGH</span></span>
+	    	<span class="hero-line"><span style="--i:1"><span class="hl hl-yellow" style="--i:0">DESIGN</span> AND <span class="hl hl-cyan" style="--i:1">RESEARCH.</span></span></span>
 		</h1>
 
-		<p class="hero-subtitle">
+		<p class="hero-subtitle hero-fade" style="--d:700ms">
 	    	Here you can see some of my favourite pieces from it.
 		</p>
 
-     	<div class="hero-actions">
+     	<div class="hero-actions hero-fade" style="--d:850ms">
 	        <a href="mailto:bruno_martignago@hotmail.com" class="btn btn-hero1">
 	          Email me
 	          <img src="assets/icons/email.png" alt="" class="btn-icon" />
@@ -87,11 +106,40 @@
 		</div>
     </div>
 
-    <div class="hero-image">
-      <img 
-        src="assets/images/pic_hero.png" 
-        alt="Bruno Martignago portrait"
-      />
+    <div class="hero-stage">
+      <div
+        class="anatomy"
+        id="anatomy"
+        role="img"
+        aria-label="Animated diagram: a web page layout is scanned and its elements are classified into categories like navigation, hero, cards and footer"
+      >
+        <div class="viz" aria-hidden="true">
+          <div class="viz-bar">
+            <span class="viz-dots"><i style="--dot:#FD93E2"></i><i style="--dot:#FFF260"></i><i style="--dot:#60FFA2"></i></span>
+            <span class="viz-title">page-anatomy · classifier</span>
+            <span class="viz-chip" data-state="classified">classified</span>
+          </div>
+          <div class="viz-body">
+            <noscript>
+              <!-- Static, fully classified landing page (same data as LAYOUTS[0] in js/anatomy.js) -->
+              <div class="ae cls" style="left:4%;top:4%;width:92%;height:8%;--c:#60C2FF;--cd:#2157A9"></div>
+              <div class="ae cls" style="left:4%;top:16%;width:55%;height:31%;--c:#FFF260;--cd:#847E30"></div>
+              <div class="ae cls" style="left:62%;top:16%;width:34%;height:31%;--c:#FD93E2;--cd:#8B487A"></div>
+              <div class="ae cls" style="left:4%;top:51%;width:29%;height:22%;--c:#60FFA2;--cd:#318D57"></div>
+              <div class="ae cls" style="left:35.5%;top:51%;width:29%;height:22%;--c:#60FFA2;--cd:#318D57"></div>
+              <div class="ae cls" style="left:67%;top:51%;width:29%;height:22%;--c:#60FFA2;--cd:#318D57"></div>
+              <div class="ae cls" style="left:4%;top:77%;width:58%;height:8%;--c:#60E7FF;--cd:#348796"></div>
+              <div class="ae cls" style="left:66%;top:77%;width:30%;height:8%;--c:#FFB37A;--cd:#9A4F1C"></div>
+              <div class="ae cls" style="left:4%;top:89%;width:92%;height:7%;--c:#D9D1CA;--cd:#5B524B"></div>
+            </noscript>
+            <div class="anatomy-scan"></div>
+          </div>
+          <div class="viz-foot">
+            <span>sample 01 · landing page</span>
+            <span>9 elements · 7 classes</span>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -104,7 +152,7 @@
 
   <div class="services-grid">
 
-    <article class="card card-services1">
+    <article class="card card-services1" data-reveal="lift" style="--i:0">
       <span class="card-label">Product Design</span>
 
       <h3 class="card-title">
@@ -125,7 +173,7 @@
       </a>
     </article>
 
-    <article class="card card-services2">
+    <article class="card card-services2" data-reveal="lift" style="--i:1">
       <span class="card-label">Research</span>
 
       <h3 class="card-title">
@@ -146,7 +194,7 @@
       </a>
     </article>
 
-    <article class="card card-services3">
+    <article class="card card-services3" data-reveal="lift" style="--i:2">
       <span class="card-label">Artificial Intelligence</span>
 
       <h3 class="card-title">
@@ -174,16 +222,48 @@
   <h2 class="body-heading">Featured Projects</h2>
   <div class="featured-projects-inner">
 
-    <div class="project reverse">
-      <div class="project-image">
-        <img src="assets/images/research_1.png" alt=" Visual patterns in web page generation">
+    <div class="project reverse" data-reveal="project">
+      <div class="project-image project-slide">
+        <!-- Animated version of assets/images/research_1.png; draws in on view, replays on hover/click -->
+        <svg class="diagram" id="diagram" viewBox="0 0 796 600" role="img" aria-label="Diagram: a web page wireframe is classified into two color-coded layout templates">
+          <rect width="796" height="600" rx="16" fill="#EFDFC9"/>
+          <rect class="d-fill" x="100" y="179" width="231" height="241" fill="#666666" style="--d:500ms"/>
+          <g fill="none" stroke="#A8A8A8" stroke-width="1.5">
+            <rect class="d-stroke" pathLength="1" x="100" y="179" width="231" height="241" style="--d:0ms"/>
+            <path class="d-stroke" pathLength="1" d="M100 197H331M100 209H331M100 302H331M100 397H331" style="--d:150ms"/>
+            <path class="d-stroke" pathLength="1" d="M216 209V302M274 209V302" style="--d:300ms"/>
+            <path class="d-stroke" pathLength="1" d="M274 218H331M274 228H331M274 238H331M274 248H331M274 258H331M274 268H331M274 278H331M274 288H331" stroke-width="1" style="--d:420ms" opacity=".6"/>
+          </g>
+          <g fill="none" stroke="#5A5A5A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path class="d-stroke" pathLength="1" d="M348 295 446 197" style="--d:850ms"/>
+            <path class="d-stroke" pathLength="1" d="M348 295 446 392" style="--d:850ms"/>
+            <path class="d-stroke" pathLength="1" d="M432 197H446V211" style="--d:1150ms"/>
+            <path class="d-stroke" pathLength="1" d="M432 392H446V378" style="--d:1150ms"/>
+          </g>
+          <g>
+            <rect class="d-block" x="464" y="41" width="231" height="17" fill="#9A9A9A" style="--d:1250ms"/>
+            <rect class="d-block" x="464" y="58" width="231" height="12" fill="#5C2A7A" style="--d:1330ms"/>
+            <rect class="d-block" x="464" y="70" width="174" height="94" fill="#BB6720" style="--d:1410ms"/>
+            <rect class="d-block" x="638" y="70" width="57" height="94" fill="#1C3397" style="--d:1490ms"/>
+            <rect class="d-block" x="464" y="164" width="231" height="94" fill="#BA2121" style="--d:1570ms"/>
+            <rect class="d-block" x="464" y="258" width="231" height="23" fill="#1E0A28" style="--d:1650ms"/>
+          </g>
+          <g>
+            <rect class="d-block" x="464" y="319" width="231" height="17" fill="#9A9A9A" style="--d:1350ms"/>
+            <rect class="d-block" x="464" y="336" width="231" height="12" fill="#5C2A7A" style="--d:1430ms"/>
+            <rect class="d-block" x="464" y="348" width="116" height="94" fill="#BB6720" style="--d:1510ms"/>
+            <rect class="d-block" x="580" y="348" width="115" height="94" fill="#BBA027" style="--d:1590ms"/>
+            <rect class="d-block" x="464" y="442" width="231" height="94" fill="#BA2121" style="--d:1670ms"/>
+            <rect class="d-block" x="464" y="536" width="231" height="23" fill="#1E0A28" style="--d:1750ms"/>
+          </g>
+        </svg>
       </div>
 
 	      <div class="project-content">
 
 	      	 <div class="project-tags">
-		          <span class="tag tag-yellow">Research</span>
-		          <span class="tag tag-green">User Interface</span>
+		          <span class="tag tag-yellow" style="--i:0">Research</span>
+		          <span class="tag tag-green" style="--i:1">User Interface</span>
 		      </div>
 	        <h3 class="project-title">
 	          Visual patterns in web page generation
@@ -199,16 +279,17 @@
       	  </div>
     </div>
 
-    <div class="project">
-      <div class="project-image">
-        <img src="assets/images/research_2.png" alt="Cognitive Load influence on page navigation">
+    <div class="project" data-reveal="project">
+      <div class="project-image project-slide">
+        <!-- js/gaze.js swaps this for the animated attention map; the image stays if it can't -->
+        <img src="assets/images/research_2.png" alt="Cognitive Load influence on page navigation" data-gaze>
       </div>
 
       <div class="project-content">
 
       	 <div class="project-tags">
-	          <span class="tag tag-yellow">Research</span>
-	          <span class="tag tag-pink">User Experiencee</span>
+	          <span class="tag tag-yellow" style="--i:0">Research</span>
+	          <span class="tag tag-pink" style="--i:1">User Experience</span>
 	      </div>
         <h3 class="project-title">
           Cognitive Load influence on page navigation
@@ -220,24 +301,26 @@
           This study can help designers understand how content hierarchy and placement can be more important than the visuals themselves.
         </p>
 
-        <a href="" class="card-cta" style=" font-size: 16px">
+        <span class="card-cta card-cta-muted" style=" font-size: 16px">
           Coming soon →
-        </a>
+        </span>
   	  </div>
     </div>
 
   </div>
 </section>
 
-<section class="other-projects">
+<section class="other-projects" id="other-projects">
   <h2 class="body-heading">Other Projects</h2>
   <div class="other-projects-grid">
 
     <a
       href="pages/aiorc.html"
       class="project-tile"
-      style="--tile-image: url('../assets/images/aiorc_thumb.png');"
+      style="--tile-image: url('../assets/images/aiorc_thumb.png'); --i:0"
+      data-reveal="lift"
     >
+      <video class="tile-video" data-src="assets/videos/previews/aiorc.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
       <div class="project-tile-content">
         <h3 class="project-tile-title">
           AI Orchestration - Digital Twin
@@ -251,8 +334,10 @@
     <a
       href="pages/cockpit.html"
       class="project-tile"
-      style="--tile-image: url('../assets/images/cockpit_thumb.png');"
+      style="--tile-image: url('../assets/images/cockpit_thumb.png'); --i:1"
+      data-reveal="lift"
     >
+      <video class="tile-video" data-src="assets/videos/previews/cockpit.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
       <div class="project-tile-content">
         <h3 class="project-tile-title">
           Cockpit Project
@@ -266,8 +351,10 @@
     <a
       href="pages/task.html"
       class="project-tile"
-      style="--tile-image: url('../assets/images/task_mng_thumb.jpg');"
+      style="--tile-image: url('../assets/images/task_mng_thumb.jpg'); --i:2"
+      data-reveal="lift"
     >
+      <span class="tile-pan" aria-hidden="true"></span>
       <div class="project-tile-content">
         <h3 class="project-tile-title">
           Family Task Manager
@@ -298,10 +385,10 @@
 
     <div class="about-socials">
       <a href="https://www.linkedin.com/in/bruno-martignago/" target="_blank" class="btn btn-socials" aria-label="LinkedIn">
-        <img src="assets/icons/linkedin.png" alt="">
+        <img src="assets/icons/Linkedin.png" alt="">
       </a>
       <a href="https://www.behance.net/brunomartignago" target="_blank" class="btn btn-socials" aria-label="Behance">
-        <img src="assets/icons/Behance.png" alt="">
+        <img src="assets/icons/behance.png" alt="">
       </a>
       <a href="mailto:bruno_martignago@hotmail.com" class="btn btn-socials" aria-label="Email">
         <img src="assets/icons/email.png" alt="">
@@ -312,25 +399,30 @@
 
 <section class="footer-cta">
   <div class="footer-cta-inner">
-    <h2 style=" color: #FFFFFF; margin-bottom: 32px;">
-    	Thank you for visiting!
-		<br />
-		Reach out and let’s chat!
-	</h2>
+    <p class="footer-kicker">Thank you for visiting!</p>
 
+    <!-- js/motion.js splits this into per-letter spans (aria-hidden); the label keeps it readable -->
+    <h2 class="talk" aria-label="Let's talk" data-reveal="talk">LET'S TALK</h2>
+
+    <p class="footer-sub">Reach out and let’s chat.</p>
+
+    <!-- Magnetic buttons: the pull goes on the .mag wrapper so the buttons' own press effect still works -->
     <div class="footer-cta-actions">
-      <a href="mailto:bruno_martignago@hotmail.com" class="btn btn-footer">
-        Email me
-        <img src="assets/icons/email.png" alt="" class="btn-icon" />
-      </a>
+      <span class="mag">
+        <a href="mailto:bruno_martignago@hotmail.com" class="btn btn-footer">
+          Email me
+          <img src="assets/icons/email.png" alt="" class="btn-icon" />
+        </a>
+      </span>
 
-      <a 
-	      href="assets/Bruno-Martignago-Resume.pdf" 
-	      class="header-btn"
-	      download
-	    >
-	      Download my resume
-	        <span class="header-btn-icon-wrapper">
+      <span class="mag">
+        <a
+	        href="assets/Bruno-Martignago-Resume.pdf"
+	        class="header-btn"
+	        download
+	      >
+	        Download my resume
+	          <span class="header-btn-icon-wrapper">
 				<img
 					src="assets/icons/download.png"
 					alt=""
@@ -342,7 +434,9 @@
 					class="header-icon header-icon-hover"
 				/>
 			 </span>
-	    </a>
+	      </a>
+      </span>
+    </div>
   </div>
 </section>
 </body>

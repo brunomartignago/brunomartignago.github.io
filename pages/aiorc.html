@@ -9,6 +9,10 @@
   <link rel="stylesheet" href="../css/layout.css" />
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/case_dark.css" />
+
+  <!-- Page transitions: must run before first render, so no defer; wait for the hero media -->
+  <link rel="expect" href="#case-hero-media" blocking="render" />
+  <script src="../js/transitions.js"></script>
 </head>
 
 <body style="background-color: #374152;">
@@ -65,7 +69,7 @@
 
       </p>
 
-      <div class="video-container">
+      <div class="video-container" id="case-hero-media" data-vt-hero>
         <video
           autoplay
           muted

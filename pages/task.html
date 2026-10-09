@@ -9,6 +9,10 @@
   <link rel="stylesheet" href="../css/layout.css" />
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/case.css" />
+
+  <!-- Page transitions: must run before first render, so no defer; wait for the hero media -->
+  <link rel="expect" href="#case-hero-media" blocking="render" />
+  <script src="../js/transitions.js"></script>
 </head>
 
 <body style="background-color: #FFFFFF;">
@@ -70,6 +74,8 @@
           src="../assets/images/cases/task/hero.png"
           alt="hero"
           class="case-hero-image reveal"
+          id="case-hero-media"
+          data-vt-hero
           loading="lazy"
         />
 

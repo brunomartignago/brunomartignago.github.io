@@ -1,25 +1,353 @@
-.hero-image img {
+/* ---------- Hero visual: page anatomy (js/anatomy.js) ---------- */
+
+.hero-stage {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+  perspective: 1000px;
+}
+
+.anatomy {
   width: 100%;
   max-width: 480px;
-  height: auto;
-  display: block;
-  margin-left: auto;
+  transform-style: preserve-3d;
+  /* Shadow offset; shifted opposite to the tilt by JS */
+  --sx: 8px;
+  --sy: 8px;
+}
+
+.viz {
+  overflow: hidden;
+  text-align: left;
+  background-color: #FFFFFF;
+  border: 3px solid var(--text-primary);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--sx) var(--sy) 0 0 var(--text-primary);
+}
+
+.viz-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-bottom: 3px solid var(--text-primary);
+  background-color: var(--bg-main);
+  font: var(--weight-medium) 12px/1 var(--font-mono);
+}
+
+.viz-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.viz-dots i {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--text-primary);
+  border-radius: 50%;
+  background-color: var(--dot);
+}
+
+.viz-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.viz-chip {
+  padding: 4px 8px;
+  border: 2px solid var(--text-primary);
+  border-radius: 8px;
+  background-color: #D9D1CA;
+  box-shadow: 2px 2px 0 0 var(--text-primary);
+  font-size: 10px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color var(--dur-base);
+}
+
+.viz-chip[data-state="scanning"] { background-color: #60E7FF; }
+.viz-chip[data-state="classified"] { background-color: #60FFA2; }
+.viz-chip[data-state="replay"] { background-color: #FFF260; }
+.viz-chip[data-state="live"] { background-color: #FD93E2; }
+.viz-chip[data-state="ready"],
+.viz-chip[data-state="paused"] { background-color: #ECE6E1; }
+
+.viz-body {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  background-color: #FFFFFF;
+}
+
+.viz-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-top: 3px solid var(--text-primary);
+  background-color: var(--bg-main);
+  font: var(--weight-medium) 11px/1.3 var(--font-mono);
+  color: var(--text-secondary);
+}
+
+.viz-foot span:last-child {
+  text-align: right;
+}
+
+/* Page elements: grey wireframe → detected (.det) → classified (.cls) → out */
+.ae {
+  position: absolute;
+  border: 2px solid #CFC7C0;
+  border-radius: 6px;
+  background-color: #ECE6E1;
+  transition:
+    background-color 450ms var(--ease-out),
+    border-color 450ms,
+    box-shadow 450ms var(--ease-land),
+    transform 450ms var(--ease-land),
+    opacity 300ms;
+}
+
+.ae.enter,
+.ae.out {
+  opacity: 0;
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.ae-box {
+  position: absolute;
+  inset: -5px;
+  border: 2px dashed var(--cd);
+  border-radius: 9px;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 220ms, transform 300ms var(--ease-land);
+}
+
+.ae-label {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background-color: var(--cd);
+  color: #FFFFFF;
+  font: var(--weight-medium) 9px/1.2 var(--font-mono);
+  letter-spacing: .06em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-3px);
+  transition: opacity 220ms, transform 300ms var(--ease-out);
+}
+
+.ae.det .ae-box,
+.ae.det .ae-label {
+  opacity: 1;
+  transform: none;
+}
+
+.ae.cls {
+  border-color: var(--text-primary);
+  background-color: var(--c);
+  box-shadow: 3px 3px 0 0 var(--cd);
+  transform: translate(-1px, -1px);
+}
+
+.ae.cls .ae-box {
+  opacity: 0;
+}
+
+.anatomy-scan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #2157A9;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.anatomy-scan::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 46px;
+  background: linear-gradient(to bottom, rgba(96, 194, 255, 0), rgba(96, 194, 255, .22));
+}
+
+.anatomy-scan.on {
+  opacity: 1;
+}
+
+/* ---------- Featured project 2 visual: attention map (js/gaze.js) ---------- */
+
+.gaze {
+  width: 100%;
+  max-width: 520px;
+  --sx: 8px;
+  --sy: 8px;
+}
+
+.gaze .viz-body {
+  cursor: crosshair;
+}
+
+.gaze-wire {
+  position: absolute;
+  border-radius: 6px;
+}
+
+.gaze-heat,
+.gaze-path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.gaze-path {
+  overflow: visible;
+}
+
+.gaze-fix {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--text-primary);
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, .88);
+  box-shadow: 2px 2px 0 0 var(--text-primary);
+  font: var(--weight-medium) 10px/1 var(--font-mono);
+  color: var(--text-primary);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 380ms var(--ease-land), opacity 300ms;
+}
+
+.gaze-fix.enter {
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.gaze-hint {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 5px 7px;
+  border-radius: 6px;
+  background-color: var(--text-primary);
+  color: var(--bg-main);
+  font: var(--weight-medium) 10px/1 var(--font-mono);
+  pointer-events: none;
+  transition: opacity 300ms;
+}
+
+@media (max-width: 900px) {
+  .hero-stage {
+    justify-content: center;
+  }
+
+  .anatomy {
+    max-width: 460px;
+  }
+
+  .ae-label {
+    padding: 1px 4px;
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 520px) {
+  .viz-bar {
+    font-size: 11px;
+  }
+
+  .viz-foot {
+    font-size: 10px;
+  }
 }
 
 .hero-title {
   font-family: var(--font-display);
-  font-size: 52px;
+  font-size: clamp(32px, 4.6vw, 52px);
+  font-weight: 400;
   color: var(--text-primary);
-  line-height: 64px;
+  line-height: 1.32;
   margin: 0 0 8px 0;
+}
+
+/* Each line is its own clipping mask for the rise-in; the padding/negative-margin pair
+   gives the highlight boxes and their shadows room without moving the text. */
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding: .16em .4em .24em .2em;
+  margin: -.16em -.4em -.24em -.2em;
+}
+
+.hero-line > span {
+  display: inline-block;
+}
+
+/* Highlight boxes, styled like the tags */
+.hl {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  line-height: 1;
+  padding: .14em .3em .08em;
+  margin: .07em .12em .07em 0;
+}
+
+.hl::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--hl-bg);
+  border: 3px solid var(--text-primary);
+  border-radius: 14px;
+  box-shadow: 5px 5px 0 0 var(--hl-shadow);
+}
+
+.hl-yellow {
+  --hl-bg: #FFF260;
+  --hl-shadow: #A9A03E;
+}
+
+.hl-cyan {
+  --hl-bg: #60E7FF;
+  --hl-shadow: #348796;
 }
 
 .hero-subtitle {
   font-family: var(--font-body);
-  font-size: 24px;
+  font-size: clamp(18px, 2vw, 24px);
   color: var(--text-tertiary);
-  line-height: 28px;
+  line-height: 1.2;
   margin: 0 0 16px 0;
+}
+
+.hero-hello {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-avatar {
+  flex: none;
+  width: 46px;
+  height: auto;
+  filter: drop-shadow(3px 3px 0 #CFA185);
 }
 
 .header-btn {
@@ -145,7 +473,18 @@
   background-color: var(--card-bg, var(--bg-card));
 
   box-shadow:
-    6px 6px 0 0 var(--card-shadow, var(--text-primary));
+    var(--shadow-offset) var(--shadow-offset) 0 0 var(--card-shadow, var(--text-primary));
+  --lift-shadow: var(--card-shadow, var(--text-primary));
+
+  transition:
+    transform var(--dur-base) var(--ease-land),
+    box-shadow var(--dur-base) var(--ease-land);
+}
+
+/* Hover lift: the card rises a little further off its shadow */
+.card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 9px 9px 0 0 var(--card-shadow, var(--text-primary));
 }
 
 .card-label {
@@ -187,6 +526,16 @@
   text-decoration: underline;
 }
 
+/* Non-link placeholder (e.g. "Coming soon") */
+.card-cta-muted {
+  color: var(--text-tertiary);
+  cursor: default;
+}
+
+.card-cta-muted:hover {
+  text-decoration: none;
+}
+
 .card-services1 {
   --card-bg: #FAFAF2;
   --card-shadow: #C4CF85;
@@ -218,6 +567,9 @@
   background-color: var(--tag-bg, transparent);
   box-shadow:
     4px 4px 0 0 var(--tag-shadow, var(--text-primary));
+
+  /* Sticker tilt, randomized once per page load by js/motion.js */
+  transform: rotate(var(--rot, 0deg));
 }
 
 .tag-yellow {
@@ -255,12 +607,34 @@
   margin-bottom: var(--space-lg);
 }
 
-.project-image img {
+.project-image img,
+.diagram {
   width: 100%;
   max-width: 520px;
   height: auto;
   display: block;
   border-radius: var(--radius-sm);
+}
+
+/* Research diagram (featured project 1) */
+.diagram {
+  cursor: pointer;
+}
+
+.d-block {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+
+/* Slide-in comes from the side the image sits on */
+.project-slide {
+  --slide-x: -60px;
+  --slide-rot: -3deg;
+}
+
+.project.reverse .project-slide {
+  --slide-x: 60px;
+  --slide-rot: 3deg;
 }
 
 .project-tile {
@@ -275,7 +649,8 @@
 
   border: 3px solid var(--text-primary);
   border-radius: var(--radius-sm);
-  box-shadow: 6px 6px 0 0 #CFA185;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 #CFA185;
+  --lift-shadow: #CFA185;
 
   background-image: var(--tile-image);
   background-size: cover;
@@ -283,11 +658,59 @@
   background-repeat: no-repeat;
 
   overflow: hidden;
+
+  transition:
+    transform var(--dur-base) var(--ease-land),
+    box-shadow var(--dur-base) var(--ease-land);
 }
 
+/* Hover lift; press on active */
 .project-tile:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 4px 4px 0 0 var(--text-primary);
+  transform: translate(-2px, -2px);
+  box-shadow: 9px 9px 0 0 #CFA185;
+}
+
+.project-tile:active {
+  transform: translate(var(--shadow-offset), var(--shadow-offset));
+  box-shadow: 0 0 0 0 #CFA185;
+  transition-duration: var(--dur-fast);
+}
+
+/* Media layers under the overlay: hover video preview, or a Ken Burns copy of the thumbnail */
+.tile-video,
+.tile-pan {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.tile-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 400ms var(--ease-out);
+}
+
+.project-tile.is-playing .tile-video {
+  opacity: 1;
+}
+
+.tile-pan {
+  background-image: var(--tile-image);
+  background-size: cover;
+  background-position: center;
+  transform-origin: 60% 40%;
+  transition: transform 700ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-tile:hover .tile-pan,
+  .project-tile:focus-visible .tile-pan {
+    transform: scale(1.12) translate(-2%, 1.5%);
+    transition: transform 7s cubic-bezier(.25, .1, .25, 1);
+  }
 }
 
 /* Overlay for text readability */
@@ -347,14 +770,6 @@
   transform: translateY(0);
 }
 
-.project-tile {
-  transition: transform 150ms ease, box-shadow 150ms ease;
-}
-
-.project-tile:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 4px 4px 0 0 var(--text-primary);
-}
 
 
 .about h2 {
@@ -385,17 +800,63 @@
   --btn-shadow: #3E822E;
 }
 
-.footer-cta h2 {
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-sm);
+.footer-kicker,
+.footer-sub {
+  font-size: clamp(18px, 2vw, 22px);
+  color: #FFFFFF;
 }
 
-.footer-cta p {
-  font-size: 16px;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-lg);
+.footer-kicker {
+  font-weight: var(--weight-medium);
+  margin: 0 0 6px;
+}
+
+.footer-sub {
+  margin: 0 0 36px;
+}
+
+/* "LET'S TALK": cream display letters with a hard ink shadow */
+.talk {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: .06em;
+  margin: 0 0 14px;
+
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(56px, 10.5vw, 136px);
+  line-height: 1;
+  letter-spacing: .01em;
+  color: var(--bg-main);
+  text-shadow: .045em .045em 0 var(--text-primary);
+}
+
+/* Each word stays on one line */
+.talk .wd {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.talk .wd + .wd {
+  margin-left: .22em;
+}
+
+.talk .ch {
+  display: inline-block;
+  transition:
+    transform 260ms var(--ease-land),
+    text-shadow 260ms var(--ease-land);
+}
+
+.talk .ch:hover {
+  transform: translate(-.015em, -.015em);
+  text-shadow: .065em .065em 0 var(--text-primary);
+}
+
+.mag {
+  display: inline-block;
+  transition: transform 400ms var(--ease-land);
 }
 
 .footer-cta-actions {

@@ -25,22 +25,90 @@ body {
   margin-bottom: var(--space-sm);
 }
 
+/* Header compaction is transform-only: the header keeps its layout height (so the page never
+   jumps), slides up to leave a 54px strip, and its contents re-center inside that strip.
+   Desktop: 20 + 77 (logo) + 20 = 117px tall → strip of 8 + 38 + 8 = 54px. */
 .site-header {
   width: 100%;
+  box-sizing: border-box;
   background-color: var(--bg-main);
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 20;
+
+  --hdr-shift: -63px;
+  --hdr-inner-shift: 31.5px;
+  --hdr-logo-scale: .4935;   /* 69×77 → ~34×38 */
+  --hdr-name-shift: -35px;   /* follows the shrunken logo */
+
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+/* 3px ink bottom border, faded in when compact */
+.site-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 3px;
+  background-color: var(--text-primary);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
 }
 
 .header-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--space-md) var(--space-lg);
+  padding: 20px var(--space-lg);
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.site-header .brand-icon {
+  transform-origin: 0 50%;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.site-header .brand-name {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.site-header.is-compact {
+  transform: translateY(var(--hdr-shift));
+}
+
+.site-header.is-compact::after {
+  opacity: 1;
+}
+
+.site-header.is-compact .header-inner {
+  transform: translateY(var(--hdr-inner-shift));
+}
+
+.site-header.is-compact .brand-icon {
+  transform: scale(var(--hdr-logo-scale));
+}
+
+.site-header.is-compact .brand-name {
+  transform: translateX(var(--hdr-name-shift));
+}
+
+/* Scroll progress (CSS scroll-driven animation in motion.css; JS sets --progress elsewhere) */
+.header-progress {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 3px;
+  background-color: var(--bg-footer);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--progress, 0));
 }
 
 .hero {
@@ -52,9 +120,21 @@ body {
   margin: 0 auto;
 
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
-  gap: var(--space-xl);
+  gap: 56px;
+}
+
+.hero-content {
+  min-width: 0;
+}
+
+/* Stack the hero (text, then the anatomy window) below 900px */
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
 }
 
 .hero-actions {
@@ -93,6 +173,9 @@ body {
 
 .featured-projects {
   padding: var(--space-xl) var(--space-lg);
+  /* The project images slide in from the side; never let that widen the page */
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .featured-projects-inner {
@@ -172,8 +255,20 @@ body {
 }
 
 @media (max-width: 768px) {
-  header {
-    padding: var(--space-sm);
+  /* 20 + 40 (button) + 20 = 80px tall → strip of 8 + 40 + 8 = 56px; logo already small */
+  .site-header {
+    --hdr-shift: -24px;
+    --hdr-inner-shift: 12px;
+    --hdr-logo-scale: 1;
+    --hdr-name-shift: 0px;
+  }
+
+  .header-inner {
+    padding: 20px var(--space-sm);
+  }
+
+  .brand-location {
+    display: none;
   }
 
   body {
@@ -212,13 +307,8 @@ body {
     text-align: center;
   }
 
-  .hero-title {
-    font-size: 36px;
-    line-height: 44px;
-  }
-
-  .hero-image {
-    margin-top: var(--space-md);
+  .hero-hello {
+    justify-content: center;
   }
 
   .hero-actions {
@@ -260,12 +350,62 @@ body {
     width: 100%;
   }
 
+  .footer-cta-actions .mag {
+    display: block;
+    width: 100%;
+  }
+
   .footer-cta-actions .btn,
   .footer-cta-actions .header-btn {
     width: 100%;
+    box-sizing: border-box;
     justify-content: center;
   }
 
 }
 
+/* Small phones: header resume button becomes icon-only (label stays for screen readers) */
+@media (max-width: 520px) {
+  .site-header .header-btn-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
 
+/* ========================= */
+/* PAGE TRANSITIONS          */
+/* ========================= */
+
+/* Cross-document View Transitions between the homepage and the case pages that load this file.
+   Browsers without support simply navigate. A clicked tile morphs into the case page's hero
+   media (names are set per navigation by js/transitions.js); everything else crossfades. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+::view-transition-group(case-hero) {
+  animation-duration: 520ms;
+  animation-timing-function: cubic-bezier(.22,1,.36,1);
+}
+
+/* Tile (4:3) and hero media (wide) have different shapes: crop instead of stretching */
+::view-transition-old(case-hero),
+::view-transition-new(case-hero) {
+  height: 100%;
+  object-fit: cover;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+}
