@@ -3,65 +3,10 @@
    Nothing runs while a figure is offscreen or the tab is hidden; reduced motion shows each
    figure's most informative final state with its controls still working. Movement of boxes
    and pages uses FLIP (measure → apply → animate the transform), never animated layout.
-   Markup lives in pages/research1.html; styles in css/figures.css. Load with defer. */
+   Markup lives in pages/research1.html; styles in css/figures.css. Load with defer after js/figures/core.js. */
 (() => {
-  const reduceMq = matchMedia("(prefers-reduced-motion: reduce)");
-  const reduced = () => reduceMq.matches;
-  const EASE_OUT = "cubic-bezier(.22,1,.36,1)";
-
-  const el = (tag, cls, style, text) => {
-    const e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (style) e.setAttribute("style", style);
-    if (text != null) e.textContent = text;
-    return e;
-  };
-  const pct = (x, y, w, h) => `left:${x}%;top:${y}%;width:${w}%;height:${h}%;`;
-  const rnd = (a, b) => a + Math.random() * (b - a);
-
-  // Fires once, the first time the element is properly in view
-  function onceInView(target, fn, threshold = 0.35) {
-    if (!("IntersectionObserver" in window)) { fn(); return; }
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { io.disconnect(); fn(); }
-    }, { threshold });
-    io.observe(target);
-  }
-
-  // Reports visibility changes (scrolling and tab switches)
-  function watchVisible(target, fn, threshold = 0.25) {
-    let onScreen = false;
-    const report = () => fn(onScreen && !document.hidden);
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; report(); }, { threshold }).observe(target);
-    } else {
-      onScreen = true;
-    }
-    document.addEventListener("visibilitychange", report);
-    report();
-  }
-
-  // FLIP for a batch: read all, apply all, read all, then animate transforms back to rest
-  function flip(nodes, apply, duration, easing = EASE_OUT) {
-    const before = nodes.map(n => n.getBoundingClientRect());
-    apply();
-    if (reduced()) return;
-    const after = nodes.map(n => n.getBoundingClientRect());
-    nodes.forEach((n, i) => {
-      const a = before[i], b = after[i];
-      if (!b.width || !b.height || !a.width || !a.height) return;
-      const dx = a.left - b.left, dy = a.top - b.top;
-      const sx = a.width / b.width, sy = a.height / b.height;
-      if (Math.abs(dx) < .5 && Math.abs(dy) < .5 && Math.abs(sx - 1) < .01 && Math.abs(sy - 1) < .01) return;
-      n.animate(
-        [{ transformOrigin: "0 0", transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})` },
-         { transformOrigin: "0 0", transform: "none" }],
-        { duration, easing }
-      );
-    });
-  }
-
-  const live = fig => fig.classList.add("is-live");
+  if (!window.Figures) return;
+  const { reduced, EASE_OUT, el, pct, rnd, onceInView, watchVisible, flip, live } = window.Figures;
 
   /* ================= Two layers ================= */
   (() => {
