@@ -53,9 +53,21 @@ body {
   margin: 0 auto;
 
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
-  gap: var(--space-xl);
+  gap: 56px;
+}
+
+.hero-content {
+  min-width: 0;
+}
+
+/* Stack the hero (text, then the anatomy window) below 900px */
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
 }
 
 .hero-actions {
@@ -215,10 +227,6 @@ body {
 
   .hero-hello {
     justify-content: center;
-  }
-
-  .hero-image {
-    margin-top: var(--space-md);
   }
 
   .hero-actions {

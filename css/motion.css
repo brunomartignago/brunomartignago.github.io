@@ -25,6 +25,11 @@
   from { opacity: 0; transform: translateY(14px); }
 }
 
+@keyframes stamp {
+  from { opacity: 0; transform: scale(1.06); }
+  60% { opacity: 1; }
+}
+
 /* ---------- Hero intro (on load, done in ~1.35s) ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
@@ -41,6 +46,21 @@
   html.js .hero-fade {
     animation: fadeUp 500ms var(--ease-out) backwards;
     animation-delay: var(--d, 0ms);
+  }
+
+  html.js .hero-stage .viz {
+    animation: stamp 650ms var(--ease-land) 200ms backwards;
+  }
+}
+
+/* ---------- Reduced motion: everything rests in its final state ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .viz-chip,
+  .ae,
+  .ae-box,
+  .ae-label {
+    transition: none;
   }
 }
 

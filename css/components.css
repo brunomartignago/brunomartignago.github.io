@@ -1,9 +1,212 @@
-.hero-image img {
+/* ---------- Hero visual: page anatomy (js/anatomy.js) ---------- */
+
+.hero-stage {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+  perspective: 1000px;
+}
+
+.anatomy {
   width: 100%;
   max-width: 480px;
-  height: auto;
-  display: block;
-  margin-left: auto;
+  transform-style: preserve-3d;
+  /* Shadow offset; shifted opposite to the tilt by JS */
+  --sx: 8px;
+  --sy: 8px;
+}
+
+.viz {
+  overflow: hidden;
+  text-align: left;
+  background-color: #FFFFFF;
+  border: 3px solid var(--text-primary);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--sx) var(--sy) 0 0 var(--text-primary);
+}
+
+.viz-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-bottom: 3px solid var(--text-primary);
+  background-color: var(--bg-main);
+  font: var(--weight-medium) 12px/1 var(--font-mono);
+}
+
+.viz-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.viz-dots i {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--text-primary);
+  border-radius: 50%;
+  background-color: var(--dot);
+}
+
+.viz-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.viz-chip {
+  padding: 4px 8px;
+  border: 2px solid var(--text-primary);
+  border-radius: 8px;
+  background-color: #D9D1CA;
+  box-shadow: 2px 2px 0 0 var(--text-primary);
+  font-size: 10px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color var(--dur-base);
+}
+
+.viz-chip[data-state="scanning"] { background-color: #60E7FF; }
+.viz-chip[data-state="classified"] { background-color: #60FFA2; }
+
+.viz-body {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  background-color: #FFFFFF;
+}
+
+.viz-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-top: 3px solid var(--text-primary);
+  background-color: var(--bg-main);
+  font: var(--weight-medium) 11px/1.3 var(--font-mono);
+  color: var(--text-secondary);
+}
+
+.viz-foot span:last-child {
+  text-align: right;
+}
+
+/* Page elements: grey wireframe → detected (.det) → classified (.cls) → out */
+.ae {
+  position: absolute;
+  border: 2px solid #CFC7C0;
+  border-radius: 6px;
+  background-color: #ECE6E1;
+  transition:
+    background-color 450ms var(--ease-out),
+    border-color 450ms,
+    box-shadow 450ms var(--ease-land),
+    transform 450ms var(--ease-land),
+    opacity 300ms;
+}
+
+.ae.enter,
+.ae.out {
+  opacity: 0;
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.ae-box {
+  position: absolute;
+  inset: -5px;
+  border: 2px dashed var(--cd);
+  border-radius: 9px;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 220ms, transform 300ms var(--ease-land);
+}
+
+.ae-label {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background-color: var(--cd);
+  color: #FFFFFF;
+  font: var(--weight-medium) 9px/1.2 var(--font-mono);
+  letter-spacing: .06em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-3px);
+  transition: opacity 220ms, transform 300ms var(--ease-out);
+}
+
+.ae.det .ae-box,
+.ae.det .ae-label {
+  opacity: 1;
+  transform: none;
+}
+
+.ae.cls {
+  border-color: var(--text-primary);
+  background-color: var(--c);
+  box-shadow: 3px 3px 0 0 var(--cd);
+  transform: translate(-1px, -1px);
+}
+
+.ae.cls .ae-box {
+  opacity: 0;
+}
+
+.anatomy-scan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #2157A9;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.anatomy-scan::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 46px;
+  background: linear-gradient(to bottom, rgba(96, 194, 255, 0), rgba(96, 194, 255, .22));
+}
+
+.anatomy-scan.on {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .hero-stage {
+    justify-content: center;
+  }
+
+  .anatomy {
+    max-width: 460px;
+  }
+
+  .ae-label {
+    padding: 1px 4px;
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 520px) {
+  .viz-bar {
+    font-size: 11px;
+  }
+
+  .viz-foot {
+    font-size: 10px;
+  }
 }
 
 .hero-title {

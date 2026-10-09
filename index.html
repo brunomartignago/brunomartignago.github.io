@@ -25,6 +25,7 @@
 		addEventListener("load", () => { if (!window.Motion) document.documentElement.classList.remove("js"); });
 	</script>
 	<script src="js/motion.js" defer></script>
+	<script src="js/anatomy.js" defer></script>
 
 </head>
 
@@ -99,11 +100,40 @@
 		</div>
     </div>
 
-    <div class="hero-image">
-      <img 
-        src="assets/images/pic_hero.png" 
-        alt="Bruno Martignago portrait"
-      />
+    <div class="hero-stage">
+      <div
+        class="anatomy"
+        id="anatomy"
+        role="img"
+        aria-label="Animated diagram: a web page layout is scanned and its elements are classified into categories like navigation, hero, cards and footer"
+      >
+        <div class="viz" aria-hidden="true">
+          <div class="viz-bar">
+            <span class="viz-dots"><i style="--dot:#FD93E2"></i><i style="--dot:#FFF260"></i><i style="--dot:#60FFA2"></i></span>
+            <span class="viz-title">page-anatomy · classifier</span>
+            <span class="viz-chip" data-state="classified">classified</span>
+          </div>
+          <div class="viz-body">
+            <noscript>
+              <!-- Static, fully classified landing page (same data as LAYOUTS[0] in js/anatomy.js) -->
+              <div class="ae cls" style="left:4%;top:4%;width:92%;height:8%;--c:#60C2FF;--cd:#2157A9"></div>
+              <div class="ae cls" style="left:4%;top:16%;width:55%;height:31%;--c:#FFF260;--cd:#847E30"></div>
+              <div class="ae cls" style="left:62%;top:16%;width:34%;height:31%;--c:#FD93E2;--cd:#8B487A"></div>
+              <div class="ae cls" style="left:4%;top:51%;width:29%;height:22%;--c:#60FFA2;--cd:#318D57"></div>
+              <div class="ae cls" style="left:35.5%;top:51%;width:29%;height:22%;--c:#60FFA2;--cd:#318D57"></div>
+              <div class="ae cls" style="left:67%;top:51%;width:29%;height:22%;--c:#60FFA2;--cd:#318D57"></div>
+              <div class="ae cls" style="left:4%;top:77%;width:58%;height:8%;--c:#60E7FF;--cd:#348796"></div>
+              <div class="ae cls" style="left:66%;top:77%;width:30%;height:8%;--c:#FFB37A;--cd:#9A4F1C"></div>
+              <div class="ae cls" style="left:4%;top:89%;width:92%;height:7%;--c:#D9D1CA;--cd:#5B524B"></div>
+            </noscript>
+            <div class="anatomy-scan"></div>
+          </div>
+          <div class="viz-foot">
+            <span>sample 01 · landing page</span>
+            <span>9 elements · 7 classes</span>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
