@@ -27,6 +27,7 @@ body {
 
 .site-header {
   width: 100%;
+  box-sizing: border-box;
   background-color: var(--bg-main);
   position: sticky;
   top: 0;
