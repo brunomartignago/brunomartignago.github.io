@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="../css/tokens.css" />
   <link rel="stylesheet" href="../css/layout.css" />
   <link rel="stylesheet" href="../css/motion.css" />
-  <link rel="stylesheet" href="../css/case.css" />
   <link rel="stylesheet" href="../css/journal.css" />
 
   <!-- Flags JS before first paint so pre-animation states never flash; without JS everything renders at rest -->
@@ -217,1106 +216,714 @@
           </div>
         </section>
 
-        <!-- Entries 04–07: not migrated yet (old markup, kept so the page stays complete) -->
-        <div class="legacy">
-<section id="e4" class="case-section reveal">
-    <div class="case-section-inner">
+        <!-- 04 -->
+        <section class="entry" id="e4" aria-labelledby="e4-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">04</span><div><small>Entry 04 · Study 1</small><h2 id="e4-title">The first study</h2></div></header>
+              <p class="rv">We conducted two rounds of testing on this subject, with the second an enhanced version of the first, featuring refined rules and guidelines.</p>
+              <p class="rv">In the first test, our main objective was to understand how to classify the elements within a page, their visual properties, and their relative positions on the screen. Our sample was formed by the following:</p>
 
-      <h2>04. The first study</h2>
-
-      <p>
-        We conducted two rounds of testing on this subject, with the second an enhanced version of the first, featuring refined rules and guidelines. 
-      </p>
-
-      <p>
-        In the first test, our main objective was to understand how to classify the elements within a page, their visual properties, and their relative positions on the screen. Our sample was formed by the following: 
-
-      <section class="list-section is-gray reveal">
-        <div class="list-section-wrapper">
-          <div class="list-section-inner">
-            <h2 class="list-section-title">
-              First test guidelines
-            </h2>
-
-            <span style="padding-top: 8px; padding-bottom: 8px;">31 pages from some of the most used websites in Brazil</span>
-
-            <div class="list-columns">
-              <div class="list-column">
-                <h3 class="list-column-title">5 types of pages were analyzed: </h3>
-                <ul>
-                  <li>Home</li>
-                  <li>Item list</li>
-                  <li>Item detail</li>
-                  <li>Article</li>
-                  <li>User page</li>
-                </ul>
+              <div class="specimen specimen--yellow" data-reveal="lift">
+                <header><h3>First test guidelines</h3><span>31 pages · some of the most used websites in Brazil</span></header>
+                <div class="cols">
+                  <div>
+                    <h4>5 page types</h4>
+                    <ul><li>Home</li><li>Item list</li><li>Item detail</li><li>Article</li><li>User page</li></ul>
+                  </div>
+                  <div>
+                    <h4>6 content types</h4>
+                    <ul><li>E-commerce</li><li>News</li><li>Social media</li><li>Streaming</li><li>Weather</li><li>Services</li></ul>
+                  </div>
+                </div>
               </div>
 
-              <div class="list-column">
-                <h3 class="list-column-title">6 types of content were analyzed: </h3>
-                <ul>
-                  <li>E-commerce</li>
-                  <li>News</li>
-                  <li>Social media</li>
-                  <li>Streaming</li>
-                  <li>Weather</li>
-                  <li>Services</li>
-                </ul>
+              <p class="rv">Our method of selecting and classifying the information was to use colored blocks over the screenshot of the page. Each block has the color of its respective element; the possible classifications were:</p>
+
+              <div class="specimen specimen--cyan" data-reveal="lift">
+                <header><h3>Element classes, test 1</h3><span>16 classes</span></header>
+                <div class="cols">
+                  <ul><li>Dropdown</li><li>Text field</li><li>Label</li><li>Text Area</li><li>Radio Button</li><li>Checkbox</li><li>Text</li><li>Breadcrumb</li></ul>
+                  <ul><li>Table</li><li>Button</li><li>Link</li><li>Image</li><li>Navigation</li><li>Ad</li><li>Search bar</li><li>Tag</li></ul>
+                </div>
+              </div>
+
+              <p class="rv">Note that this list does not cover all possible elements; this will be addressed in the second round of testing.</p>
+              <p class="rv">To measure how much of the page that element represents, we collect the width and height of the block and compare the area of the block with the area of the full page. Using this to calculate the area of all blocks, we can also find the amount of information on the page, considering <mark class="hl">“information” as everything that is not a blank space</mark>.</p>
+              <p class="rv">Using this method, we created a set of images with colored blocks on top, like this:</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/test1.jpg" alt="Two news pages from the first test, covered in colored blocks that classify each element" width="576" height="316" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 05</b><span>Pages from the first test with colored blocks classifying each element.</span></figcaption>
+              </figure>
+
+              <p class="rv">Some considerations about how we approached this first round of classification:</p>
+              <ul class="rv">
+                <li>We decided that all elements with the purpose of navigating the user after clicking them will be categorized as links. This is the main reason we see so many green rectangles in the image above.
+                  <ul><li>This decision made us realize that there was a problem with the single categorization that we were using.</li></ul>
+                </li>
+                <li>We decided that if two or more elements of the same type are within 4 to 8 pixels of each other, we would consider them the same element.</li>
+              </ul>
+              <p class="rv">All the collected data was then organized into spreadsheets, and we analyzed it.</p>
+              <p class="rv">In short, there wasn't much solid information gathered that could already answer any of our research questions. But, throughout this test, we learned a lot about what to do, and most importantly, what NOT to do. This gave us motivation to build a second test that would be more organized and objective. As for this test, this is a list of lessons learned we gathered along the way:</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/test1_results.jpg" alt="Charts from the first test: median and variation of total information by content type, totals by UX valuation and site, and totals by site and page type" width="1600" height="854" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 06</b><span>First test results, including the “median of total and variance type” and “total by site and page” charts.</span></figcaption>
+              </figure>
+
+              <ul class="rv">
+                <li>There is a lot of variation in the total amount of information on websites, depending on their content.
+                  <ul>
+                    <li>For example, streaming and social media websites can have lots of information on some pages, and little to no information on others, and this behavior is not very linear across websites (given their objectives and formats), as shown in the “median of total and variance type” chart.</li>
+                    <li>On the other hand, website categories such as services, news, and e-commerce tend to exhibit much less variation and a more consistent content pattern, making them strong candidates for an in-depth study.</li>
+                  </ul>
+                </li>
+                <li>For us, the most important discovery is what can be seen on the “Total by site and page” chart: throughout the page flows, we can see there is less and less variation in the median of total information on pages; this means that there is a big chance of finding patterns in pages like item detail, cart, checkout.</li>
+              </ul>
+              <p class="rv">At this point, we realized that to answer the research questions, we needed to refine our method and improve our data collection. We separated the next steps into three main categories:</p>
+
+              <div class="specimen specimen--pink" data-reveal="lift">
+                <header><h3>Next steps after test 1</h3><span>3 categories</span></header>
+                <dl>
+                  <dt>Better component categorization</dt><dd>Separate information elements into form, function, and components.</dd>
+                  <dt>Create a template taxonomy</dt><dd>Break down the main structure (header, body, and footer) into easier-to-find blocks, like columns, panels, and menus.</dd>
+                  <dt>Develop a method for page evaluation</dt><dd>The Information Density Mapping.</dd>
+                </dl>
               </div>
             </div>
+            <aside class="mnote rv">
+              <span class="k">Information Density Mapping</span>
+              <p>A tool for page evaluation, developed by one of the collaborators of this research.</p>
+            </aside>
           </div>
-        </div>
-      </section>
 
-      <p>
-        Our method of selecting and classifying the information was to use colored blocks over the screenshot of the page. Each block has the color of its respective element; the possible classifications were: 
-      </p>
+          <div class="row">
+            <div class="main">
+              <div class="sub-entry rv"><small>Building blocks of the methodology</small></div>
+              <blockquote class="pull rv"><p>The challenge of element classification.</p></blockquote>
+              <p class="rv">As a result of the extensive manual work necessary in the first test, when analyzing ways of doing the second one, the first approach that we tried was to use web crawlers to get element names, positioning and other useful information that could be collected, but, after many attempts, this is what we found:</p>
+              <ul class="rv">
+                <li>Web crawlers depend on <code>&lt;class&gt;</code> naming, which means that different names for the same thing will be classified as different classes. For example, dropdown menus are sometimes named "dropdown", sometimes "nav bar", and others, just “menu”, so even though they are the same component, they would be classified separately.</li>
+                <li>Crawlers can indicate the <code>&lt;div&gt;</code> (or <code>&lt;section&gt;</code>) the elements are part of, but this doesn't necessarily give the element's general position, since multiple blocks can contain the same element, and they would be categorized as the same set.</li>
+              </ul>
+            </div>
+            <aside class="mnote mnote--blue rv">
+              <span class="k">Semantic vs non-semantic</span>
+              <p>Semantic elements define their own content (<code>&lt;table&gt;</code>, <code>&lt;form&gt;</code>, <code>&lt;article&gt;</code>). Non-semantic elements don’t (<code>&lt;div&gt;</code>, <code>&lt;section&gt;</code>), and most of the online content is inside them.</p>
+            </aside>
+          </div>
 
-      <div class="list-columns">
-        <div class="list-column">
-          <ul>
-            <li>Dropdown</li>
-            <li>Text field</li>
-            <li>Label</li>
-            <li>Text Area</li>
-            <li>Radio Button</li>
-            <li>Checkbox</li>
-            <li>Text</li>
-            <li>Breadcrumb</li>
-          </ul>
-        </div>
-        <div class="list-column">
-          <ul>
-            <li>Table</li>
-            <li>Button</li>
-            <li>Link</li>
-            <li>Image</li>
-            <li>Navigation</li>
-            <li>Ad</li>
-            <li>Search bar</li>
-            <li>Tag</li>
-          </ul>
-        </div>
-      </div>
- 
-      <p>
-        Note that this list does not cover all possible elements; this will be addressed in the second round of testing.
-      </p>
+          <div class="row">
+            <div class="main">
+              <p class="rv">There is another major problem: pages can vary widely in size. What that means is that it is hard to compare and classify elements across different screens because of their size differences. For instance, you can compare two "Item detail" pages from the same e-commerce site and have completely different results based on the volume of information provided for each product, so even if the page has the same general structure, with most of the elements being the same, you could not locate the position of an element inside them.</p>
+              <p class="rv">We had to rethink our approach, leading to the development of a new classification methodology. The first step was to update our mind model for elements on the screen. Two visual elements can have the same form but serve a different function, and vice versa. While a visual element can perform a specific function by itself, it can still be part of a larger group (component) that gives it a different purpose.</p>
+              <p class="rv">So, to encapsulate all the possible behaviors of a specific element, we decided to classify elements into three categories: form, function, and component.</p>
 
-      <p>
-        To measure how much of the page that element represents, we collect the width and height of the block and compare the area of the block with the area of the full page. Using this to calculate the area of all blocks, we can also find the amount of information on the page, considering “information” as everything that is not a blank space.
-      </p>
-
-      <p>
-        Using this method, we created a set of images with colored blocks on top, like this:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/test1.jpg"
-        alt="Two news pages from the first test, covered in colored blocks that classify each element"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-    <p>
-      Some considerations about how we approached this first round of classification: 
-    </p>
-
-    <ul>
-      <li>
-        We decided that all elements with the purpose of navigating the user after clicking them will be categorized as links. This is the main reason we see so many green rectangles in the image above.  
-      </li>
-      <ul>
-        <li>
-          This decision made us realize that there was a problem with the single categorization that we were using. 
-        </li>
-      </ul>
-      <li>
-        We decided that if two or more elements of the same type are within 4 to 8 pixels of each other, we would consider them the same element. 
-      </li>
-    </ul>
-
-    <p>
-      All the collected data was then organized into spreadsheets, and we analyzed it.
-    </p>
-
-    <p>
-      In short, there wasn't much solid information gathered that could already answer any of our research questions. But, throughout this test, we learned a lot about what to do, and most importantly, what NOT to do. This gave us motivation to build a second test that would be more organized and objective. As for this test, this is a list of lessons learned we gathered along the way:
-    </p>
-
-    <img
-      src="../assets/images/cases/research1/test1_results.jpg"
-      alt="Charts from the first test: median and variation of total information by content type, totals by UX valuation and site, and totals by site and page type"
-      class="case-hero-image reveal"
-      loading="lazy"
-    />
-
-    <ul>
-      <li>
-        There is a lot of variation in the total amount of information on websites, depending on their content.    
-      </li>
-      <ul>
-        <li>
-          For example, streaming and social media websites can have lots of information on some pages, and little to no information on others, and this behavior is not very linear across websites (given their objectives and formats), as shown in the “median of total and variance type” chart.  
-        </li>
-        <li>
-          On the other hand, website categories such as services, news, and e-commerce tend to exhibit much less variation and a more consistent content pattern, making them strong candidates for an in-depth study. 
-        </li>
-      </ul>
-      <li>
-        For us, the most important discovery is what can be seen on the “Total by site and page” chart: throughout the page flows, we can see there is less and less variation in the median of total information on pages; this means that there is a big chance of finding patterns in pages like item detail, cart, checkout.  
-      </li>
-    </ul>
-
-    <p>
-      At this point, we realized that to answer the research questions, we needed to refine our method and improve our data collection. We separated the next steps into three main categories: 
-    </p>
-
-    <ul>
-      <li>
-        Better component categorization      
-      </li>
-      <ul>
-        <li>
-          Separate information elements into form, function, and components. 
-        </li>
-      </ul>
-      <li>
-        Create a template taxonomy.
-        <ul>
-          <li>
-            Break down the main structure (header, body, and footer) into easier-to-find blocks, like columns, panels, and menus. 
-          </li>
-        </ul>
-      </li>
-      <li>
-        Develop a method for page evaluation.      
-      </li>
-      <ul>
-        <li>
-          We will discuss in next sections about the Information Density Mapping, a tool developed by one of the collaborators of this research.  
-        </li>
-      </ul>
-    </ul>
-    <hr class="page-divider reveal" />
-    </div>
-  </section>
-
-  <section class="case-section reveal">
-    <div class="case-section-inner">
-
-      <h2>04. Building blocks of the methodology</h2>
-
-      <h1 class="case-title">
-        The challenge of element classification.
-      </h1>
-
-      <p>
-        As a result of the extensive manual work necessary in the first test, when analyzing ways of doing the second one, the first approach that we tried was to use web crawlers to get element names, positioning and other usefull information that could be collected, but, after many attempts, this is what we found:
-      </p>
-
-      <ul>
-      <li>
-        Web crawlers depend on &lt;class&gt; naming, which means that different names for the same thing will be classified as different classes. For example, dropdown menus are sometimes named "dropdown", sometimes "nav bar", and others, just “menu”, so even though they are the same component, they would be classified separately.      
-      </li>
-      <li>
-        Crawlers can indicate the &lt;div&gt; (or &lt;section&gt;) the elements are part of, but this doesn't necessarily give the element's general position, since multiple blocks can contain the same element, and they would be categorized as the same set. 
-      </li>
-      <ul>
-        <li>
-            These blocks of content can be separated into two different groups: semantic and non-semantic elements. Semantic elements are those that define their own content (&lt;table&gt;, &lt;form&gt;, and &lt;article&gt;). Non-semantic elements are the ones that don’t have any classification of their content (&lt;div&gt;, &lt;section&gt;), and most of the online content is inside non-semantic elements. 
-        </li>
-      </ul>
-
-      <p>
-        There is another major problem: pages can vary widely in size. What that means is that it is hard to compare and classify elements across different screens because of their size differences. For instance, you can compare two "Item detail" pages from the same e-commerce site and have completely different results based on the volume of information provided for each product, so even if the page has the same general structure, with most of the elements being the same, you could not locate the position of an element inside them. 
-      </p>
-
-      <p>
-        We had to rethink our approach, leading to the development of a new classification methodology. The first step was to update our mind model for elements on the screen. Two visual elements can have the same form but serve a different function, and vice versa. While a visual element can perform a specific function by itself, it can still be part of a larger group (component) that gives it a different purpose. 
-      </p>
-
-      <p>
-        So, to encapsulate all the possible behaviors of a specific element, we decided to classify elements into three categories: form, function, and component. 
-      </p>
-
-      <section class="list-section is-blue reveal">
-        <div class="list-section-wrapper">
-          <div class="list-section-inner">
-            <h2 class="list-section-title">
-              Element Classification Method
-            </h2>
-
-            <div class="list-tri-columns">
-              <div class="list-column">
-                <h3 class="list-column-title">Forms: </h3>
-                <ul>
-                  <li>Typo</li>
-                  <li>Image</li>
-                  <li>Icon</li>
-                  <li>Space</li>
-                </ul>
+              <div class="specimen" style="--cols:3" data-reveal="lift">
+                <header><h3>Element Classification Method</h3><span>Form × Function × Component</span></header>
+                <div class="cols">
+                  <div>
+                    <h4>Forms</h4>
+                    <ul><li>Typo</li><li>Image</li><li>Icon</li><li>Space</li></ul>
+                  </div>
+                  <div>
+                    <h4>Functions</h4>
+                    <ul><li>Dropdown</li><li>Radio button</li><li>Checkbox</li><li>Text input</li><li>Label</li><li>Text</li><li>Breadcrumb</li><li>Button</li><li>Link</li><li>Ad</li><li>Tag</li><li>Heading</li><li>Illustration</li></ul>
+                  </div>
+                  <div>
+                    <h4>Components</h4>
+                    <ul><li>Carousel</li><li>Card</li><li>Table</li><li>Search bar</li><li>Banner</li><li>Menu</li><li>Filter</li><li>Tab</li><li>List item</li><li>Blank (non-component)</li></ul>
+                  </div>
+                </div>
               </div>
 
-              <div class="list-column">
-                <h3 class="list-column-title">Functions:</h3>
-                <ul>
-                  <li>Dropdown</li>
-                  <li>Radio button</li>
-                  <li>Checkbox</li>
-                  <li>Text input</li>
-                  <li>Label</li>
-                  <li>Text</li>
-                  <li>Breadcrumb</li>
-                  <li>Button</li>
-                  <li>Link</li>
-                  <li>Ad</li>
-                  <li>Tag</li>
-                  <li>Heading</li>
-                  <li>Illustration</li>
-                </ul>
-              </div>
+              <p class="rv">Note that this list may not include all possible classification outcomes, but these were the ones we needed throughout this research. There may be a need for new classifications for different pages.</p>
+              <p class="rv">Let's deep-dive into the other part of the problem: accurately mapping the elements inside the page. The biggest barrier is page size variation, which makes it hard to point to the same element across similar pages because their content varies.</p>
+              <p class="rv">For example, let’s compare the same type of page between two different websites. For this, we will look at two store platforms that sell the same type of product, so we have the minimum possible variation. Let’s compare the Item Detail pages for Dell Technologies and Lenovo:</p>
 
-              <div class="list-column">
-                <h3 class="list-column-title">Components:</h3>
-                <ul>
-                  <li>Carousel</li>
-                  <li>Card</li>
-                  <li>Table</li>
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/template_tax_1.jpg" alt="Dell and Lenovo item detail pages side by side: 1788 × 18482 px and 1788 × 14463 px" width="1320" height="743" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 07</b><span>Item detail pages from Dell (18,482 px tall) and Lenovo (14,463 px tall).</span></figcaption>
+              </figure>
+
+              <p class="rv">As shown in the image, even though the pages are the same type (Item detail), display the same product category (laptops), and are targeted to the same persona (people looking for an all-purpose laptop), their sizes can vary. One valid counterargument is how each brand presents its content: one page has more images than the other. To further minimize possible variation, let's check what happens if we investigate the same page (Item Detail) on a single website (Dell Technologies) with two similar products (laptops).</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/template_tax_2.jpg" alt="Two Dell item detail pages for similar laptops: 1788 × 18482 px and 1788 × 19432 px" width="1320" height="743" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 08</b><span>Two Dell item detail pages for similar laptops: 18,482 px and 19,432 px tall.</span></figcaption>
+              </figure>
+
+              <p class="rv">As expected, there is still a difference. Smaller, but still present. This makes comparing these pages difficult, as specific sections are at different heights.</p>
+              <p class="rv">A solution to this problem is to have <mark class="hl">a uniform categorization of page sections</mark>, organized so we can build a summarized view of the same size across all templates. We will build that through a series of template section definitions.</p>
+
+              <article class="defn" data-reveal="lift" aria-labelledby="def1">
+                <div class="term"><h3 id="def1">Header</h3><i>noun · template section</i><span class="no">DEF. 01</span></div>
+                <p>The header is the top portion of the page, consisting of a combination, but not exclusively, of the following elements:</p>
+                <ol>
+                  <li>Site logo/title</li>
+                  <li>Navigational menu (links and/or dropdowns that redirect the user to a new page when interacted with)</li>
                   <li>Search bar</li>
-                  <li>Banner</li>
-                  <li>Menu</li>
-                  <li>Filter</li>
-                  <li>Tab</li>
-                  <li>List item</li>
-                  <li>Blank (non-component)</li>
-                </ul>
-              </div>
+                  <li>Login/user area</li>
+                </ol>
+                <p>Headers usually have a visual delimitation, represented by a line, shadow, or color difference. In code, it represents the entire area inside the <code>&lt;header&gt;</code> section.</p>
+                <p class="see">See also: Subheader · Footer</p>
+              </article>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/headers.jpg" alt="Header examples from Dell, Amazon, Vox and AmCharts, each outlined" width="1320" height="742" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 09</b><span>Header examples: Dell, Amazon, Vox and AmCharts.</span></figcaption>
+              </figure>
+
+              <article class="defn" data-reveal="lift" aria-labelledby="def2">
+                <div class="term"><h3 id="def2">Subheader</h3><i>noun · template section</i><span class="no">DEF. 02</span></div>
+                <p>Subheaders represent the portion of the page between the header and the main content (body). It's called a subheader because it’s usually an extension of the header's capabilities and, often, has the same type of elements on it.</p>
+                <p>Some new elements that we will consider part of the subheader for this definition are:</p>
+                <ol>
+                  <li>Breadcrumb</li>
+                  <li>Filters</li>
+                  <li>Complementary call-to-actions</li>
+                </ol>
+                <p class="see">See also: Header</p>
+              </article>
+
+              <p class="rv">Note that not all webpages have subheaders, but given their frequency during the tests for this project, we concluded it was important to formally define them.</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/subheaders.jpg" alt="Subheader examples from Americanas, Apple, Mercado Livre and Steam, each outlined" width="1320" height="743" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 10</b><span>Subheader examples: Americanas, Apple, Mercado Livre and Steam.</span></figcaption>
+              </figure>
+
+              <article class="defn" data-reveal="lift" aria-labelledby="def3">
+                <div class="term"><h3 id="def3">Footer</h3><i>noun · template section</i><span class="no">DEF. 03</span></div>
+                <p>The footer is the bottom portion of the page, consisting, but not exclusively, of the following elements:</p>
+                <ol>
+                  <li>Site map</li>
+                  <li>Contact information</li>
+                  <li>Important links</li>
+                </ol>
+                <p>Usually, the footer section is the same across the entire website and features visual elements that set it apart from the content above, such as line dividers or color changes.</p>
+                <p>In code, the footer is identified by the <code>&lt;footer&gt;</code> section.</p>
+                <p class="see">See also: Header</p>
+              </article>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/footers.jpg" alt="Footer examples from Dell, Booking, Disney and Cinemark, each outlined" width="1320" height="743" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 11</b><span>Footer examples: Dell, Booking, Disney and Cinemark.</span></figcaption>
+              </figure>
+
+              <article class="defn" data-reveal="lift" aria-labelledby="def4">
+                <div class="term"><h3 id="def4">Overlay</h3><i>noun · template section</i><span class="no">DEF. 04</span></div>
+                <p>Overlays are all the structural elements that are positioned above the main page. The word "above" in this case refers to the z-axis of the page (even though webpages are 2D, the CSS property z-index allows elements to be positioned above others when their values are greater than 0).</p>
+                <p>These elements don’t have a fixed position on the page's overall plane, but can be identified both visually and by code.</p>
+              </article>
+            </div>
+            <aside class="mnote mnote--green rv">
+              <span class="k">Not in the template</span>
+              <p>Since overlays don’t have a fixed position and can appear anywhere on a page, this section is not included in the template. Its definition helps when mapping elements on screen, but doesn’t aggregate with the overall page structure.</p>
+            </aside>
+          </div>
+
+          <div class="row">
+            <div class="main">
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/overlays.jpg" alt="Overlay examples from Udemy, American Airlines, Dell and iFood, each outlined" width="1320" height="742" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 12</b><span>Overlay examples: Udemy, American Airlines, Dell and iFood.</span></figcaption>
+              </figure>
+
+              <p class="rv">So far, all the sections follow the exact same structure and classification of HTML because these areas are clearly recognizable and occupy a limited space. Now we will start defining the structures within the body of the page, which will allow easier localization independent of page length.</p>
+
+              <article class="defn" data-reveal="lift" aria-labelledby="def5">
+                <div class="term"><h3 id="def5">Columns</h3><i>noun · template section</i><span class="no">DEF. 05</span></div>
+                <p>A column represents a portion of the same content inside the <code>&lt;body&gt;</code> section. Horizontally, a column can occupy between 20 and 100 percent of the <code>&lt;body&gt;</code> content, while vertically, it can occupy between 1 and 100 percent of the <code>&lt;body&gt;</code> content.</p>
+                <p>A column is delimited by the type of content that is displayed inside of it, but some visual cues can also be used to enhance column separation. For example:</p>
+                <ol>
+                  <li>Spacing</li>
+                  <li>Graphic elements (lines and imagery)</li>
+                  <li>Color change</li>
+                </ol>
+                <p class="see">See also: Column identification · Panels and menus</p>
+              </article>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/columns_2.png" alt="Column examples outlined on a Mercado Livre item list page and an Amazon cart page" width="1320" height="743" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 13</b><span>Column examples: a Mercado Livre item list page and an Amazon cart page.</span></figcaption>
+              </figure>
+
+              <p class="rv">Pages can have multiple columns, both side-by-side and stacked. To identify which column has been referenced, nomenclature is necessary.</p>
+
+              <article class="defn" data-reveal="lift" aria-labelledby="def6">
+                <div class="term"><h3 id="def6">Column identification</h3><i>nomenclature</i><span class="no">DEF. 06</span></div>
+                <p>A column can be identified by the notation:</p>
+                <p class="metadata-line">Column X</p>
+                <p>Where X represents a number between 0 and 5.</p>
+                <p>According to a previous definition, a column can occupy between 20 and 100 percent of the horizontal space of the page, so the numbers {1, 2, 3, 4, 5} represent the horizontal order (left to right) of alignment of the columns on a given section.</p>
+                <p>Whenever the section is filled with a single column, the number 0 should be used to represent the given column.</p>
+                <p class="see">See also: Columns</p>
+              </article>
+
+              <article class="defn" data-reveal="lift" aria-labelledby="def7">
+                <div class="term"><h3 id="def7">Panels and menus</h3><i>nomenclature</i><span class="no">DEF. 07</span></div>
+                <p>A panel is a column with a width less than 20 percent of the total page width. We will consider only the columns that are the very first or very last in the section. Sections that contain only one column automatically can’t be considered a panel, given the definition of a column 0.</p>
+                <p>A menu is a panel that contains Links as its main element (at least 50% of its elements).</p>
+                <p>Panels and menus can be identified by the notation:</p>
+                <p class="metadata-line">Y Panel, Z menu</p>
+                <p>Where Y and Z represent the direction (left or right) of the page on which it is located.</p>
+                <p class="see">See also: Columns · Column identification</p>
+              </article>
+            </div>
+            <aside class="mnote rv">
+              <span class="k">Panels vs menus</span>
+              <p>The distinction was made to better identify the distribution of elements within them. For the purpose of template construction, they are the same.</p>
+            </aside>
+          </div>
+
+          <div class="row">
+            <div class="main">
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/nomenclature.jpg" alt="Mercado Livre item list and Amazon cart pages with sections labeled column 0, column 1, menu and panel" width="1320" height="743" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 14</b><span>The nomenclature applied: column 0, column 1, menu and panel.</span></figcaption>
+              </figure>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <p>
-        Note that this list may not include all possible classification outcomes, but these were the ones we needed throughout this research. There may be a need for new classifications for different pages.
-      </p>
-
-      <p>
-        Let's deep-dive into the other part of the problem, accurately map the elements inside the page. The biggest barrier is page size variation, which makes it hard to point to the same element across similar pages because their content varies.
-      </p>
-
-      <p>
-        For example, let’s compare the same type of page between two different websites. For this, we will look at two store platforms that sell the same type of product, so we have the minimum possible variation. Let’s compare the Item Detail pages for Dell Technologies and Lenovo:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/template_tax_1.jpg"
-        alt="Dell and Lenovo item detail pages side by side: 1788 × 18482 px and 1788 × 14463 px"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        As shown in the image, even though the pages are the same type (Item detail), display the same product category (laptops), and are targeted to the same persona (people looking for an all-purpose laptop), their sizes can vary. One valid counterargument is how each brand presents its content: one page has more images than the other. To further minimize possible variation, let's check what happens if we investigate the same page (Item Detail) on a single website (Dell Technologies) with two similar products (laptops). 
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/template_tax_2.jpg"
-        alt="Two Dell item detail pages for similar laptops: 1788 × 18482 px and 1788 × 19432 px"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        As expected, there is still a difference. Smaller, but still present. This makes comparing these pages difficult, as specific sections are at different heights. 
-      </p>
-
-      <p>
-        A solution to this problem is to have a uniform categorization of page sections, organized so we can build a summarized view of the same size across all templates. We will build that through a series of template section definitions.
-      </p>
-
-    </div>
-  </section>
-
-  <section class="case-section">
-    <div class="case-section-inner">
-
-      <section class="definition-block reveal">
-        <div class="definition-inner">
-
-          <div class="definition-label">
-            Definition
+        <!-- 05 -->
+        <section class="entry" id="e5" aria-labelledby="e5-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">05</span><div><small>Entry 05 · Study 2</small><h2 id="e5-title">The second study</h2></div></header>
+              <p class="rv">With these new definitions at hand, we ran a second test. The data collection worked very similarly to before; we classified the information blocks by hand, but this time with much more detail:</p>
+              <ul class="rv">
+                <li>Rectangular blocks will be added above the element.
+                  <ul><li>This time, elements will be classified separately, even if they are insignificantly distant from one another; if the element is not the same as the previous one, it will be a different classification.</li></ul>
+                </li>
+                <li>Every rectangle will have a description code for what it represents:</li>
+              </ul>
+              <p class="metadata-line rv">Page; template; function; form; component; width; height</p>
+              <p class="rv">This allows us to classify every element into each of the previously defined concepts.</p>
+            </div>
+            <aside class="mnote rv">
+              <span class="k">Tooling</span>
+              <p>The first test was organized in Figma; the second, in Adobe XD. Figma resizes images that are too large, while Adobe XD imports them as they are, so all pages have at least the same base width for a fair comparison.</p>
+              <p>An Adobe XD plugin also extracts layer titles as a JSON file, and text layers are named the same as their content, which made moving the data to Excel easier.</p>
+            </aside>
           </div>
 
-          <div class="definition-content">
-            <h3>Header</h3>
-            <p>
-              The header is the top portion of the page, consisting of a combination, but not exclusively, of the following elements: 
-            </p>
-
-            <ul>
-              <li>Site logo/title</li>
-              <li>Navigational menu (links and/or dropdowns that redirect the user to a new page when interacted with)</li>
-              <li>Search bar</li>
-              <li>login/user area</li>
-            </ul>
-
-            <p>
-              Headers usually have a visual delimitation, represented by a line, shadow, or color difference. In code, it represents the entire area inside the &lt;header&gt; section. 
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-      <p>
-        Bellow, are examples of headers:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/headers.jpg"
-        alt="Header examples from Dell, Amazon, Vox and AmCharts, each outlined"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <section class="definition-block reveal">
-        <div class="definition-inner">
-
-          <div class="definition-label">
-            Definition
-          </div>
-
-          <div class="definition-content">
-            <h3>Subheader</h3>
-            <p>
-              Subheaders represent the portion of the page between the header and the main content (body). It's called a subheader because it’s usually an extension of the header's capabilities and, often, has the same type of elements on it.
-            </p>
-
-            <p>
-              Some new elements that we will consider part of the subheader for this definition are: 
-            </p>
-
-            <ul>
-              <li>Breadcrumb</li>
-              <li>Filters</li>
-              <li>Complementary call-to-actions</li>
-            </ul>
-          </div>
-
-        </div>
-      </section>
-
-      <p>
-        Note that not all webpages have subheaders, but given their frequency during the tests for this project, we concluded it was important to formally define them. 
-      </p>
-
-      <p>
-        Bellow, are examples of subheaders:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/subheaders.jpg"
-        alt="Subheader examples from Americanas, Apple, Mercado Livre and Steam, each outlined"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <section class="definition-block reveal">
-        <div class="definition-inner">
-
-          <div class="definition-label">
-            Definition
-          </div>
-
-          <div class="definition-content">
-            <h3>Footer</h3>
-            <p>
-              The footer is the bottom portion of the page, consisting, but not exclusively, of the following elements: 
-            </p>
-
-            <ul>
-              <li>Site map</li>
-              <li>Contact information</li>
-              <li>Important links</li>
-            </ul>
-
-            <p>
-              Usually, the footer section is the same across the entire website and features visual elements that set it apart from the content above, such as line dividers or color changes. 
-            </p>
-
-            <p>
-              In code, the footer is identified by the &lt;footer&gt; section. 
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-      <p>
-        Bellow, are examples of footers:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/footers.jpg"
-        alt="Footer examples from Dell, Booking, Disney and Cinemark, each outlined"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <section class="definition-block reveal">
-        <div class="definition-inner">
-
-          <div class="definition-label">
-            Definition
-          </div>
-
-          <div class="definition-content">
-            <h3>Overlay</h3>
-            <p>
-              Overlays are all the structural elements that are positioned above the main page. The word "above" in this case refers to the z-axis of the page (even though webpages are 2D, the CSS property z-index allows elements to be positioned above others when their values are greater than 0).
-            </p>
-
-            <p>
-              These elements don’t have a fixed position on the page's overall plane, but can be identified both visually and by code. 
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-      <p>
-        Note: since overlays don’t have a fixed position and can appear anywhere on a page, this session will not be included in the template. Its definition helps when mapping elements on screen, but doesn’t aggregate with the overall page structure. 
-      </p>
-
-      <p>
-        Bellow, are examples of overlays:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/overlays.jpg"
-        alt="Overlay examples from Udemy, American Airlines, Dell and iFood, each outlined"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        So far, all the sections follow the exact same structure and classification of HTML because these areas are clearly recognizable and occupy a limited space. Now we will start defining the structures within the body of the page, which will allow easier localization independent of page length.
-      </p>
-
-      <section class="definition-block reveal">
-        <div class="definition-inner">
-
-          <div class="definition-label">
-            Definition
-          </div>
-
-          <div class="definition-content">
-            <h3>Columns</h3>
-            <p>
-              A column represents a portion of the same content inside the &lt;body&gt; section. Horizontally, a column can occupy between 20 and 100 percent of the &lt;body&gt; content, while vertically, it can occupy between 1 and 100 percent of the &lt;body&gt; content. 
-            </p>
-
-            <p>
-              A column is delimited by the type of content that is displayed inside of it, but some visual cues can also be used to enhance column separation. For example:  
-            </p>
-
-            <ul>
-              <li>Spacing</li>
-              <li>Graphic elements (lines and imagery)</li>
-              <li>Color change</li>
-            </ul>
-          </div>
-
-        </div>
-      </section>
-
-      <p>
-        Bellow, are examples of columns:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/columns_2.png"
-        alt="Column examples outlined on a Mercado Livre item list page and an Amazon cart page"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        Note: Pages can have multiple columns, both side-by-side and stacked. To identify which column has been referenced, nomenclature is necessary.  
-      </p>
-
-      <section class="definition-block reveal">
-        <div class="definition-inner">
-
-          <div class="definition-label">
-            Nomenclature
-          </div>
-
-          <div class="definition-content">
-            <h3>Column identification</h3>
-            <p>
-              A column can be identified by the notation:
-            </p>
-
-            <p style="text-align: center;">
-              Column X  
-            </p>
-
-            <p>
-              Where X represents a number between 0 and 5. 
-            </p>
-
-            <p>
-              According to a previous definition, a column can occupy between 20 and 100 percent of the horizontal space of the page, so the numbers {1, 2, 3, 4, 5} represent the horizontal order (left to right) of alignment of the columns on a given section.  
-            </p>
-
-            <p>
-              Whenever the section is filled with a single column, the number 0 should be used to represent the given column. 
-            </p>
-
-          </div>
-
-        </div>
-      </section>
-
-      <section class="definition-block reveal">
-        <div class="definition-inner">
-
-          <div class="definition-label">
-            Nomenclature
-          </div>
-
-          <div class="definition-content">
-            <h3>Panels and Menus</h3>
-            <p>
-              A panel is a column with a width less than 20 percent of the total page width. Will consider only the columns that are the very first or very last in the section. Sections that contain only one column automatically can’t be considered a panel, given the definition of a column 0.
-            </p>
-
-            <p>
-              A menu is a panel that contains Links as its main element (at least 50% of its elements). 
-            </p>
-
-            <p>
-              Panels and menus can be identified by the notation: 
-            </p>
-
-            <p style="text-align: center;">
-              Y Panel, Z menu 
-            </p>
-
-            <p>
-              Where Y and Z represent the direction (left or right) of the page on which it is located. 
-            </p>
-
-          </div>
-
-        </div>
-      </section>
-
-      <p>
-        Note: The distinction between Panels and Menus was made to better identify the distribution of elements within them. For the purpose of template construction, they are the same.  
-      </p>
-
-      <p>
-        Bellow, are examples of the nomenclature:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/nomenclature.jpg"
-        alt="Mercado Livre item list and Amazon cart pages with sections labeled column 0, column 1, menu and panel"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <hr class="page-divider reveal" />
-    </div>
-  </section>
-
-  <section id="e5" class="case-section">
-    <div class="case-section-inner">
-
-      <h2>05. The second study</h2>
-
-      <p>
-        With these new definitions at hand, we ran a second test. The data collection worked very similarly to before; we classified the information blocks by hand, but this time with much more detail:
-      </p>
-
-      <ul>
-        <li>Rectangular blocks will be added above the element.</li>
-        <ul>
-          <li>This time, elements will be classified separately, even if they are insignificantly distant from one another; if the element is not the same as the previous one, it will be a different classification.</li>
-        </ul>
-        <li>Every rectangle will have a description code for what it represents:</li>
-      </ul>
-
-      <p style="text-align: center; font-weight: 600;">
-        Page; template; function; form; component; width; height 
-      </p>
-
-      <p>
-        This allows us to classify every element into each of the previously defined concepts. 
-      </p>
-
-      <p>
-        Note: For the second test, we changed the tool we used to organize the scrape. On the first, it was Figma; on the second, Adobe XD. This decision was made because Figma resizes images that are too large, while Adobe XD imports them as they are, so we can make a fair comparison, given that all pages would have at least the same base width. Another advantage was that Adobe XD has a plugin that extracts layer titles as a JSON file, and text layers are named the same as their content, making it easier to move the collected information to Excel after finishing the scraping. 
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/study2.png"
-        alt="A Dell page from the second study with every element covered by a labeled classification box"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        We also decided to be more concise in selecting the pages we would experiment with this time. We selected 10 e-commerce/store pages and mapped 3 page types across all of them. The flow and content type were also the same in all of them: “purchase flow with 2 items added to the cart”.  
-      </p>
-
-      <section class="list-section is-blue reveal">
-        <div class="list-section-wrapper">
-          <div class="list-section-inner">
-            <h2 class="list-section-title">
-              Test 2 scope
-            </h2>
-
-            <div class="list-tri-columns">
-              <div class="list-column">
-                <h3 class="list-column-title">Websites: </h3>
-                <ul>
-                  <li>Amazon</li>
-                  <li>Americanas</li>
-                  <li>Apple</li>
-                  <li>Dell</li>
-                  <li>HP</li>
-                </ul>
-              </div>
-
-              <div class="list-column">
-                <h3 class="list-column-title"><br /></h3>
-                <ul>
-                  <li>Lenovo</li>
-                  <li>Mercado Livre</li>
-                  <li>Playstation</li>
-                  <li>Steam</li>
-                  <li>Xbox</li>
-                </ul>
-              </div>
-
-              <div class="list-column">
-                <h3 class="list-column-title">Pages:</h3>
-                <ul>
-                  <li>Item list</li>
-                  <li>Item detail</li>
-                  <li>Cart</li>
-                </ul>
+          <div class="row">
+            <div class="main">
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/study2.png" alt="A Dell page from the second study with every element covered by a labeled classification box" width="1017" height="811" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 15</b><span>Scraping in the second study: every element gets a box and a description code.</span></figcaption>
+              </figure>
+
+              <p class="rv">We also decided to be more concise in selecting the pages we would experiment with this time. We selected 10 e-commerce/store pages and mapped 3 page types across all of them. The flow and content type were also the same in all of them: “purchase flow with 2 items added to the cart”.</p>
+
+              <div class="specimen" style="--cols:3" data-reveal="lift">
+                <header><h3>Test 2 scope</h3><span>10 websites × 3 page types</span></header>
+                <div class="cols">
+                  <div>
+                    <h4>Websites</h4>
+                    <ul><li>Amazon</li><li>Americanas</li><li>Apple</li><li>Dell</li><li>HP</li></ul>
+                  </div>
+                  <div>
+                    <h4 aria-hidden="true">&nbsp;</h4>
+                    <ul><li>Lenovo</li><li>Mercado Livre</li><li>Playstation</li><li>Steam</li><li>Xbox</li></ul>
+                  </div>
+                  <div>
+                    <h4>Pages</h4>
+                    <ul><li>Item list</li><li>Item detail</li><li>Cart</li></ul>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <p>
-        This gives a total of 30 separated pages analyzed. 
-      </p>
-
-      <p>
-        The process for organizing and summarizing the data in Excel was similar to what was done on the first test; the main difference was that instead of using separate tables to calculate clusters of information, everything was done in one Consolidation page using multiple formulas.  
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/study2_table.png"
-        alt="Spreadsheet from the second study listing each element's site, page, template section, function, form, component, size and share of the page"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        One thing worth noting is that, given the nature and method used in the second test, there were many more lines in each table, and the individual values for each visual element on screen were smaller, providing greater confidence in the results. 
-      </p>
-
-      <p>
-        Now, for the results, let's take a look at what we found when analyzing the amount of information across all pages and how that translated to each page type.
-      </p>
-
-      <section class="definition-block reveal">
-        <div class="definition-inner">
-
-          <div class="definition-label">
-            Results
+            <aside class="mnote mnote--pink rv">
+              <span class="k">Sample</span>
+              <p>10 e-commerce/store sites × 3 page types: a total of 30 separate pages analyzed.</p>
+            </aside>
           </div>
 
-          <div class="definition-content">
+          <div class="row">
+            <div class="main">
+              <p class="rv">The process for organizing and summarizing the data in Excel was similar to what was done on the first test; the main difference was that instead of using separate tables to calculate clusters of information, everything was done in one Consolidation page using multiple formulas.</p>
 
-            <div class="highlight-grid">
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/study2_table.png" alt="Spreadsheet from the second study listing each element's site, page, template section, function, form, component, size and share of the page" width="797" height="775" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 16</b><span>The table scraped in the second study: one line per element.</span></figcaption>
+              </figure>
 
-              <article class="highlight-card">
-                <h4>29.19%</h4>
-                <p>
-                  Is the median of the total amount of information on the analyzed pages (average of 29.29%).
-                </p>
+              <p class="rv">One thing worth noting is that, given the nature and method used in the second test, there were many more lines in each table, and the individual values for each visual element on screen were smaller, providing greater confidence in the results.</p>
+              <p class="rv">Now, for the results, let's take a look at what we found when analyzing the amount of information across all pages and how that translated to each page type.</p>
+
+              <div class="stats">
+                <div class="stat stat--yellow" data-reveal="lift" style="--i:0"><strong class="rv" data-count="29.19" data-suffix="%">29.19%</strong><span>Is the median of the total amount of information on the analyzed pages (average of 29.29%).</span></div>
+                <div class="stat stat--cyan" data-reveal="lift" style="--i:1"><strong class="rv" data-count="1.05" data-suffix="%">1.05%</strong><span>Is the variation in the total amount of information on the analyzed pages.</span></div>
+                <div class="stat stat--green" data-reveal="lift" style="--i:2"><strong class="rv" data-count="10.25" data-suffix="%">10.25%</strong><span>Is the standard deviation of the total amount of information on the analyzed pages.</span></div>
+                <div class="stat stat--pink" data-reveal="lift" style="--i:3"><strong class="rv" data-count="56" data-decimals="0" data-suffix="%">56%</strong><span>Is how much of the information had the Form Typo.</span></div>
+                <div class="stat stat--peach" data-reveal="lift" style="--i:4"><strong class="rv" data-count="86" data-decimals="0" data-suffix="%">86%</strong><span>Is the combination of the functions Illustrations, links, and plain text.</span></div>
+              </div>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/form_function.jpeg" alt="Sankey chart of how element functions distribute across the forms typo, space, image and icon" width="1269" height="552" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 17</b><span>Form × Function distribution within elements.</span></figcaption>
+              </figure>
+
+              <p class="rv">Now, before getting into the details of the distribution by page type, I want to show the discoveries we made using the taxonomy we defined previously.</p>
+              <p class="rv">My initial hypothesis was that, by following this categorization, we would better understand the structure of each page type. In a way, my end objective was to see if it was possible to summarize the page types enough to build a set of templates that encapsulate how that type of page will most likely look.</p>
+              <p class="rv">I have already discussed throughout this article that the biggest challenge in standardization was page-size variation. So, to eliminate this problem, I defined a new metric that makes page comparisons more fair; we call this technique <mark class="hl">Template Summarization</mark>.</p>
+              <p class="rv">From now on, we will reference templates a lot and how we worked on them. For the sake of standardization, we will define a template as an alternative version of a webpage composed only of blocks of its segmented sections (header, sub-header, footer, columns, panels, and menus). Below is a template example:</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/template.jpg" alt="A PlayStation cart page next to its template version made of colored section blocks" width="1320" height="742" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 18</b><span>A PlayStation cart page and its template version.</span></figcaption>
+              </figure>
+
+              <p class="rv">Below is a technique for simplifying these components into a compact view:</p>
+
+              <article class="defn" data-reveal="lift" aria-labelledby="def8">
+                <div class="term"><h3 id="def8">Summarized template</h3><i>noun · technique</i><span class="no">DEF. 08</span></div>
+                <p>A summarized template is a visualization of the template sections clustered (without blank spacing) inside a 24:25 rectangle.</p>
+                <p class="see">See also: Template archetype · Template incident</p>
               </article>
 
-              <article class="highlight-card">
-                <h4>1.05%</h4>
-                <p>
-                  Is the variation in the total amount of information on the analyzed pages.
-                </p>
+              <p class="rv">We can now apply this method to the previous template:</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/summarized_template.jpg" alt="A PlayStation cart page next to its summarized template" width="1320" height="612" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 19</b><span>The PlayStation cart page and its summarized template.</span></figcaption>
+              </figure>
+
+              <p class="rv">With summarized templates, we can now compare pages that differ in content but share a similar structure. Look at this example comparing three item detail pages from different websites (Amazon, Americanas, and Dell):</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/template_tax_3.jpg" alt="Amazon, Americanas and Dell item detail pages at very different lengths" width="1320" height="743" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 20</b><span>Item detail pages from Amazon, Americanas and Dell.</span></figcaption>
+              </figure>
+
+              <p class="rv">We can see significant variation in size, content, and placement across pages, even though they serve the same function. But let's compare their summarized templates:</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/template_tax_4.jpeg" alt="Summarized templates of the Amazon, Americanas and Dell item detail pages, with a color legend for each section type" width="1600" height="900" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 21</b><span>The same three pages as summarized templates.</span></figcaption>
+              </figure>
+
+              <p class="rv">As we can see in the image, even though the pages are considerably different in their original format, the summarized template shows some similar elements between them. More than the basic structure, a section with one column and a variation between a second column, a panel, or both, and a section with a single column. Structurally, the Amazon page is the most different, having a third content section with a menu and a column.</p>
+              <p class="rv">This is a simple visual analysis done by just looking and comparing the structures of these summarized templates, but what if we did the same comparison across multiple pages at a time? What if we compared all pages of a specific type? Would they have an overall similar summarized template?</p>
+              <p class="rv">In order to do that, I've built this process:</p>
+              <ol class="rv">
+                <li>Use an all-black version of the summarized template.</li>
+                <li>Make it transparent, consider how many pages you’re comparing at the same time, and divide the 100% opacity by the number of pages - for example, if you are comparing 10 pages, the opacity of each summarized template should be 10%.</li>
+                <li>Stack all the summarized templates on top of each other to create a new version that highlights the outlines of each page's elements, demonstrating all possible template variations.</li>
+                <li>Depending on your sample size, removing outliers may be a good idea here - outliers here reference the instances of radical difference that happened a single time.</li>
+              </ol>
+              <p class="rv">In the generated version, it will be possible to see variation lines from different templates; <mark class="hl">the stronger the line, the more the structure is repeated across the pages</mark>.</p>
+              <p class="rv">We can then mark these variations, as in the example below, using the method with item detail pages from study 2:</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/stacked_templates.jpeg" alt="Stacked view of all item detail templates, and the same view with the recurring section lines highlighted" width="1600" height="900" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 22</b><span>Stacked item detail templates, then the same stack with its variations highlighted.</span></figcaption>
+              </figure>
+
+              <article class="defn" data-reveal="lift" aria-labelledby="def9">
+                <div class="term"><h3 id="def9">Template archetype</h3><i>noun</i><span class="no">DEF. 09</span></div>
+                <p>The result of highlighting the variations in stacked summarized templates.</p>
+                <p class="see">See also: Summarized template · Template incident</p>
               </article>
 
-              <article class="highlight-card">
-                <h4>10.25%</h4>
-                <p>
-                  Is the standard deviation of the total amount of information on the analyzed pages.
-                </p>
+              <article class="defn" data-reveal="lift" aria-labelledby="def10">
+                <div class="term"><h3 id="def10">Template incident</h3><i>noun</i><span class="no">DEF. 10</span></div>
+                <p>Any variation that can be drawn from a Template Archetype.</p>
+                <p class="see">See also: Template archetype</p>
               </article>
 
-              <article class="highlight-card">
-                <h4>56%</h4>
-                <p>
-                  Is how much of the information had the Form Typo.
-                </p>
-              </article>
+              <p class="rv">In the case of the item detail pages we analyzed, these are the incidences:</p>
 
-              <article class="highlight-card">
-                <h4>86%</h4>
-                <p>
-                  Is the combination of the functions Illustrations, links, and plain text.
-                </p>
-              </article>
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/item_detail_incidence.jpeg" alt="Highlighted stack of item detail templates and its two variations: two columns, or one column with a right panel" width="1600" height="900" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 23</b><span>Item detail template incidences: two columns, or one column and a right panel.</span></figcaption>
+              </figure>
 
+              <p class="rv">Since the overlap occurred between a second column and a panel on the right, the two summarized template types that best represent this type of page are the ones above.</p>
+              <p class="rv">Repeating the process for the item list pages, we had a surprise: all pages had the exact same summarized template, so when overlapped, there was no variation, creating only one instance. This is mostly because of the type of website we were studying; in general, e-commerce and store sites tend to use the same structure for their item list pages, and we were just surprised when all of them used the exact same one.</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/item_list_incidence.jpeg" alt="Merged item list templates, the item list archetype, and its single template incidence" width="1600" height="900" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 24</b><span>Item list pages: one archetype, one incidence.</span></figcaption>
+              </figure>
+
+              <p class="rv">The cart page had the most variation. In total, there were 4 incidences in our sample, stemming from the overall structure of the top half of the page: the presence or absence of a subheader and the number of panels/columns per page.</p>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/cart_incidence.jpeg" alt="Merged cart templates, the cart archetype, and its four template incidences" width="1600" height="900" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 25</b><span>Cart pages: the archetype and its four incidences.</span></figcaption>
+              </figure>
+
+              <p class="rv">Now, let's use these templates to see how the elements are distributed in each page type.</p>
+
+              <div class="stats">
+                <div class="stat stat--blue" data-reveal="lift" style="--i:0"><strong class="rv" data-count="42.38" data-suffix="%">42.38%</strong><span>Item list: share of all the information collected</span></div>
+                <div class="stat stat--yellow" data-reveal="lift" style="--i:1"><strong class="rv" data-count="33.13" data-suffix="%">33.13%</strong><span>Item detail: share of all the information collected</span></div>
+                <div class="stat stat--green" data-reveal="lift" style="--i:2"><strong class="rv" data-count="24.49" data-suffix="%">24.49%</strong><span>Cart: share of all the information collected</span></div>
+              </div>
+
+              <div class="sub-entry rv"><small>Page type</small><h3>Item list</h3></div>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/item_list_elements.jpeg" alt="Item list archetype holding 42.38% of all information, with element breakdowns for the left panel, top column and bottom column" width="1600" height="715" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 26</b><span>Element distribution on the item list archetype.</span></figcaption>
+              </figure>
+
+              <p class="rv">The most interesting fact we found while analyzing the data is that this set of pages accounts for 42.38% of all the information collected, making it the most overloaded page and suggesting that the information distribution is quite unequal across pages.</p>
+              <p class="rv">Looking through the different sections, we find that the top column is mostly filled with cards (85.65%), while the bottom column is split between cards (36.44%) and non-component elements (32.67%). On the left panel, where we expect to see links, buttons, and filters, we see that 77.86% of the information is not part of a component, and of it, 91.52% comes from the form typo.</p>
+
+              <div class="sub-entry rv"><small>Page type</small><h3>Item detail</h3></div>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/item_detail_elements.jpeg" alt="Item detail archetype holding 33.13% of all information, with element breakdowns for its top-left and lower columns" width="1600" height="697" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 27</b><span>Element distribution on the item detail archetype.</span></figcaption>
+              </figure>
+
+              <p class="rv">Analyzing the item detail page, the first thing worth noting is that it accounts for 33.13% of the total information collected, making it well-balanced compared to the other two pages.</p>
+              <p class="rv">Looking through the template sections, we were surprised to discover that the column on the left-hand side of the top of the page has more text elements than images, since this is where we usually display pictures of the item. The typo form accounts for 51.65% of the information in that space, while images account for 23.14%. The column on the second half of the template shows that 52.66% of its elements are non-components, 20.24% are cards, 17.09% are banners, 5.55% are tables, and the rest is a mixture of other elements. It’s worth mentioning that the non-component elements are divided into 64.38% as typos, 31.62% as images, and 4% as icons.</p>
+
+              <div class="sub-entry rv"><small>Page type</small><h3>Cart</h3></div>
+
+              <figure class="fig rv">
+                <button type="button" class="fig-zoom">
+                  <span class="frame">
+                    <span class="zoom-hint" aria-hidden="true">Click to zoom</span>
+                    <span class="sr-only">Enlarge figure: </span>
+                    <img src="../assets/images/cases/research1/cart_elements.jpeg" alt="Cart archetype holding 24.49% of all information, with the bottom column split between blank space and cards" width="1600" height="766" loading="lazy" />
+                  </span>
+                </button>
+                <figcaption><b>Fig. 28</b><span>Element distribution on the cart archetype.</span></figcaption>
+              </figure>
+
+              <p class="rv">The last page analyzed was the cart page. As shown in the image, this page accounts for 24.49% of the total information, making it the emptiest of the three (with more white space).</p>
+              <p class="rv">Across the template's sections, the bottom column is divided almost equally between two types of elements: 49.71% non-component elements and 40.98% cards. For the whole page, the information is spread between many different elements, but one interesting fact is seeing how much influence the footer we have here has. One of the websites studied has a long footer, and since this page has the least information, the footer accounted for a large portion of it, bringing the total for this template to 28.03% of the information.</p>
             </div>
-
           </div>
-        </div>
-      </section>
+        </section>
 
-      <p>
-        Below we have a chart for Form x Function distribution within elements:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/form_function.jpeg"
-        alt="Sankey chart of how element functions distribute across the forms typo, space, image and icon"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        Now, before getting into the details of the distribution by page type, I want to show the discoveries we made using the taxonomy we defined previously.
-      </p>
-
-      <p>
-        My initial hypothesis was that, by following this categorization, we would better understand the structure of each page type. In a way, my end objective was to see if it was possible to summarize the page types enough to build a set of templates that encapsulate how that type of page will most likely look.
-      </p>
-
-      <p>
-        I have already discussed throughout this arcticle that the biggest challenge in standardization was page-size variation. So, to eliminate this problem, I defined a new metric that makes page comparisons more fair; we call this technique Template Summarization.
-      </p>
-
-      <p>
-        From now on, we will reference templates a lot and how we worked on them. For the sake of standardization, we will define a template as an alternative version of a webpage composed only of blocks of its segmented sections (header, sub-header, footer, columns, panels, and menus). Below is a template example:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/template.jpg"
-        alt="A PlayStation cart page next to its template version made of colored section blocks"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        Below is a technique for simplifying these components into a compact view:
-      </p>
-
-      <section class="definition-block reveal">
-        <div class="definition-inner">
-
-          <div class="definition-label">
-            Definition
+        <!-- 06 -->
+        <section class="entry" id="e6" aria-labelledby="e6-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">06</span><div><small>Entry 06</small><h2 id="e6-title">Insights and the scaling problem</h2></div></header>
+              <blockquote class="pull rv"><p>How can we make this process scalable?</p><cite>The question after study 2</cite></blockquote>
+              <p class="rv">By the end of the second study, this was the question I had in mind most. Even though the test was good and we were able to validate many of our original hypotheses, to fully confirm it and establish a structured method, we would need a way to speed up the categorization process.</p>
+              <p class="rv">The second test took months to complete. All categorization, data organization, analysis, etc., was done by my colleague Leonardo Souza, who was my product designer intern at the time, and me.</p>
+            </div>
+            <aside class="mnote mnote--blue rv">
+              <span class="k">Co-researcher</span>
+              <p>Leonardo Souza, my product designer intern at the time, worked on study 2 with me.</p>
+            </aside>
           </div>
 
-          <div class="definition-content">
-            <h3>Summarized Template</h3>
-            <p>
-              A summarized template is a visualization of the template sections clustered (without blank spacing) inside a 24:25 rectangle.
-            </p>
+          <div class="row">
+            <div class="main">
+              <p class="rv">My approach was to start looking for ways to develop a classification model that we could train on our hand-made examples, which would accelerate our tagging of Form, Function, and Components. Unfortunately, that proved to be a lot more complicated than I anticipated, and here are the reasons:</p>
+              <ul class="rv">
+                <li>Since we created this classification method from scratch, there's no initial dataset we can use to leverage any existing base model; we would need to do it by hand.</li>
+                <li>There are many image classification models that could work for what we are looking for, but in general, <mark class="hl">image recognition models are trained on a single label at a time</mark>, not multiple labels like we're doing.</li>
+                <li>The available UI kits for image classification using machine learning models are OK at best. They usually allow you to select one block, area, element, or polygon at a time, and the classification itself is unitary; you can't select multiple items with the same tag type at once.</li>
+                <li>The results from these models needed extensive preparation for the analysis we were doing, as in the second study.</li>
+              </ul>
+              <p class="rv">These were discoveries I made while trying to do a third study. This one was smaller, a benchmark for my team, comparing a specific type of page with its competitors, but using the method we created to evaluate the pages and the overall amount of information.</p>
+            </div>
+            <aside class="mnote mnote--green rv">
+              <span class="k">Tooling</span>
+              <p>While searching for models to test, I found Darwin V7, which uses YOLO as a base model for image recognition. Its UI kit is robust and helps a lot with classifying large batches of images, but since my images required multiple selections with many tags per box, finishing the classification with it took about as much work as without a UI kit.</p>
+            </aside>
           </div>
 
-        </div>
-      </section>
+          <div class="row">
+            <div class="main">
+              <p class="rv">One thing that was different from previous tests was that now we had the coordinates of each selection box, so for each element, the extracted metadata looked like this:</p>
+              <p class="metadata-line rv">Form; Function; Component; Template taxonomy; Width; Height; Position X; Position Y</p>
+              <p class="rv">where X and Y corresponded to the bottom left corner of the box.</p>
+              <p class="rv">This allowed for a new type of visualization within the summarized templates, with small boxes representing element distribution. However, because the sample in this study was much smaller, further investigation would be necessary to extract insights from the method.</p>
+            </div>
+          </div>
+        </section>
 
-      <p>
-        We can now apply this method to the previous template:
-      </p>
+        <!-- 07 -->
+        <section class="entry" id="e7" aria-labelledby="e7-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">07</span><div><small>Entry 07</small><h2 id="e7-title">Building my own classification tool</h2></div></header>
+              <p class="rv">My frustration with the solutions available in the market made me start exploring ways to try to build my own solution.</p>
+              <p class="rv">In all honesty, I’m still figuring things out. I think what I’ve built covers the easier part of the process: making categorization faster and easier. In order to have the entire method automated, I still need a model that is capable of understanding the Form x Function x Component classification method, lots of data labeled, and more refinements on the overall structure of the tests.</p>
+              <p class="rv">Below is a quick demo of the tool I developed for the classification step:</p>
 
-      <img
-        src="../assets/images/cases/research1/summarized_template.jpg"
-        alt="A PlayStation cart page next to its summarized template"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
+              <figure class="fig fig--video rv">
+                <span class="frame">
+                  <div class="video-placeholder" data-video-src="../assets/images/cases/research1/image_categorization.mp4">
+                    <img src="../assets/images/cases/research1/video_thumb.png" alt="Play video: demo of the annotation tool classifying elements on a web page" width="1918" height="1031" loading="lazy" />
+                    <button type="button" class="video-play" aria-label="Play video">▶</button>
+                  </div>
+                </span>
+                <figcaption><b>Fig. 29</b><span>Demo of the tool I developed for the classification step.</span></figcaption>
+              </figure>
 
-      <p>
-        With summarized templates, we can now compare pages that differ in content but share a similar structure. Look at this example comparing three item detail pages from different websites (Amazon, Americanas, and Dell):
-      </p>
+              <p class="rv">This tool was built with speed in mind, so when exporting the information, it generates a JSON file with a structure that facilitates data analysis later.</p>
+              <p class="rv">Along with this tool, I made a script that navigates to different webpages, scrolls them to the bottom, and takes a screenshot of the entire page, making it much easier to find new pages to use.</p>
+              <p class="rv">I’m currently developing a model that will use all this information to automate classification and generate summarized templates as a result.</p>
+              <p class="rv">But this is only one of the approaches for this research.</p>
+              <p class="rv">In the next article, I’ll discuss how we used a cognitive load measurement method to understand how the page's physical layout can intrinsically influence how users navigate it.</p>
+              <p class="rv">If you read to this point, thank you! This research means a lot to me; I hope this can also be inspiring for you in some way.</p>
 
-      <img
-        src="../assets/images/cases/research1/template_tax_3.jpg"
-        alt="Amazon, Americanas and Dell item detail pages at very different lengths"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        We can see significant variation in size, content, and placement across pages, even though they serve the same function. But let's compare their summarized templates:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/template_tax_4.jpeg"
-        alt="Summarized templates of the Amazon, Americanas and Dell item detail pages, with a color legend for each section type"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        As we can see in the image, even though the pages are considerably different in their original format, the summarized template shows some similar elements between them. More than the basic structure, a section with one column and a variation between a second column, a panel, or both, and a section with a single column. Structurally, the Amazon page is the most different, having a third content section with a menu and a column. 
-      </p>
-
-      <p>
-        This is a simple visual analysis done by just looking and comparing the structures of these summarized templates, but what if we did the same comparison across multiple pages at a time? What if we compared all pages of a specific type? Would they have an overall similar summarized template?
-      </p>
-
-      <p>
-        In order to do that, I've built this process:
-      </p>
-
-      <ul>
-        <li>Use an all-black version of the summarized template.</li>
-        <li>Make it transparent, consider how many pages you’re comparing at the same time, and divide the 100% opacity by the number of pages - for example, if you are comparing 10 pages, the opacity of each summarized template should be 10%</li>
-        <li>Stack all the summarized templates on top of each other to create a new version that highlights the outlines of each page's elements, demonstrating all possible template variations. </li>
-        <li>Depending on your sample size, removing outliers may be a good idea here - outliers here reference the instances of radical difference that happened a single time.</li>
-      </ul>
-
-      <p>
-        In the generated version, it will be possible to see variation lines from different templates; the stronger the line, the more the structure is repeated across the pages.
-      </p>
-
-      <p>
-        We can then mark these variations, as in the example below, using the method with item detail pages from study 2:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/stacked_templates.jpeg"
-        alt="Stacked view of all item detail templates, and the same view with the recurring section lines highlighted"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        The result of highlighting the variations is what we call the <bold>Template Archetype.</bold> 
-      </p>
-
-      <p>
-        Finally, we can define our last concept: the <bold>Template Incident</bold>, which is any variation that can be drawn from a Template Archetype. In the case of the item detail pages we analyzed, these are the incidences:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/item_detail_incidence.jpeg"
-        alt="Highlighted stack of item detail templates and its two variations: two columns, or one column with a right panel"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        Since the overlap occurred between a second column and a panel on the right, the two summarized template types that best represent this type of page are the ones above.
-      </p>
-
-      <p>
-        Repeating the process for the item list pages, we had a surprise: all pages had the exact same summarized template, so when overlapped, there was no variation, creating only one instance. This is mostly because of the type of website we were studying; in general, e-commerce and store sites tend to use the same structure for their item list pages, and we were just surprised when all of them used the exact same one.
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/item_list_incidence.jpeg"
-        alt="Merged item list templates, the item list archetype, and its single template incidence"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        The cart page had the most variation. In total, there were 4 incidences in our sample, stemming from the overall structure of the top half of the page: the presence or absence of a subheader and the number of panels/columns per page.
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/cart_incidence.jpeg"
-        alt="Merged cart templates, the cart archetype, and its four template incidences"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        Now, let's use these templates to see how the elements are distributed in each page type. Starting with the item list page:
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/item_list_elements.jpeg"
-        alt="Item list archetype holding 42.38% of all information, with element breakdowns for the left panel, top column and bottom column"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        The most interesting fact we found while analyzing the data is that this set of pages accounts for 42.38% of all the information collected, making it the most overloaded page and suggesting that the information distribution is quite unequal across pages. 
-      </p>
-
-      <p>
-        Looking through the different sections, we find that the top column is mostly filled with cards (85.65%), while the bottom column is split between cards (36.44%) and non-component elements (32.67%). On the left panel, where we expect to see links, buttons, and filters, we see that 77.86% of the information is not part of a component, and of it, 91.52% comes from the form typo. 
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/item_detail_elements.jpeg"
-        alt="Item detail archetype holding 33.13% of all information, with element breakdowns for its top-left and lower columns"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        Analyzing the item detail page, the first thing worth noting is that it accounts for 33.13% of the total information collected, making it well-balanced compared to the other two pages. 
-      </p>
-
-      <p>
-        Looking through the template sections, we were surprised to discover that the column on the left-hand side of the top of the page has more text elements than images, since this is where we usually display pictures of the item. The typo form accounts for 51.65% of the information in that space, while images account for 23.14%. The column on the second half of the template shows that 52.66% of its elements are non-components, 20.24% are cards, 17.09% are banners, 5.55% are tables, and the rest is a mixture of other elements. It’s worth mentioning that the non-component elements are divided into 64.38% as typos, 31.62% as images, and 4% as icons. 
-      </p>
-
-      <img
-        src="../assets/images/cases/research1/cart_elements.jpeg"
-        alt="Cart archetype holding 24.49% of all information, with the bottom column split between blank space and cards"
-        class="case-hero-image reveal"
-        loading="lazy"
-      />
-
-      <p>
-        The last page analyzed was the cart page. As shown in the image, this page accounts for 24.49% of the total information, making it the emptiest of the three (with more white space). 
-      </p>
-
-      <p>
-        Across the template's sections, the bottom column is divided almost equally between two types of elements: 49.71% non-component elements and 40.98% cards. For the whole page, the information is spread between many different elements, but one interesting fact is seeing how much influence the footer we have here has. One of the websites studied has a long footer, and since this page has the least information, the footer accounted for a large portion of it, bringing the total for this template to 28.03% of the information.  
-      </p>
-      <hr class="page-divider reveal" />
-    </div>
-  </section>
-
-  <section id="e6" class="case-section reveal">
-    <div class="case-section-inner">
-
-      <h2>06. Insights and the scaling problem</h2>
-
-      <h1 class="case-title">
-        How can we make this process scalable?
-      </h1>
-
-      <p>
-        By the end of the second study, this was the question I had in mind most. Even though the test was good and we were able to validate many of our original hypotheses, to fully confirm it and establish a structured method, we would need a way to speed up the categorization process.
-      </p>
-
-      <p>
-        The second test took months to complete. All categorization, data organization, analysis, etc., was done by my colleague Leonardo Souza, who was my product designer intern at the time, and me.
-      </p>
-
-      <p>
-        My approach was to start looking for ways to develop a classification model that we could train on our hand-made examples, which would accelerate our tagging of Form, Function, and Components. Unfortunately, that proved to be a lot more complicated than I anticipated, and here are the reasons:
-      </p>
-
-      <ul>
-        <li>Since we created this classification method from scratch, there's no initial dataset we can use to leverage any existing base model; we would need to do it by hand.</li>
-        <li>There are many image classification models that could work for what we are looking for, but in general, image recognition models are trained on a single label at a time, not multiple labels like we're doing.</li>
-        <li>The available UI kits for image classification using machine learning models are OK at best. They usually allow you to select one block, area, element, or polygon at a time, and the classification itself is unitary; you can't select multiple items with the same tag type at once.</li>
-        <li>The results from these models needed extensive preparation for the analysis we were doing, as in the second study.</li>
-      </ul>
-
-      <p>
-        These were discoveries I made while trying to do a third study. This one was smaller, a benchmark for my team, comparing a specific type of page with its competitors, but using the method we created to evaluate the pages and the overall amount of information.
-      </p>
-
-      <p>
-        While searching for models to test, I found Darwing V7, which uses YOLO as a base model for image recognition. Their UI kit is robust and helps a lot with classifying large batches of images, but, as mentioned, since my images required multiple selections with many tags per box, the work required to finalize the classification using Darwing was similar to what we did without a UI kit.
-      </p>
-
-      <p>
-        One thing that was different from previous tests was that now we had the coordinates of each selection box, so for each element, the extracted metadata looked like this:
-      </p>
-
-      <p style="text-align: center; font-weight: 600;">
-        Form; Function; Component; Template taxonomy; Width; Height; Position X; Position Y
-      </p>
-
-      <p>
-        where X and Y corresponded to the bottom left corner of the box.
-      </p>
-
-      <p>
-        This allowed for a new type of visualization within the summarized templates, with small boxes representing element distribution. However, because the sample in this study was much smaller, further investigation would be necessary to extract insights from the method.
-      </p>
-
-      <hr class="page-divider reveal" />
-    </div>
-  </section>
-
-  <section id="e7" class="case-section reveal">
-    <div class="case-section-inner">
-
-      <h2>07. Building my own classification tool</h2>
-
-      <p>
-        My frustration with the solutions available in the market made me start exploring ways to try build my own solution.
-      </p>
-
-      <p>
-        In all honesty, I’m still figuring things out. I think what I’ve built covers the easier part of the process: making categorization faster and easier. In order to have the entire method automated, I still need a model that is capable of understanding the Form x Function x Component classification method, lots of data labeled, and more refinements on the overall structure of the tests. 
-      </p>
-
-      <p>
-        Bellow is a quick demo of the tool I developed for the classification step:
-      </p>
-
-      <div class="video-placeholder" data-video-src="../assets/images/cases/research1/image_categorization.mp4">
-        <img src="../assets/images/cases/research1/video_thumb.png" alt="Play video: demo of the annotation tool classifying elements on a web page">
-        <button class="video-play">▶</button>
-      </div>
-
-      <p>
-        This tool was built with speed in mind, so when exporting the information, it generates a JSON file with a structure that facilitates data analysis later.
-      </p>
-
-      <p>
-        Along with this tool, I made a script that navigates to different webpages, scrolls them to the bottom, and takes a screenshot of the entire page, making it much easier to find new pages to use.
-      </p>
-
-      <p>
-        I’m currently developing a model that will use all this information to automate classification and generate summarized templates as a result.
-      </p>
-
-      <p>
-        But this is only one of the approaches for this research.
-      </p>
-
-      <p>
-        In the next article, I’ll discuss how we used a cognitive load measurement method to understand how the page's physical layout can intrinsically influence how users navigate it.
-      </p>
-
-      <p>
-        If you read to this point, thank you! This research means a lot to me; I hope this can also be inspiring for you in some way.
-      </p>
-
-    </div>
-  </section>
-        </div>
+              <p class="sign-off rv">Thank you for reading</p>
+              <a class="next" href="aiorc.html" data-reveal="lift">
+                <span><small>Next case file · 02</small><strong>AI Orchestration – Digital Twin</strong></span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </section>
 
       </article>
     </div>
   </main>
 
-  <script src="../js/reveal.js"></script>
   <script src="../js/lazyload.js"></script>
 </body>
 </html>

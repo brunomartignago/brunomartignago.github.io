@@ -32,6 +32,7 @@
 
   const reveal = el => {
     el.classList.add("in");
+    if (el.matches("[data-count]")) countUp(el);
     el.querySelectorAll("[data-count]").forEach(countUp);
   };
 
