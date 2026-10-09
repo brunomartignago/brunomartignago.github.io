@@ -1890,3 +1890,90 @@
     white-space: nowrap;
   }
 }
+
+/* ---------- Fig 04 · Pages to scale ---------- */
+
+.r2-s-stage {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-around;
+  padding: 24px 16px 16px;
+  background-color: #FFFFFF;
+}
+
+.r2-s-col {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  text-align: center;
+}
+
+.r2-s-bar {
+  position: relative;
+  border: 2px solid #0A0A0A;
+  border-radius: 4px;
+  background-color: #F4FDFF;
+  /* one band per 1920 × 1080 screen */
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--scr) - 1px), #9CCFD9 calc(var(--scr) - 1px), #9CCFD9 var(--scr));
+  box-sizing: content-box;
+  transform-origin: top;
+}
+
+.r2-s-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  margin: -5px 0 0 -5px;
+  border: 1.5px solid #0A0A0A;
+  border-radius: 50%;
+  background-color: #E0352B;
+}
+
+.r2-s-col b {
+  color: #0A0A0A;
+  font: var(--weight-medium) 11px/1.2 var(--font-mono);
+}
+
+.r2-s-col span {
+  color: #6E6A66;
+  font: var(--weight-regular) 10.5px/1.35 var(--font-mono);
+}
+
+.r2-s-stage.is-waiting .r2-s-bar {
+  transform: scaleY(0);
+}
+
+.r2-s-stage.is-waiting .r2-s-dot {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.r2-s-stage.is-in .r2-s-bar {
+  transition: transform 900ms var(--ease-out, cubic-bezier(.22,1,.36,1)) calc(var(--i) * 90ms);
+}
+
+.r2-s-stage.is-in .r2-s-dot {
+  transition:
+    opacity 250ms ease-out,
+    transform 400ms cubic-bezier(.34,1.56,.64,1);
+  transition-delay: calc(700ms + var(--i) * 90ms + var(--d) * 45ms);
+}
+
+@media (max-width: 560px) {
+  .r2-s-stage {
+    gap: 4px;
+    padding: 18px 8px 12px;
+  }
+
+  .r2-s-col b {
+    font-size: 10px;
+  }
+
+  .r2-s-col span {
+    font-size: 9.5px;
+  }
+}

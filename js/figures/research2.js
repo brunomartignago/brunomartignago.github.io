@@ -306,4 +306,41 @@
     applyPreset("layout");
     live(fig);
   })();
+  /* ================= Fig 04 · The six pages, to scale ================= */
+  (() => {
+    const fig = document.getElementById("cf-scale");
+    if (!fig) return;
+    const stage = fig.querySelector(".r2-s-stage");
+    const MAX_H = 440; // px for the longest page
+
+    load("local_centers_of_mass.json").then(data => {
+      const pages = Object.values(data.pages);
+      const [SW, SH] = data.screen;
+      const SC = data.screenshot_width / SW; // CM y is in 1920-wide units; pages are 1788 wide
+      const longest = Math.max(...pages.map(p => p.height_px));
+      const k = MAX_H / longest;
+
+      pages.forEach((p, n) => {
+        const col = el("div", "r2-s-col", `--i:${n};`);
+        const bar = el("div", "r2-s-bar", `height:${Math.max(24, p.height_px * k)}px;width:${data.screenshot_width * k}px;--scr:${SH * SC * k}px;`);
+        p.cm.forEach(([x, y], i) => {
+          const top = Math.min(99, y * SC / p.height_px * 100);
+          bar.append(el("span", "r2-s-dot", `left:${x / SW * 100}%;top:${top}%;--d:${i};`));
+        });
+        const name = el("b");
+        // Let "PlayStation" break at its capital on narrow screens
+        p.name.split(/(?<=[a-z])(?=[A-Z])/).forEach((part, i) => { if (i) name.append(el("wbr")); name.append(part); });
+        const meta = el("span");
+        meta.append(p.category, el("br"), `${p.height_px.toLocaleString("en-US")} px`, el("br"), `${p.cm.length} CMs`);
+        col.append(bar, name, meta);
+        stage.append(col);
+      });
+
+      live(fig);
+      if (reduced()) return;
+      // Pages unroll top-down, then their centers of mass drop in, once
+      stage.classList.add("is-waiting");
+      onceInView(stage, () => stage.classList.replace("is-waiting", "is-in"));
+    }).catch(() => fail(fig));
+  })();
 })();
