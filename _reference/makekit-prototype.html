@@ -1,0 +1,629 @@
+<title>Make Kit Case Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: case journal system (Journal level + sticky notes + taped cover figure), Day edition, accent = peach.
+   A shorter case: structure-first figures built from the real kit (file sizes, router triggers, manifest). */
+:root {
+  color-scheme: light;
+  --paper: #FAF5F2; --card: #FFFFFF; --ink: #0A0A0A;
+  --text: #1F1F1F; --text-2: #4A4A4A; --text-3: #6E6A66;
+  --rule: rgba(10,10,10,.08); --line: #D8D0C9; --wire: #ECE6E1;
+  --accent: #FFB37A; --accent-d: #9A4F1C;
+  --yellow: #FFF260; --yellow-d: #A9A03E; --blue: #60C2FF; --blue-d: #2157A9; --cyan: #60E7FF; --cyan-d: #348796;
+  --green: #60FFA2; --green-d: #318D57; --pink: #FD93E2; --pink-d: #8B487A; --red: #E0352B;
+  --orange: #D7763D; --tape: rgba(255, 179, 122, .55);
+  --font-body: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Black Han Sans', 'Arial Black', Impact, system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --radius: 15px; --ease-out: cubic-bezier(.22,1,.36,1); --ease-land: cubic-bezier(.34,1.56,.64,1);
+}
+html { overflow-x: clip; }
+body { margin: 0; background: var(--paper); color: var(--text); font: 400 17px/1.7 var(--font-body); overflow-x: clip;
+  background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px); background-size: 28px 28px; background-position: -1px -1px; }
+a { color: inherit; } button { font: inherit; } code { font: 500 .88em var(--font-mono); background: rgba(10,10,10,.06); padding: 1px 5px; border-radius: 5px; }
+
+.site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: var(--paper); border-bottom: 3px solid var(--ink); }
+.header-inner { max-width: 1280px; margin: 0 auto; padding: 10px clamp(16px, 3vw, 32px); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
+.brand img { width: 34px; height: 38px; }
+.crumb { font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.crumb span { color: var(--text-3); font-weight: 400; }
+.header-meta { font: 500 12px/1 var(--font-mono); color: var(--text-3); white-space: nowrap; }
+.progress { position: absolute; left: 0; right: 0; bottom: -3px; height: 3px; background: var(--orange); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
+
+.cover { max-width: 1280px; margin: 0 auto; padding: 56px clamp(16px, 3vw, 32px) 16px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 48px; align-items: start; }
+.eyebrow { font: 500 12px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin: 0 0 18px; }
+.eyebrow b { color: var(--text); font-weight: 500; }
+.case-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(38px, 5.4vw, 72px); line-height: 1.05; margin: 0 0 22px; text-wrap: balance; }
+.case-title mark { background: none; color: inherit; position: relative; z-index: 0; padding: 0 .08em; }
+.case-title mark::before { content: ""; position: absolute; inset: .12em -.02em .02em; background: var(--accent); z-index: -1; border-radius: 6px; }
+.lede { font-size: clamp(18px, 1.7vw, 21px); line-height: 1.6; color: var(--text-2); max-width: 60ch; margin: 0; }
+.index-card { background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 6px 6px 0 0 var(--ink); padding: 20px 22px; font-size: 15px; }
+.index-card h2 { font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; margin: 0 0 14px; padding-bottom: 12px; border-bottom: 2px dashed var(--line); color: var(--text-3); }
+.index-card dl { margin: 0; display: grid; grid-template-columns: 92px 1fr; gap: 10px 12px; }
+.index-card dt { font: 500 12px/1.6 var(--font-mono); color: var(--text-3); text-transform: uppercase; letter-spacing: .04em; }
+.index-card dd { margin: 0; line-height: 1.5; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { display: inline-flex; padding: 3px 9px; font-size: 13px; font-weight: 500; color: #0A0A0A; border: 2px solid var(--ink); border-radius: 10px; background: var(--tb); box-shadow: 3px 3px 0 0 var(--ts); }
+.cover-fig { grid-column: 1 / -1; max-width: 860px; }
+
+.journal { max-width: 1280px; margin: 0 auto; padding: 24px clamp(16px, 3vw, 32px) 80px; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 48px; }
+.toc { position: sticky; top: 92px; align-self: start; font-size: 14px; }
+.toc h2 { font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin: 0 0 14px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.toc a { display: grid; grid-template-columns: 30px 1fr; gap: 4px; padding: 6px 10px; border-radius: 10px; text-decoration: none; color: var(--text-2); border: 2px solid transparent; line-height: 1.35; transition: background 200ms, border-color 200ms, box-shadow 200ms var(--ease-land), transform 200ms var(--ease-land); }
+.toc a span { font: 500 12px/1.7 var(--font-mono); color: var(--text-3); }
+.toc a:hover { background: var(--card); color: var(--text); }
+.toc a.active { color: #0A0A0A; background: var(--accent); border-color: var(--ink); box-shadow: 3px 3px 0 0 var(--accent-d); transform: translate(-1px,-1px); }
+.toc a.active span { color: #0A0A0A; }
+.entries { min-width: 0; }
+.row { display: grid; grid-template-columns: minmax(0, 660px) 230px; gap: 0 48px; align-items: start; }
+.row > .main { min-width: 0; } .row > .wide { grid-column: 1 / -1; min-width: 0; }
+.entry { padding-block: 40px 20px; scroll-margin-top: 80px; }
+.entry + .entry { border-top: 2px dashed var(--line); }
+.entry-head { display: flex; align-items: flex-end; gap: 18px; margin: 0 0 22px; }
+.entry-num { font-family: var(--font-display); font-size: 64px; line-height: .8; color: var(--paper); -webkit-text-stroke: 2px var(--ink); text-shadow: 4px 4px 0 var(--accent); }
+.entry-head small { display: block; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 8px; }
+.entry-head h2 { margin: 0; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.15; font-weight: 600; text-wrap: balance; }
+.main p { margin: 0 0 18px; max-width: 66ch; }
+.main ul, .main ol { margin: 0 0 18px; padding-left: 22px; } .main li { margin-bottom: 6px; }
+.hl { background-color: transparent; background-image: linear-gradient(transparent 58%, var(--accent) 58%, var(--accent) 92%, transparent 92%); background-repeat: no-repeat; background-size: 100% 100%; padding: 0 2px; color: inherit; }
+.mnote { background: #FFF7B8; color: #2A2A2A; border: 2px solid #0A0A0A; border-radius: 4px 4px 14px 4px; padding: 14px 14px 12px; box-shadow: 4px 4px 0 0 #A9A03E; transform: rotate(var(--r, 1.2deg)); font-size: 14px; line-height: 1.55; }
+.mnote .k { display: block; font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: #6A6416; margin-bottom: 6px; }
+.mnote.pink { background: #FFD8F4; box-shadow: 4px 4px 0 0 #8B487A; } .mnote.pink .k { color: #7A3A69; }
+.mnote.blue { background: #D6EEFF; box-shadow: 4px 4px 0 0 #2157A9; } .mnote.blue .k { color: #1D4A8A; }
+.mnote.peach { background: #FFE3CC; box-shadow: 4px 4px 0 0 #9A4F1C; } .mnote.peach .k { color: #7A3E14; }
+
+.fig { margin: 8px 0 32px; }
+.frame { position: relative; display: block; background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 6px 6px 0 0 var(--ink); overflow: hidden; }
+.frame.taped { overflow: visible; }
+.frame.taped::before, .frame.taped::after { content: ""; position: absolute; width: 96px; height: 26px; background: var(--tape); top: -14px; z-index: 2; border-left: 1px dashed rgba(0,0,0,.12); border-right: 1px dashed rgba(0,0,0,.12); }
+.frame.taped::before { left: 18px; transform: rotate(-5deg); } .frame.taped::after { right: 18px; transform: rotate(4deg); }
+figcaption { display: flex; gap: 10px; margin-top: 14px; font-size: 14px; line-height: 1.5; color: var(--text-2); }
+figcaption b { font: 500 12px/1.75 var(--font-mono); color: var(--text); white-space: nowrap; text-transform: uppercase; letter-spacing: .04em; }
+.frame-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 14px; border-bottom: 3px solid var(--ink); background: var(--paper); }
+.frame-bar .lbl { font: 500 12px/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; }
+.ctrls { display: flex; gap: 6px; flex-wrap: wrap; }
+.ctrl { font: 500 12.5px/1 var(--font-body); color: var(--ink); cursor: pointer; padding: 8px 11px; border: 2px solid var(--ink); border-radius: 10px; background: var(--card); box-shadow: 3px 3px 0 0 var(--ink); transition: transform 150ms, box-shadow 150ms, background 150ms; }
+.ctrl:hover { transform: translate(1px,1px); box-shadow: 2px 2px 0 0 var(--ink); }
+.ctrl[aria-pressed="true"], .ctrl:active { transform: translate(3px,3px); box-shadow: 0 0 0 0 var(--ink); background: var(--accent); }
+.ctrl:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--blue-d); outline-offset: 2px; }
+.illus { font: 400 12px/1.4 var(--font-mono); color: var(--text-3); padding: 8px 14px 12px; margin: 0; }
+.specimen { background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); overflow: hidden; margin: 6px 0 28px; box-shadow: 6px 6px 0 0 var(--accent-d); }
+.specimen header { background: var(--accent); color: #0A0A0A; padding: 12px 18px; border-bottom: 3px solid var(--ink); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.specimen header h3 { margin: 0; font-size: 18px; font-weight: 600; } .specimen header span { font: 500 12px/1 var(--font-mono); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 8px 0 28px; }
+.stat { background: var(--sb); color: #0A0A0A; border: 3px solid var(--ink); border-radius: var(--radius); padding: 14px 14px 12px; box-shadow: 5px 5px 0 0 var(--ss); }
+.stat strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 44px; line-height: 1; margin-bottom: 6px; }
+.stat span { font-size: 13.5px; line-height: 1.4; display: block; }
+.next { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; margin-top: 32px; padding: 22px 24px; text-decoration: none; background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 6px 6px 0 0 var(--ink); transition: transform 300ms var(--ease-land), box-shadow 300ms var(--ease-land); }
+.next:hover { transform: translate(-2px,-2px); box-shadow: 9px 9px 0 0 var(--ink); }
+.next small { display: block; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 8px; }
+.next strong { font-size: 22px; font-weight: 600; } .next .arrow { font-family: var(--font-display); font-size: 40px; }
+.pull { margin: 10px 0 28px; padding: 6px 0 6px 22px; border-left: 6px solid var(--ink); }
+.pull p { font-family: var(--font-display); font-size: clamp(28px, 3.4vw, 42px); line-height: 1.12; margin: 0; max-width: none; }
+
+/* Fig 01 · router excerpt (cover) */
+.router-card { padding: 16px 18px 18px; font: 400 13px/1.5 var(--font-mono); overflow-x: auto; }
+.router-card .file { display: flex; justify-content: space-between; gap: 10px; font-weight: 500; margin-bottom: 10px; color: var(--text-3); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.router-card table { border-collapse: collapse; width: 100%; min-width: 560px; }
+.router-card th, .router-card td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.router-card th { font-weight: 500; color: var(--text-3); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; border-bottom: 2px solid var(--ink); }
+.router-card td:first-child { color: var(--text); font-family: var(--font-body); font-size: 14px; }
+.router-card td b { font-weight: 500; background: #FFE3CC; padding: 1px 4px; border-radius: 4px; }
+
+/* Fig 02 · claims vs live */
+.claims { display: grid; gap: 0; }
+.claim { display: grid; grid-template-columns: 170px minmax(0, 1fr) 160px; gap: 14px; align-items: center; padding: 14px 16px; border-bottom: 2px dashed var(--line); }
+.claim:last-child { border-bottom: 0; }
+.claim .comp { font: 500 14px/1.3 var(--font-mono); }
+.claim .said { font-size: 14.5px; line-height: 1.45; color: var(--text-2); position: relative; }
+.claim .said s { text-decoration-thickness: 2px; text-decoration-color: var(--red); }
+.claim .live { font-size: 13.5px; line-height: 1.45; color: var(--text); margin-top: 4px; opacity: 0; transform: translateY(-4px); transition: opacity 400ms, transform 400ms var(--ease-out); }
+.claim .stampv { justify-self: end; font: 500 11px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; text-align: center; color: var(--red); border: 2px solid var(--red); border-radius: 8px; padding: 6px 8px; transform: rotate(-4deg) scale(1.4); opacity: 0; transition: opacity 250ms, transform 420ms var(--ease-land); }
+.claim.checked .live { opacity: 1; transform: none; }
+.claim.checked .stampv { opacity: .9; transform: rotate(-4deg) scale(1); }
+.claim.scanning { background: linear-gradient(90deg, rgba(96,194,255,.0), rgba(96,194,255,.18), rgba(96,194,255,0)); background-size: 200% 100%; animation: scan 700ms linear; }
+@keyframes scan { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+
+/* Fig 03 · build order */
+.order { display: grid; grid-template-columns: 110px 1fr 1fr; gap: 8px 10px; padding: 14px 18px 16px; align-items: center; }
+.order .h { font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); }
+.order .who { font: 500 13px/1.2 var(--font-mono); }
+.kitchip { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 10px; border: 2px solid var(--ink); border-radius: 10px; font-size: 13.5px; font-weight: 500; background: var(--kb); box-shadow: 3px 3px 0 0 var(--ks); }
+.k-full { --kb: #D6EEFF; --ks: #2157A9; } .k-red { --kb: #FFE3CC; --ks: #9A4F1C; }
+
+/* Fig 04 · dot matrix */
+.matrix { padding: 16px 18px 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.mcol h4 { margin: 0 0 10px; font: 500 12px/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; display: flex; justify-content: space-between; }
+.mcol h4 b { font-family: var(--font-display); font-weight: 400; font-size: 26px; letter-spacing: 0; }
+.dots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.bd { aspect-ratio: 1; border: 2px solid var(--ink); border-radius: 12px; display: grid; place-items: center; text-align: center; font: 500 11px/1.25 var(--font-mono); background: #FFFFFF; transition: background 350ms, box-shadow 350ms var(--ease-land), transform 350ms var(--ease-land); padding: 4px; }
+.bd.yes { background: var(--yesc, var(--green)); box-shadow: 3px 3px 0 0 var(--ink); transform: translate(-1px,-1px); }
+.bd small { display: block; font-size: 9.5px; color: var(--text-3); }
+.metric-desc { padding: 0 18px 14px; font-size: 14px; color: var(--text-2); min-height: 44px; }
+
+/* Fig 05 · router explorer */
+.rx { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+.rx-brief { padding: 16px; border-right: 3px solid var(--ink); display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.rx-brief .k, .rx-kit .k { font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); }
+.brief-text { font-size: 14px; line-height: 1.6; background: var(--paper); border: 2px solid var(--ink); border-radius: 10px; padding: 12px 14px; max-height: 300px; overflow: auto; }
+.brief-text mark { background: #FFE3CC; color: inherit; border-radius: 4px; padding: 0 2px; box-shadow: inset 0 -2px 0 var(--accent-d); }
+.rx textarea { width: 100%; box-sizing: border-box; min-height: 90px; font: 400 14px/1.5 var(--font-body); border: 2px solid var(--ink); border-radius: 10px; padding: 10px 12px; resize: vertical; background: #FFFFFF; color: var(--text); }
+.meter { display: grid; gap: 6px; }
+.meter .bar { height: 18px; border: 2px solid var(--ink); border-radius: 9px; background: #FFFFFF; overflow: hidden; }
+.meter .fill { height: 100%; width: var(--w, 0%); background: var(--accent); border-right: 2px solid var(--ink); transition: width 600ms var(--ease-land); }
+.meter .num { display: flex; justify-content: space-between; font: 500 13px/1.3 var(--font-mono); }
+.meter .num b { font-family: var(--font-display); font-weight: 400; font-size: 30px; }
+.rx-kit { padding: 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.tier { display: grid; gap: 6px; }
+.tier h5 { margin: 0; font: 500 12px/1.2 var(--font-mono); display: flex; justify-content: space-between; gap: 8px; }
+.tier h5 span { color: var(--text-3); font-weight: 400; }
+.files { display: flex; flex-wrap: wrap; gap: 4px; }
+.fchip { font: 400 10.5px/1 var(--font-mono); padding: 4px 6px; border: 1.5px solid var(--line); border-radius: 6px; background: #FFFFFF; color: var(--text-3); transition: background 300ms, border-color 300ms, color 300ms, box-shadow 300ms var(--ease-land), transform 300ms var(--ease-land); white-space: nowrap; }
+.fchip.on { background: var(--accent); border-color: var(--ink); color: #0A0A0A; box-shadow: 2px 2px 0 0 var(--ink); transform: translate(-1px,-1px); }
+.fchip.req { background: #FFE3CC; border-color: var(--accent-d); color: #0A0A0A; }
+.fchip.always { background: #D6EEFF; border-color: var(--blue-d); color: #0A0A0A; }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font: 400 11px/1 var(--font-mono); color: var(--text-3); }
+.legend i { display: inline-block; width: 12px; height: 12px; border: 1.5px solid var(--ink); border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
+
+/* Fig 06 · manifest checker */
+.checker { padding: 18px; display: grid; gap: 14px; }
+.checker .inrow { display: flex; gap: 8px; flex-wrap: wrap; }
+.checker input { flex: 1; min-width: 200px; font: 500 16px/1 var(--font-mono); padding: 12px 14px; border: 3px solid var(--ink); border-radius: 12px; background: #FFFFFF; color: var(--text); box-shadow: 4px 4px 0 0 var(--ink); }
+.verdict { border: 3px solid var(--ink); border-radius: 12px; padding: 14px 16px; display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; background: var(--vb, #FFFFFF); box-shadow: 4px 4px 0 0 var(--vs, var(--ink)); transition: background 250ms; }
+.verdict .big { font-family: var(--font-display); font-size: 30px; line-height: 1; }
+.verdict p { margin: 0; font-size: 14.5px; line-height: 1.5; }
+.v-real { --vb: #D4FFE6; --vs: #318D57; } .v-fake { --vb: #FFDCD8; --vs: #9C2A20; } .v-close { --vb: #FFF7B8; --vs: #A9A03E; }
+.tryrow { display: flex; gap: 6px; flex-wrap: wrap; font: 400 12px/1 var(--font-mono); color: var(--text-3); align-items: center; }
+.tryrow button { all: unset; cursor: pointer; font: 500 12px/1 var(--font-mono); padding: 5px 7px; border: 1.5px solid var(--ink); border-radius: 6px; background: #FFFFFF; color: var(--ink); }
+.tryrow button:focus-visible { outline: 3px solid var(--blue-d); outline-offset: 2px; }
+
+/* Fig 07 · anatomy */
+.anat { display: grid; grid-template-columns: 240px minmax(0, 1fr); }
+.anat ol { list-style: none; margin: 0; padding: 10px; border-right: 3px solid var(--ink); display: grid; gap: 4px; background: var(--paper); counter-reset: s; }
+.anat li button { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 26px 1fr; gap: 6px; width: 100%; padding: 7px 9px; border: 2px solid transparent; border-radius: 9px; font-size: 14px; }
+.anat li button span { font: 500 12px/1.6 var(--font-mono); color: var(--text-3); }
+.anat li button:hover { background: #FFFFFF; }
+.anat li button[aria-selected="true"] { background: var(--accent); border-color: var(--ink); box-shadow: 3px 3px 0 0 var(--accent-d); }
+.anat li button:focus-visible { outline: 3px solid var(--blue-d); outline-offset: 1px; }
+.anat li.new button::after { content: "NEW"; justify-self: end; grid-column: 2; font: 500 9.5px/1 var(--font-mono); background: var(--ink); color: var(--paper); padding: 3px 5px; border-radius: 4px; margin-top: 2px; width: max-content; }
+.anat .pane { padding: 16px 18px; min-width: 0; font-size: 14.5px; line-height: 1.6; }
+.anat .pane h4 { margin: 0 0 8px; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); }
+.anat .pane table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+.anat .pane th, .anat .pane td { text-align: left; border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+.anat .pane th { font: 500 11px/1.3 var(--font-mono); text-transform: uppercase; color: var(--text-3); border-bottom: 2px solid var(--ink); }
+.anat .pane pre { margin: 0; font: 400 12.5px/1.55 var(--font-mono); background: var(--paper); border: 2px solid var(--ink); border-radius: 10px; padding: 12px; overflow-x: auto; }
+.anat .pane ul { margin: 0; padding-left: 18px; }
+.anat .tablewrap { overflow-x: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .rv:not(.in) { opacity: 0; transform: translateY(18px); }
+  .js .rv { transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
+  .js .hl:not(.in) { background-size: 0% 100%; } .js .hl { transition: background-size 900ms var(--ease-out) 200ms; }
+  .js .case-title mark::before { animation: wipe 700ms var(--ease-out) 450ms backwards; transform-origin: 0 50%; }
+}
+@keyframes wipe { from { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) { .claim .live, .claim .stampv, .bd, .fchip, .meter .fill { transition: none !important; } .claim.scanning { animation: none; } }
+
+@media (max-width: 1180px) { .row { grid-template-columns: minmax(0, 1fr); } .row > .mnote { margin: -4px 8px 22px; max-width: 520px; } }
+@media (max-width: 900px) {
+  .journal { grid-template-columns: 1fr; gap: 0; }
+  .toc { position: static; margin-bottom: 8px; } .toc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cover { grid-template-columns: 1fr; gap: 32px; } .header-meta { display: none; }
+  .rx { grid-template-columns: 1fr; } .rx-brief { border-right: 0; border-bottom: 3px solid var(--ink); }
+}
+@media (max-width: 640px) {
+  body { font-size: 16px; } .entry-num { font-size: 48px; } .toc ol { grid-template-columns: 1fr; }
+  .claim { grid-template-columns: 1fr; gap: 6px; } .claim .stampv { justify-self: start; }
+  .matrix { grid-template-columns: 1fr; }
+  .order { grid-template-columns: 80px 1fr 1fr; padding: 12px; } .kitchip { font-size: 12px; padding: 6px; }
+  .anat { grid-template-columns: 1fr; } .anat ol { border-right: 0; border-bottom: 3px solid var(--ink); grid-template-columns: 1fr 1fr; }
+}
+</style>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="https://brunomartignago.github.io/" target="_blank" rel="noopener"><img src="../assets/images/logo.png" alt="Bruno Martignago logo" width="69" height="77"><span class="crumb">Bruno Martignago <span>/ DDS v3 Make Kit</span></span></a>
+    <span class="header-meta" id="readLeft"></span>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<section class="cover">
+  <div>
+    <p class="eyebrow"><b>Case file 03</b> · Design systems · AI tooling</p>
+    <h1 class="case-title">A Make Kit that knows what's real, and <mark>reads only what it needs.</mark></h1>
+    <p class="lede">How a study on accessibility guidance led me to rebuild the Dell Design System's Figma Make Kit: verified against the live system, organized in tiers, and routed so every session loads only what its brief asks for.</p>
+  </div>
+  <aside class="index-card" aria-label="Project facts">
+    <h2>Index card</h2>
+    <dl>
+      <dt>Role</dt><dd>Researcher &amp; designer</dd>
+      <dt>Released</dt><dd>Kit 1.0.0, 28 Aug 2026</dd>
+      <dt>Scope</dt><dd>50 components · 69 guideline files · 5 tiers</dd>
+      <dt>Study</dt><dd>4 designers · 8 builds · 2 kits</dd>
+      <dt>Adoption</dt><dd>Every designer at Dell</dd>
+      <dt>Methods</dt><dd><span class="tags"><span class="tag" style="--tb:#FFB37A;--ts:#9A4F1C">Design systems</span><span class="tag" style="--tb:#60C2FF;--ts:#2157A9">Figma Make</span><span class="tag" style="--tb:#60FFA2;--ts:#318D57">Code review</span></span></dd>
+    </dl>
+  </aside>
+  <figure class="fig cover-fig">
+    <div class="frame taped"><div class="router-card">
+      <div class="file"><span>guidelines/ROUTER.md</span><span>excerpt</span></div>
+      <table><thead><tr><th>If the brief mentions…</th><th>Load</th><th>Also loads (required)</th></tr></thead>
+      <tbody>
+        <tr><td><b>modal</b>, dialog, confirmation popup, "are you sure"</td><td>modal.md</td><td>modal-composition.md, dialogs-and-overlays.md</td></tr>
+        <tr><td><b>radio group</b>, "choose one of", single-select options</td><td>radio-button.md</td><td>forms-and-inputs.md, fieldset.md</td></tr>
+        <tr><td><b>progress tracker</b>, multi-step status trail, "step 2 of 4"</td><td>progress-tracker.md</td><td>feedback-states.md</td></tr>
+        <tr><td><b>side nav</b>, navigation rail, app sidebar</td><td>sidenav.md</td><td>sidenav-composition.md, navigation.md, component-patterns.md</td></tr>
+      </tbody></table>
+    </div></div>
+    <figcaption><b>Fig. 01</b><span>The front door of the new kit: phrases in a brief decide which files load, and what they require.</span></figcaption>
+  </figure>
+</section>
+
+<div class="journal">
+  <nav class="toc" aria-label="Contents"><h2>Contents</h2>
+    <ol id="toc">
+      <li><a href="#e1"><span>01</span>Confident, but wrong</a></li>
+      <li><a href="#e2"><span>02</span>The study</a></li>
+      <li><a href="#e3"><span>03</span>What the code said</a></li>
+      <li><a href="#e4"><span>04</span>Back to the source</a></li>
+      <li><a href="#e5"><span>05</span>One kit, five tiers</a></li>
+      <li><a href="#e6"><span>06</span>Load only what's needed</a></li>
+      <li><a href="#e7"><span>07</span>The closed set</a></li>
+      <li><a href="#e8"><span>08</span>Nine sections</a></li>
+      <li><a href="#e9"><span>09</span>What's next</a></li>
+    </ol>
+  </nav>
+  <div class="entries">
+
+    <section class="entry" id="e1">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">01</span><div><small>Entry 01 · The problem</small><h2>Confident, but wrong</h2></div></div>
+        <p class="rv">A Make Kit is the set of guidelines Figma Make reads before it generates anything with the Dell Design System. It decides which components exist, which props they take and which tokens are allowed. <mark class="hl">When the kit is wrong, Make is wrong with total confidence.</mark></p>
+        <p class="rv">If you've used Figma Make with DDS before, you've probably hit this moment: it comes back with a <code>DDSModal</code> using a prop that doesn't exist, or a hand-rolled stepper because it couldn't find <code>DDSProgressTracker</code>, which was there the whole time.</p>
+      </div>
+      <aside class="mnote rv" style="--r:1.3deg"><span class="k">Nobody's fault</span>It's what happens when documentation gets copied forward instead of re-checked.</aside></div>
+      <div class="row"><figure class="fig main rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 02 — Old kit vs live source</span><div class="ctrls"><button class="ctrl" type="button" id="cRun">Re-check ↻</button></div></div>
+          <div class="claims" id="claims">
+            <div class="claim"><div class="comp">DDSButton</div><div><div class="said">Old kit: <s>kind = filled | outline | ghost · default size md</s></div><div class="live">Live: <code>kind</code> also has <code>minimal</code>; default <code>size</code> is <code>lg</code>.</div></div><div class="stampv">Incomplete</div></div>
+            <div class="claim"><div class="comp">DDSModal</div><div><div class="said">Old kit: <s>three documented props</s> that don't exist in v3</div><div class="live">Live: one was removed after v2; two never existed.</div></div><div class="stampv">Phantom props</div></div>
+            <div class="claim"><div class="comp">DDSProgressTracker</div><div><div class="said">Old kit: <s>(not documented anywhere)</s></div><div class="live">Live: a real, fully built component. Builders hand-rolled their own.</div></div><div class="stampv">Undocumented</div></div>
+            <div class="claim"><div class="comp">DDSSidenav</div><div><div class="said">Guessed as <s>DDSSideNav</s></div><div class="live">Live: lowercase <code>n</code>. The casing was never written down.</div></div><div class="stampv">Wrong name</div></div>
+          </div>
+        </div>
+        <figcaption><b>Fig. 02</b><span>Four of the claims the old kit made, checked against the live DDS v3 source.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <section class="entry" id="e2">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">02</span><div><small>Entry 02 · Method</small><h2>The study</h2></div></div>
+        <p class="rv">I designed and ran a study before rewriting anything, because I wanted to know what the guidance was actually doing. So we asked a narrower question: <mark class="hl">does built-in accessibility guidance change what gets built?</mark></p>
+        <div class="specimen rv"><header><h3>Same brief, two kits</h3><span>4 designers · 8 builds</span></header>
+          <div style="padding:12px 18px 14px;font-size:15px;line-height:1.6">An internal “Device Support Request” tool: a request form, its validation-error state and a confirmation modal, plus a status screen as a stretch goal. One build used the full kit; the other, an identical copy with the accessibility guidance removed.</div></div>
+      </div>
+      <aside class="mnote rv peach" style="--r:-1.2deg"><span class="k">House rules</span>One screen per prompt. Stay inside Make. No hand-fixing in Figma Design. Being blocked counted as a finding.</aside></div>
+      <div class="row"><figure class="fig main rv">
+        <div class="frame"><div class="frame-bar"><span class="lbl">Fig. 03 — Build order</span></div>
+          <div class="order" role="img" aria-label="Designers 1 to 3 built with the reduced kit first and the full kit second; designer 4 built with the full kit first.">
+            <span></span><span class="h">Build 1</span><span class="h">Build 2</span>
+            <span class="who">Designer 1</span><span class="kitchip k-red">Reduced</span><span class="kitchip k-full">Full</span>
+            <span class="who">Designer 2</span><span class="kitchip k-red">Reduced</span><span class="kitchip k-full">Full</span>
+            <span class="who">Designer 3</span><span class="kitchip k-red">Reduced</span><span class="kitchip k-full">Full</span>
+            <span class="who">Designer 4</span><span class="kitchip k-full">Full</span><span class="kitchip k-red">Reduced</span>
+          </div>
+        </div>
+        <figcaption><b>Fig. 03</b><span>The order was mixed so a kit effect couldn't hide behind “people get better on the second try”.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <section class="entry" id="e3">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">03</span><div><small>Entry 03 · Finding</small><h2>What the code said</h2></div></div>
+        <p class="rv">We read all eight builds line by line. The headline was a caution, not a win: <mark class="hl">the full kit's builds were not more accessible than the reduced kit's.</mark> The one difference that held up went the other way.</p>
+        <p class="rv">Feelings and code also diverged. The group felt the full kit was more accessible. The code mostly didn't agree, and some problems showed up in every build, whichever kit was used.</p>
+      </div>
+      <aside class="mnote rv blue" style="--r:1deg"><span class="k">Small sample</span>4 designers, 8 builds, static code review. Every finding is a lead, not a law.</aside></div>
+      <div class="row"><figure class="fig main rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 04 — Eight builds</span>
+            <div class="ctrls" role="group" aria-label="Measure">
+              <button class="ctrl" type="button" data-m="fieldset" aria-pressed="true">Grouped options</button>
+              <button class="ctrl" type="button" data-m="tokens" aria-pressed="false">Invented tokens</button>
+              <button class="ctrl" type="button" data-m="parts" aria-pressed="false">Guessed sub-parts</button>
+              <button class="ctrl" type="button" data-m="tracker" aria-pressed="false">Hand-rolled tracker</button>
+            </div></div>
+          <div class="matrix" id="matrix" aria-live="polite"></div>
+          <p class="metric-desc" id="mdesc"></p>
+        </div>
+        <figcaption><b>Fig. 04</b><span>Each square is one build. Switch the measure: only the first differs by kit, and in the unexpected direction.</span></figcaption>
+      </figure></div>
+      <div class="row"><div class="main"><blockquote class="pull rv"><p>More guidance wasn't the lever. Structure and truth were.</p></blockquote></div></div>
+    </section>
+
+    <section class="entry" id="e4">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">04</span><div><small>Entry 04 · Rebuild</small><h2>Back to the source</h2></div></div>
+        <p class="rv">We didn't patch a few prop tables. We went back to the live DDS v3 source and checked every component against it: its Storybook entries, its rendered examples, its actual props, before a line of guidance was written.</p>
+        <div class="stats rv">
+          <div class="stat" style="--sb:#FFB37A;--ss:#9A4F1C"><strong>50</strong><span>components documented, up from 46</span></div>
+          <div class="stat" style="--sb:#60FFA2;--ss:#318D57"><strong>49</strong><span>verified against the live system</span></div>
+          <div class="stat" style="--sb:#60C2FF;--ss:#2157A9"><strong>36</strong><span>doc pairs merged from two sources</span></div>
+          <div class="stat" style="--sb:#FD93E2;--ss:#8B487A"><strong>20</strong><span>broken references fixed</span></div>
+        </div>
+        <p class="rv">Where two sources disagreed on a fact, the rule was simple: re-verify, and if it's still uncertain, say so in the file. <mark class="hl">A kit that quietly resolves conflicts looks equally confident either way.</mark> This one doesn't.</p>
+      </div>
+      <aside class="mnote rv pink" style="--r:1.4deg"><span class="k">New first-class components</span>DDSTable, DDSSearch, DDSTimePicker and DDSViewMoreLess.</aside></div>
+    </section>
+
+    <section class="entry" id="e5">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">05</span><div><small>Entry 05 · Structure</small><h2>One kit, five tiers</h2></div></div>
+        <p class="rv">The old kit asked the model to read a list of files "by exact path", with no map of what existed. The new kit is organized in tiers: <code>ROUTER.md</code> as the front door, <code>core/</code> always loaded, <code>reference/</code> with one file per component, <code>accessibility/</code> pulled in as a dependency, <code>manifests/</code> as the closed set of what's real, and <code>skills/</code> for rare cases like AI mode and dark mode.</p>
+        <p class="rv">Every file carries a small frontmatter block: its tier, the phrases that should trigger it, and what it requires. The accessibility guidance that sat orphaned in the old kit is now a hard dependency of the components that need it.</p>
+      </div>
+      <aside class="mnote rv" style="--r:-1.3deg"><span class="k">One hop only</span>If A requires B and B requires C, C isn't pulled in. Chasing chains is the unbounded reading this design avoids.</aside></div>
+    </section>
+
+    <section class="entry" id="e6">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">06</span><div><small>Entry 06 · Cheaper</small><h2>Load only what the brief needs</h2></div></div>
+        <p class="rv">The kit grew to 69 guideline files and 474 KB, but no session reads all of it. The router scans the whole brief, loads each matching file plus its required dependencies, and stops. <mark class="hl">Less to read means fewer tokens</mark>, and fewer chances for the model to latch onto guidance meant for something else.</p>
+      </div></div>
+      <div class="row"><figure class="fig wide rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 05 — The router at work</span>
+            <div class="ctrls" role="group" aria-label="Brief">
+              <button class="ctrl" type="button" data-brief="study" aria-pressed="true">Study brief</button>
+              <button class="ctrl" type="button" data-brief="modal" aria-pressed="false">Confirmation modal</button>
+              <button class="ctrl" type="button" data-brief="custom" aria-pressed="false">Write your own</button>
+            </div></div>
+          <div class="rx">
+            <div class="rx-brief">
+              <span class="k">The brief</span>
+              <div class="brief-text" id="briefText"></div>
+              <label class="k" for="briefInput" id="briefInputLbl" hidden>Type a brief</label>
+              <textarea id="briefInput" hidden placeholder="e.g. A settings page with tabs, a toggle for notifications and a save button"></textarea>
+              <div class="meter"><div class="num"><span><b id="mKB">0</b> KB loaded</span><span id="mOf">of 474 KB · 0 files</span></div><div class="bar"><div class="fill" id="mFill"></div></div></div>
+            </div>
+            <div class="rx-kit" id="kitTree" aria-live="polite">
+              <span class="k">The kit · 69 files</span>
+              <div class="legend"><span><i style="background:#D6EEFF"></i>always (core + router)</span><span><i style="background:var(--accent)"></i>matched</span><span><i style="background:#FFE3CC"></i>required dependency</span></div>
+            </div>
+          </div>
+          <p class="illus">File sizes and router rules come from the kit itself. Manifests are opened only on demand, so they never count toward a brief.</p>
+        </div>
+        <figcaption><b>Fig. 05</b><span>The full study brief loads 29 files, 37% of the kit. A single confirmation modal loads 9 files, 13%.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <section class="entry" id="e7">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">07</span><div><small>Entry 07 · Enforcement</small><h2>If it's not in the manifest, it doesn't exist</h2></div></div>
+        <p class="rv">Documentation alone didn't stop invention: in the study, every build made up plausible <code>--dds-*</code> tokens. So the kit now has an enforcement layer. <code>manifests/components.json</code> is a closed set. <mark class="hl">If a DDS name isn't in there, it does not exist</mark>, no matter how plausible it sounds.</p>
+      </div></div>
+      <div class="row"><figure class="fig main rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 06 — Ask the manifest</span></div>
+          <div class="checker">
+            <div class="inrow"><label for="mfIn" class="sr" style="position:absolute;left:-9999px">Component name</label><input id="mfIn" value="DDSSuperButton" autocomplete="off" spellcheck="false"></div>
+            <div class="tryrow">Try: <button type="button">DDSSideNav</button><button type="button">DDSProgressTracker</button><button type="button">DDSModalFooter</button><button type="button">DDSStepper</button><button type="button">DDSCalendar</button></div>
+            <div class="verdict" id="mfOut" aria-live="polite"></div>
+          </div>
+        </div>
+        <figcaption><b>Fig. 06</b><span>Checks against the real manifest: 85 exports, including composition parts like DDSModalFooter.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <section class="entry" id="e8">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">08</span><div><small>Entry 08 · Consistency</small><h2>Same nine sections, every time</h2></div></div>
+        <p class="rv">Every component file now follows the same shape, so you always know where to look. The last section is new: <mark class="hl">“Not a substitute for”</mark>, a quick table saying why this isn't the component you want if you're tempted to use it for the wrong job.</p>
+      </div>
+      <aside class="mnote rv peach" style="--r:1.2deg"><span class="k">The study's gaps became files</span>The modal and side-nav compositions every build had to guess are now documented, and load automatically with their parent.</aside></div>
+      <div class="row"><figure class="fig wide rv">
+        <div class="frame">
+          <div class="frame-bar"><span class="lbl">Fig. 07 — reference/components/button.md</span></div>
+          <div class="anat"><ol id="anatList" role="tablist" aria-label="Sections"></ol><div class="pane" id="anatPane" role="tabpanel"></div></div>
+        </div>
+        <figcaption><b>Fig. 07</b><span>The real DDSButton file, section by section.</span></figcaption>
+      </figure></div>
+    </section>
+
+    <section class="entry" id="e9">
+      <div class="row"><div class="main">
+        <div class="entry-head rv"><span class="entry-num" aria-hidden="true">09</span><div><small>Entry 09</small><h2>Results and what's next</h2></div></div>
+        <p class="rv">The biggest difference with the new kit is confidence: fewer invented props, fewer hand-rolled substitutes for components that already exist, and an explicit signal whenever something is genuinely uncertain.</p>
+        <p class="rv">The kit is now integrated for every designer at Dell, and other design system teams have used it as the base for bringing their own guidance up to the same standard.</p>
+        <blockquote class="pull rv"><p>One of the most advanced Make Kits among the companies using Figma Make.</p><cite style="display:block;margin-top:12px;font:500 12px/1.4 var(--font-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);font-style:normal">How Figma’s team described it in our weekly meetings</cite></blockquote>
+        <p class="rv">Documentation solves half the problem. Figma's MCP server gives an AI coding agent the real structure, variables and Code Connect mappings of a design; the Make Kit gives it the real components and props. Together, <mark class="hl">the agent never has to guess either one.</mark></p>
+        <p class="rv">Next: bring the kit and the MCP workflow to the next team piloting Figma Make, treat every conflict note as an open question, and check every new DDS release the same way: live source first, always.</p>
+        <a class="next rv" href="https://brunomartignago.github.io/" target="_blank" rel="noopener"><span><small>Next case file</small><strong>AI Orchestration – Digital Twin</strong></span><span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <aside class="mnote rv blue" style="--r:-1deg"><span class="k">Thanks</span>Miguel Wermuth and Selina Nie, our main user testers and evangelists; Sasha Souza, Karim Merchant and Itee Sharma; the accessibility team; and everyone who took part in the study.</aside></div>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const root = document.documentElement; root.classList.add('js');
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+  const onView = (el, fn, t = .4) => { const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { fn(); io.disconnect(); } }, { threshold: t }); io.observe(el); };
+  const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; e.target.classList.add('in'); e.target.querySelectorAll('.hl').forEach(h => h.classList.add('in')); io.unobserve(e.target); }), { threshold: .12 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+  const TOTAL = Math.max(1, Math.round((document.querySelector('.entries').innerText.split(/\s+/).length + 100) / 220));
+  const links = [...document.querySelectorAll('#toc a')], targets = links.map(a => document.querySelector(a.getAttribute('href')));
+  function onScroll() { const max = document.documentElement.scrollHeight - innerHeight, p = max > 0 ? Math.min(1, scrollY / max) : 0; $('progress').style.setProperty('--p', p.toFixed(4)); $('readLeft').textContent = p > .97 ? 'Finished · thanks for reading' : `${Math.max(1, Math.round(TOTAL * (1 - p)))} min left`; let idx = 0; targets.forEach((t, i) => { if (t.getBoundingClientRect().top < innerHeight * .35) idx = i; }); links.forEach((a, i) => a.classList.toggle('active', i === idx)); }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  links.forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth' }); }));
+
+  /* Fig 02 · claims vs live */
+  const claims = [...document.querySelectorAll('.claim')]; let cT = [];
+  function runClaims() { cT.forEach(clearTimeout); cT = []; claims.forEach(c => c.classList.remove('checked', 'scanning'));
+    if (reduced()) { claims.forEach(c => c.classList.add('checked')); return; }
+    claims.forEach((c, i) => { cT.push(setTimeout(() => { c.classList.add('scanning'); }, 200 + i * 800)); cT.push(setTimeout(() => { c.classList.remove('scanning'); c.classList.add('checked'); }, 850 + i * 800)); }); }
+  $('cRun').addEventListener('click', runClaims); onView($('claims'), runClaims);
+
+  /* Fig 04 · dot matrix (from the study report) — order: D1..D4 */
+  const M = {
+    fieldset: { label: 'Used real DDSFieldset + DDSLegend for the two option groups', red: [1,1,0,1], full: [0,1,0,0], color: 'var(--green)', note: 'Reduced kit 3 of 4, full kit 1 of 4: the one kit difference that held up, in the unexpected direction.' },
+    tokens: { label: 'Invented a non-existent --dds-* token', red: [1,1,1,1], full: [1,1,1,1], color: 'var(--pink)', note: 'All 8 builds, both kits. Full guidance did not stop it, so the new kit adds a closed manifest of real tokens.' },
+    parts: { label: 'Guessed the undocumented modal and side-nav sub-parts', red: [1,1,1,1], full: [1,1,1,1], color: 'var(--yellow)', note: 'All 8 builds reached for the same sub-parts. They were the real pattern, just undocumented. Now they are.' },
+    tracker: { label: 'Hand-rolled a progress trail', red: [1,1,0,1], full: [1,1,0,1], color: 'var(--blue)', note: '6 of 8 builds. DDSProgressTracker existed the whole time, it just wasn’t documented. Designer 3 used DDSProgressBar instead.' },
+  };
+  const ORDER = { red: ['Build 1', 'Build 1', 'Build 1', 'Build 2'], full: ['Build 2', 'Build 2', 'Build 2', 'Build 1'] };
+  function setM(k) {
+    const m = M[k]; const mx = $('matrix'); mx.innerHTML = '';
+    [['red', 'Reduced kit'], ['full', 'Full kit']].forEach(([key, name]) => {
+      const n = m[key].reduce((a, b) => a + b, 0);
+      const col = document.createElement('div'); col.className = 'mcol';
+      col.innerHTML = `<h4><span>${name}</span><b>${n}/4</b></h4><div class="dots">${m[key].map((v, i) => `<div class="bd${v ? ' yes' : ''}" style="--yesc:${m.color}">D${i + 1}<small>${ORDER[key][i]}</small></div>`).join('')}</div>`;
+      mx.append(col);
+    });
+    mx.setAttribute('aria-label', `${m.label}: reduced kit ${m.red.reduce((a, b) => a + b)} of 4, full kit ${m.full.reduce((a, b) => a + b)} of 4.`);
+    $('mdesc').innerHTML = `<b>${m.label}.</b> ${m.note}`;
+    document.querySelectorAll('[data-m]').forEach(b => b.setAttribute('aria-pressed', b.dataset.m === k));
+  }
+  document.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => setM(b.dataset.m))); setM('fieldset');
+
+  /* Fig 05 · router explorer — sizes and rules from the kit */
+  const SIZES = {"CHANGELOG.md":9586,"ROUTER.md":9194,"accessibility/dialogs-and-overlays.md":3322,"accessibility/feedback-states.md":3837,"accessibility/forms-and-inputs.md":3574,"accessibility/icons-and-imagery.md":3389,"accessibility/navigation.md":3405,"accessibility/README.md":11838,"core/hard-rules.md":6721,"core/implementation-best-practices.md":10847,"core/setup.md":5987,"manifests/components.json":22983,"manifests/icons.json":22991,"manifests/tokens.json":41482,"reference/component-patterns.md":9599,"skills/ai-mode.md":16680,"skills/carousel-patterns.md":1671,"skills/dark-mode.md":12840,"reference/components/_index.md":5062,"reference/components/accordion.md":7515,"reference/components/action-menu.md":6454,"reference/components/badge.md":6237,"reference/components/blockquote.md":4577,"reference/components/breadcrumb.md":4606,"reference/components/button.md":6826,"reference/components/card.md":18135,"reference/components/carousel.md":6012,"reference/components/checkbox.md":5931,"reference/components/cite.md":1004,"reference/components/date-picker.md":6604,"reference/components/divider.md":3760,"reference/components/drawer.md":6405,"reference/components/dropdown.md":7208,"reference/components/fieldset.md":1195,"reference/components/file-input.md":6174,"reference/components/footnote.md":4811,"reference/components/form-field.md":3499,"reference/components/helper-text.md":1522,"reference/components/icon.md":4786,"reference/components/label.md":2454,"reference/components/legend.md":528,"reference/components/link.md":4378,"reference/components/list.md":4877,"reference/components/loading-indicator.md":5549,"reference/components/menu.md":6532,"reference/components/message-bar.md":6643,"reference/components/modal-composition.md":3096,"reference/components/modal.md":7859,"reference/components/notification.md":7103,"reference/components/overlay.md":3570,"reference/components/pagination.md":4138,"reference/components/popover.md":5451,"reference/components/progress-bar.md":5320,"reference/components/progress-tracker.md":8371,"reference/components/radio-button.md":5441,"reference/components/search.md":4960,"reference/components/select.md":4687,"reference/components/sidenav-composition.md":2685,"reference/components/sidenav.md":6863,"reference/components/switch.md":4615,"reference/components/table.md":5674,"reference/components/tabs.md":7250,"reference/components/tag.md":5633,"reference/components/text-area.md":3348,"reference/components/text-input.md":7752,"reference/components/time-picker.md":4763,"reference/components/tooltip.md":5954,"reference/components/view-more-less.md":5293,"reference/patterns/form.md":5315};
+  const TOTALKB = Object.values(SIZES).reduce((a, b) => a + b, 0);
+  const ALWAYS = ['core/hard-rules.md', 'core/setup.md', 'core/implementation-best-practices.md', 'ROUTER.md'];
+  const RC = 'reference/components/', A = 'accessibility/';
+  const RULES = [
+    [['button', 'submit', 'cancel', 'call to action', 'quick actions', 'actions'], [RC + 'button.md'], ['reference/component-patterns.md']],
+    [['checkbox'], [RC + 'checkbox.md'], [A + 'forms-and-inputs.md']],
+    [['date picker', 'choose a date'], [RC + 'date-picker.md'], [A + 'forms-and-inputs.md', RC + 'form-field.md']],
+    [['dropdown', 'type-ahead'], [RC + 'dropdown.md'], [A + 'forms-and-inputs.md', RC + 'form-field.md']],
+    [['file upload', 'attachment', 'upload'], [RC + 'file-input.md'], [A + 'forms-and-inputs.md', RC + 'form-field.md']],
+    [['search'], [RC + 'search.md'], [A + 'forms-and-inputs.md']],
+    [['time picker', 'choose a time'], [RC + 'time-picker.md'], [A + 'forms-and-inputs.md']],
+    [['radio group', 'radio', 'choose one of'], [RC + 'radio-button.md'], [A + 'forms-and-inputs.md', RC + 'fieldset.md']],
+    [['toggle', 'switch'], [RC + 'switch.md'], [A + 'forms-and-inputs.md', 'reference/component-patterns.md']],
+    [['text area', 'multi-line', 'description'], [RC + 'text-area.md'], [A + 'forms-and-inputs.md']],
+    [['text field', 'serial number', 'name field', 'input'], [RC + 'text-input.md'], [A + 'forms-and-inputs.md', RC + 'form-field.md', 'reference/component-patterns.md']],
+    [['form'], ['reference/patterns/form.md'], [A + 'forms-and-inputs.md']],
+    [['helper text'], [RC + 'helper-text.md'], []],
+    [['breadcrumb'], [RC + 'breadcrumb.md'], [A + 'navigation.md']],
+    [['link', 'learn more'], [RC + 'link.md'], [A + 'navigation.md']],
+    [['pagination', 'next page'], [RC + 'pagination.md'], [A + 'navigation.md']],
+    [['side nav', 'side navigation', 'sidebar', 'navigation rail'], [RC + 'sidenav.md'], [RC + 'sidenav-composition.md', A + 'navigation.md', 'reference/component-patterns.md']],
+    [['tabs', 'tabbed'], [RC + 'tabs.md'], [A + 'navigation.md']],
+    [['badge', 'status indicator', 'status pill'], [RC + 'badge.md'], [A + 'feedback-states.md']],
+    [['loading', 'spinner'], [RC + 'loading-indicator.md'], [A + 'feedback-states.md']],
+    [['message', 'banner', 'error', 'summary message'], [RC + 'message-bar.md'], [A + 'feedback-states.md']],
+    [['progress bar', 'percent complete'], [RC + 'progress-bar.md'], [A + 'feedback-states.md']],
+    [['progress trail', 'progress tracker', 'stages', 'step 2 of'], [RC + 'progress-tracker.md'], [A + 'feedback-states.md']],
+    [['tag', 'chip'], [RC + 'tag.md'], [A + 'feedback-states.md']],
+    [['tooltip'], [RC + 'tooltip.md'], [A + 'feedback-states.md']],
+    [['notification', 'toast'], [RC + 'notification.md'], [A + 'feedback-states.md']],
+    [['action menu', 'kebab'], [RC + 'action-menu.md'], [A + 'dialogs-and-overlays.md']],
+    [['drawer', 'side sheet'], [RC + 'drawer.md'], [A + 'dialogs-and-overlays.md']],
+    [['modal', 'dialog', 'confirmation', 'are you sure'], [RC + 'modal.md'], [RC + 'modal-composition.md', A + 'dialogs-and-overlays.md']],
+    [['popover'], [RC + 'popover.md'], [A + 'dialogs-and-overlays.md']],
+    [['accordion', 'expand/collapse'], [RC + 'accordion.md'], []],
+    [['card'], [RC + 'card.md'], ['reference/component-patterns.md']],
+    [['carousel', 'slider'], [RC + 'carousel.md'], ['skills/carousel-patterns.md']],
+    [['table', 'rows and columns'], [RC + 'table.md'], []],
+    [['label'], [RC + 'label.md'], [A + 'forms-and-inputs.md']],
+    [['divider'], [RC + 'divider.md'], []],
+  ];
+  const BRIEFS = {
+    study: 'A request form with a left side navigation and a card. Serial number text field with helper text, a device type dropdown, a description text area, an attachment upload, a priority radio group, a toggle for status updates and a checkbox. Cancel and Submit request buttons. A validation error state with a summary message. A confirmation modal. A status screen with a status indicator, a progress trail of stages and quick actions.',
+    modal: 'A confirmation modal: “Submit this request?” with a short summary and Cancel and Submit request buttons.',
+  };
+  const tree = $('kitTree');
+  const TIERS = [['ROUTER.md', f => f === 'ROUTER.md' || f === 'CHANGELOG.md'], ['core/', f => f.startsWith('core/')], ['reference/', f => f.startsWith('reference/')], ['accessibility/', f => f.startsWith('accessibility/')], ['manifests/', f => f.startsWith('manifests/')], ['skills/', f => f.startsWith('skills/')]];
+  const chipEls = {};
+  TIERS.forEach(([name, test]) => {
+    const files = Object.keys(SIZES).filter(test).sort(); const kb = files.reduce((a, f) => a + SIZES[f], 0) / 1000;
+    const t = document.createElement('div'); t.className = 'tier';
+    t.innerHTML = `<h5>${name} <span>${files.length} files · ${kb.toFixed(0)} KB</span></h5>`;
+    const wrap = document.createElement('div'); wrap.className = 'files';
+    files.forEach(f => { const c = document.createElement('span'); c.className = 'fchip'; c.textContent = f.split('/').pop().replace(/\.(md|json)$/, ''); c.title = `${f} · ${(SIZES[f] / 1000).toFixed(1)} KB`; wrap.append(c); chipEls[f] = c; });
+    t.append(wrap); tree.append(t);
+  });
+  const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  function route(text) {
+    const low = text.toLowerCase(); const matched = new Set(), req = new Set(), hits = [];
+    RULES.forEach(([keys, load, requires]) => {
+      const k = keys.find(k => new RegExp(`\\b${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i').test(low));
+      if (!k) return; load.forEach(f => matched.add(f)); requires.forEach(f => req.add(f));
+      keys.forEach(kk => { let i = -1; const re = new RegExp(`\\b${kk.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'gi'); let m; while ((m = re.exec(text))) hits.push([m.index, m.index + m[0].length]); });
+    });
+    matched.forEach(f => req.delete(f)); ALWAYS.forEach(f => { matched.delete(f); req.delete(f); });
+    return { matched, req, hits };
+  }
+  function highlight(text, hits) {
+    hits.sort((a, b) => a[0] - b[0]); const merged = [];
+    hits.forEach(h => { const l = merged[merged.length - 1]; if (l && h[0] <= l[1]) l[1] = Math.max(l[1], h[1]); else merged.push([...h]); });
+    let out = '', p = 0; merged.forEach(([s, e]) => { out += esc(text.slice(p, s)) + '<mark>' + esc(text.slice(s, e)) + '</mark>'; p = e; }); return out + esc(text.slice(p));
+  }
+  let rT = [];
+  function showRoute(text, animate) {
+    rT.forEach(clearTimeout); rT = [];
+    const { matched, req, hits } = route(text);
+    Object.values(chipEls).forEach(c => c.classList.remove('on', 'req', 'always'));
+    if (!$('briefInput').hidden) {} else $('briefText').innerHTML = highlight(text, hits);
+    const seq = [...ALWAYS.map(f => [f, 'always']), ...[...matched].map(f => [f, 'on']), ...[...req].map(f => [f, 'req'])];
+    let kb = 0, n = 0;
+    const apply = ([f, cls]) => { chipEls[f] && chipEls[f].classList.add(cls); kb += SIZES[f] || 0; n++; $('mKB').textContent = Math.round(kb / 1000); $('mOf').textContent = `of ${Math.round(TOTALKB / 1000)} KB · ${n} files · ${Math.round(kb / TOTALKB * 100)}%`; $('mFill').style.setProperty('--w', (kb / TOTALKB * 100).toFixed(1) + '%'); };
+    if (!animate || reduced()) { seq.forEach(apply); return; }
+    seq.forEach((s, i) => rT.push(setTimeout(() => apply(s), 60 * i)));
+  }
+  function setBrief(k) {
+    document.querySelectorAll('[data-brief]').forEach(b => b.setAttribute('aria-pressed', b.dataset.brief === k));
+    const custom = k === 'custom'; $('briefInput').hidden = !custom; $('briefInputLbl').hidden = !custom; $('briefText').hidden = custom;
+    if (custom) { if (!$('briefInput').value) $('briefInput').value = 'A settings page with tabs, a toggle for email notifications, a date picker and a save button.'; showRoute($('briefInput').value, false); $('briefInput').focus(); }
+    else showRoute(BRIEFS[k], true);
+  }
+  document.querySelectorAll('[data-brief]').forEach(b => b.addEventListener('click', () => setBrief(b.dataset.brief)));
+  $('briefInput').addEventListener('input', e => showRoute(e.target.value, false));
+  $('briefText').innerHTML = esc(BRIEFS.study);
+  onView($('kitTree'), () => setBrief('study'), .3);
+
+  /* Fig 06 · manifest checker */
+  const MAN = {"total":51,"verified":50,"exports":[{"n":"DDSButton","c":"Form Controls","u":false},{"n":"DDSCheckbox","c":"Form Controls","u":false},{"n":"DDSDatePicker","c":"Form Controls","u":false},{"n":"DDSDropdown","c":"Form Controls","u":false},{"n":"DDSOption","c":"part of DDSDropdown","u":false},{"n":"DDSOptionGroup","c":"part of DDSDropdown","u":false},{"n":"DDSFileInput","c":"Form Controls","u":false},{"n":"DDSRadioButton","c":"Form Controls","u":false},{"n":"DDSSelect","c":"Form Controls","u":false},{"n":"DDSSwitch","c":"Form Controls","u":false},{"n":"DDSTextArea","c":"Form Controls","u":false},{"n":"DDSTextInput","c":"Form Controls","u":false},{"n":"DDSInputGroup","c":"part of DDSTextInput","u":false},{"n":"DDSInputAddOn","c":"part of DDSTextInput","u":false},{"n":"DDSFieldset","c":"Form Composition","u":false},{"n":"DDSHelperText","c":"Form Composition","u":false},{"n":"DDSLabel","c":"Form Composition","u":false},{"n":"DDSLegend","c":"Form Composition","u":false},{"n":"DDSFormField","c":"Form Composition","u":false},{"n":"DDSBreadcrumb","c":"Navigation","u":false},{"n":"DDSBreadcrumbItem","c":"part of DDSBreadcrumb","u":false},{"n":"DDSLink","c":"Navigation","u":false},{"n":"DDSMenu","c":"Navigation","u":false},{"n":"DDSMenuGroup","c":"part of DDSMenu","u":false},{"n":"DDSMenuGroupLabel","c":"part of DDSMenu","u":false},{"n":"DDSMenuGroupContent","c":"part of DDSMenu","u":false},{"n":"DDSMenuItemButton","c":"part of DDSMenu","u":false},{"n":"DDSMenuItemLink","c":"part of DDSMenu","u":false},{"n":"DDSMenuItemOption","c":"part of DDSMenu","u":false},{"n":"DDSPagination","c":"Navigation","u":false},{"n":"DDSSidenav","c":"Navigation","u":false},{"n":"DDSSidenavMenu","c":"part of DDSSidenav","u":false},{"n":"DDSSidenavItem","c":"part of DDSSidenav","u":false},{"n":"DDSSidenavItemContent","c":"part of DDSSidenav","u":false},{"n":"DDSSidenavGroup","c":"part of DDSSidenav","u":false},{"n":"DDSSidenavGroupLabel","c":"part of DDSSidenav","u":false},{"n":"DDSSidenavGroupContent","c":"part of DDSSidenav","u":false},{"n":"DDSTabs","c":"Navigation","u":false},{"n":"DDSTabsHeader","c":"part of DDSTabs","u":false},{"n":"DDSTabsBody","c":"part of DDSTabs","u":false},{"n":"DDSTab","c":"part of DDSTabs","u":false},{"n":"DDSTabPanel","c":"part of DDSTabs","u":false},{"n":"DDSBadge","c":"Feedback","u":false},{"n":"DDSLoadingIndicator","c":"Feedback","u":false},{"n":"DDSMessageBar","c":"Feedback","u":false},{"n":"DDSProgressBar","c":"Feedback","u":false},{"n":"DDSProgressTracker","c":"Feedback","u":false},{"n":"DDSProgressTrackerStep","c":"part of DDSProgressTracker","u":false},{"n":"DDSTag","c":"Feedback","u":false},{"n":"DDSTagDismissible","c":"part of DDSTag","u":false},{"n":"DDSTooltip","c":"Feedback","u":false},{"n":"DDSActionMenu","c":"Overlays","u":false},{"n":"DDSDrawer","c":"Overlays","u":false},{"n":"DDSDrawerBody","c":"part of DDSDrawer","u":false},{"n":"DDSDrawerFooter","c":"part of DDSDrawer","u":false},{"n":"DDSModal","c":"Overlays","u":false},{"n":"DDSModalHeader","c":"part of DDSModal","u":false},{"n":"DDSModalBody","c":"part of DDSModal","u":false},{"n":"DDSModalFooter","c":"part of DDSModal","u":false},{"n":"DDSOverlay","c":"Overlays","u":false},{"n":"DDSPopover","c":"Overlays","u":false},{"n":"DDSPopoverHeader","c":"part of DDSPopover","u":false},{"n":"DDSPopoverBody","c":"part of DDSPopover","u":false},{"n":"DDSAccordion","c":"Content Display","u":false},{"n":"DDSAccordionItem","c":"part of DDSAccordion","u":false},{"n":"DDSAccordionHeading","c":"part of DDSAccordion","u":false},{"n":"DDSAccordionContent","c":"part of DDSAccordion","u":false},{"n":"DDSBlockquote","c":"Content Display","u":false},{"n":"DDSCalendar","c":"Content Display","u":true},{"n":"DDSCard","c":"Content Display","u":false},{"n":"DDSCardClickable","c":"Content Display","u":false},{"n":"DDSCarousel","c":"Content Display","u":false},{"n":"DDSCarouselItem","c":"part of DDSCarousel","u":false},{"n":"DDSCite","c":"Content Display","u":false},{"n":"DDSDivider","c":"Content Display","u":false},{"n":"DDSFootnote","c":"Content Display","u":false},{"n":"DDSList","c":"Content Display","u":false},{"n":"DDSIcon","c":"Icons & Media","u":false},{"n":"DDSTagDismissible","c":"Feedback","u":false},{"n":"DDSNotificationProvider","c":"Feedback","u":false},{"n":"DDSNotificationContainer","c":"Feedback","u":false},{"n":"DDSTable","c":"Content Display","u":false},{"n":"DDSSearch","c":"Form Controls","u":false},{"n":"DDSTimePicker","c":"Form Controls","u":false},{"n":"DDSViewMoreLess","c":"Content Display","u":false}]};
+  const names = MAN.exports.map(e => e.n);
+  const lev = (a, b) => { const d = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j; for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return d[a.length][b.length]; };
+  function check(v) {
+    const out = $('mfOut'); v = v.trim(); out.className = 'verdict';
+    if (!v) { out.innerHTML = '<span class="big">?</span><p>Type a component name, e.g. DDSButton.</p>'; return; }
+    const hit = MAN.exports.find(e => e.n === v);
+    if (hit) { out.classList.add(hit.u ? 'v-close' : 'v-real'); out.innerHTML = `<span class="big">${hit.u ? 'Unverified' : 'Real'}</span><p><b>${esc(v)}</b> is in the manifest${hit.c && hit.c.startsWith('part of') ? `, as a composition part (${esc(hit.c)})` : ` · ${esc(hit.c || '')}`}.${hit.u ? ' Carried over from the old kit and not yet confirmed live: check before using it.' : ''}</p>`; return; }
+    const ci = names.find(n => n.toLowerCase() === v.toLowerCase());
+    const near = ci || names.map(n => [n, lev(n.toLowerCase(), v.toLowerCase())]).sort((a, b) => a[1] - b[1]).find(([, d]) => d <= 3)?.[0];
+    out.classList.add(near ? 'v-close' : 'v-fake');
+    out.innerHTML = `<span class="big">Not real</span><p><b>${esc(v)}</b> isn't in the manifest, so it doesn't exist.${near ? ` Did you mean <b>${esc(near)}</b>?` : ' However plausible it sounds.'}</p>`;
+  }
+  $('mfIn').addEventListener('input', e => check(e.target.value));
+  document.querySelectorAll('.tryrow button').forEach(b => b.addEventListener('click', () => { $('mfIn').value = b.textContent; check(b.textContent); }));
+  check($('mfIn').value);
+
+  /* Fig 07 · anatomy of button.md (real excerpts) */
+  const SECTIONS = [
+    ['Description', '<p>The primary interactive trigger for actions — submitting a form, opening a modal, confirming or canceling.</p><p style="margin:10px 0 0;font-size:13.5px;color:var(--text-3)">Includes a correction note: this file previously listed incomplete <code>color</code> and <code>kind</code> values and defaulted <code>size</code> to <code>md</code>. Confirmed live now.</p>'],
+    ['When to use / not', '<ul><li>Trigger an action on a page; complete tasks in forms and modals.</li><li><b>Not</b> for navigation to another page — use <code>DDSLink</code>.</li><li><b>Not</b> for metadata or filtering — use <code>DDSTag</code>.</li></ul>'],
+    ['Props', '<div class="tablewrap"><table><tr><th>Prop</th><th>Type</th><th>Default</th></tr><tr><td><code>kind</code></td><td>filled | outline | minimal | ghost</td><td>filled</td></tr><tr><td><code>size</code></td><td>xs | sm | md | lg</td><td><b>lg</b> — not md</td></tr><tr><td><code>color</code></td><td>brand | destructive | success | neutral</td><td>brand</td></tr><tr><td><code>iconOnly</code></td><td>boolean — requires aria-label</td><td>false</td></tr><tr><td><code>variant</code></td><td>default | ai</td><td>default</td></tr></table></div>'],
+    ['Usage', '<pre>&lt;DDSButton kind="filled" color="brand" size="md"&gt;Primary action&lt;/DDSButton&gt;\n&lt;DDSButton kind="outline" color="neutral" size="md"&gt;Secondary action&lt;/DDSButton&gt;\n\n{/* Icon-only — requires aria-label, never bare */}\n&lt;DDSButton kind="ghost" size="sm" iconOnly aria-label="Clear search text"&gt;\n  &lt;DDSIcon name="close-x" size="xs" /&gt;\n&lt;/DDSButton&gt;</pre>'],
+    ['Layout', '<ul><li>Inside modals, popovers and cards: right-aligned.</li><li>Maximum 2 visible buttons per content section — group the rest in a <code>DDSActionMenu</code>.</li><li><code>filled</code> for the primary action, <code>outline</code> secondary, <code>minimal</code> tertiary.</li></ul>'],
+    ['States', '<div class="tablewrap"><table><tr><th>State</th><th>Behavior</th></tr><tr><td>Rest</td><td>Starting/ending state</td></tr><tr><td>Hover</td><td>Highlight appears</td></tr><tr><td>Focus</td><td>Visible outline via keyboard navigation</td></tr><tr><td>Inactive</td><td>40% opacity — still needs 3:1 contrast</td></tr></table></div>'],
+    ['Accessibility', '<ul><li>Labels unique and descriptive — never “Click Here”.</li><li><code>iconOnly</code> buttons always carry <code>aria-label</code>.</li><li>Destructive buttons pair with a non-color cue, and irreversible actions need a confirmation step.</li></ul>'],
+    ['Content', '<ul><li>Fewer than 3 words, title case, starting with a verb.</li><li>One action per label — never “Save and Exit”.</li><li>No punctuation.</li></ul>'],
+    ['Not a substitute for', '<div class="tablewrap"><table><tr><th>Component</th><th>Because</th></tr><tr><td><code>DDSLink</code></td><td>Button triggers actions; Link navigates to another page</td></tr><tr><td><code>DDSTag</code></td><td>Button is an action trigger; Tag is metadata/filter display</td></tr></table></div>'],
+  ];
+  const list = $('anatList'), pane = $('anatPane');
+  SECTIONS.forEach(([t], i) => { const li = document.createElement('li'); if (i === 8) li.className = 'new'; const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.id = 'tab' + i; b.innerHTML = `<span>${i + 1}</span>${t}`; b.addEventListener('click', () => setA(i)); b.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); setA((i + 1) % 9, true); } if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); setA((i + 8) % 9, true); } }); li.append(b); list.append(li); });
+  function setA(i, focus) { [...list.querySelectorAll('button')].forEach((b, j) => { b.setAttribute('aria-selected', j === i); b.tabIndex = j === i ? 0 : -1; }); pane.setAttribute('aria-labelledby', 'tab' + i); pane.innerHTML = `<h4>${i + 1} · ${SECTIONS[i][0]}</h4>${SECTIONS[i][1]}`; if (focus) list.querySelectorAll('button')[i].focus(); }
+  setA(8);
+})();
+</script>
