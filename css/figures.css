@@ -2444,3 +2444,95 @@
     color: #6E6A66;
   }
 }
+
+/* ---------- Fig 02 · First kit vs live source ---------- */
+
+.mk-claim {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr) 140px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 2px dashed #E4DFDA;
+  color: #1F1F1F;
+}
+
+.mk-claim:last-child {
+  border-bottom: 0;
+}
+
+.mk-claim .comp {
+  color: #0A0A0A;
+  font: var(--weight-medium) 14px/1.3 var(--font-mono);
+  overflow-wrap: anywhere;
+}
+
+.mk-claim .said {
+  color: #4A4642;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.mk-claim .said s {
+  text-decoration-color: #E0352B;
+  text-decoration-thickness: 2px;
+}
+
+.mk-claim .live {
+  margin-top: 4px;
+  color: #0A0A0A;
+  font-size: 13.5px;
+  line-height: 1.45;
+  transition: opacity 400ms, transform 400ms cubic-bezier(.22,1,.36,1);
+}
+
+.mk-claim code {
+  font-size: .92em;
+}
+
+.mk-claim .stampv {
+  justify-self: end;
+  padding: 6px 8px;
+  border: 2px solid #C42B22;
+  border-radius: 8px;
+  color: #C42B22;
+  font: var(--weight-medium) 11px/1.2 var(--font-mono);
+  letter-spacing: .08em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+  transition: opacity 250ms, transform 420ms cubic-bezier(.34,1.56,.64,1);
+}
+
+/* Armed (JS, motion allowed): each correction waits for its row to be checked */
+.mk-c.is-armed .mk-claim:not(.checked) .live {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.mk-c.is-armed .mk-claim:not(.checked) .stampv {
+  opacity: 0;
+  transform: rotate(-4deg) scale(1.4);
+}
+
+.mk-claim.scanning {
+  background-image: linear-gradient(90deg, rgba(255, 179, 122, 0), rgba(255, 179, 122, .3), rgba(255, 179, 122, 0));
+  background-size: 200% 100%;
+  animation: mk-scan 700ms linear;
+}
+
+@keyframes mk-scan {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+@media (max-width: 640px) {
+  .mk-claim {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .mk-claim .stampv {
+    justify-self: start;
+  }
+}
