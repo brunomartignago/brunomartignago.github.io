@@ -1,0 +1,432 @@
+{
+ "total": 51,
+ "verified": 50,
+ "exports": [
+  {
+   "n": "DDSButton",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSCheckbox",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSDatePicker",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSDropdown",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSOption",
+   "c": "part of DDSDropdown",
+   "u": false
+  },
+  {
+   "n": "DDSOptionGroup",
+   "c": "part of DDSDropdown",
+   "u": false
+  },
+  {
+   "n": "DDSFileInput",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSRadioButton",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSSelect",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSSwitch",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSTextArea",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSTextInput",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSInputGroup",
+   "c": "part of DDSTextInput",
+   "u": false
+  },
+  {
+   "n": "DDSInputAddOn",
+   "c": "part of DDSTextInput",
+   "u": false
+  },
+  {
+   "n": "DDSFieldset",
+   "c": "Form Composition",
+   "u": false
+  },
+  {
+   "n": "DDSHelperText",
+   "c": "Form Composition",
+   "u": false
+  },
+  {
+   "n": "DDSLabel",
+   "c": "Form Composition",
+   "u": false
+  },
+  {
+   "n": "DDSLegend",
+   "c": "Form Composition",
+   "u": false
+  },
+  {
+   "n": "DDSFormField",
+   "c": "Form Composition",
+   "u": false
+  },
+  {
+   "n": "DDSBreadcrumb",
+   "c": "Navigation",
+   "u": false
+  },
+  {
+   "n": "DDSBreadcrumbItem",
+   "c": "part of DDSBreadcrumb",
+   "u": false
+  },
+  {
+   "n": "DDSLink",
+   "c": "Navigation",
+   "u": false
+  },
+  {
+   "n": "DDSMenu",
+   "c": "Navigation",
+   "u": false
+  },
+  {
+   "n": "DDSMenuGroup",
+   "c": "part of DDSMenu",
+   "u": false
+  },
+  {
+   "n": "DDSMenuGroupLabel",
+   "c": "part of DDSMenu",
+   "u": false
+  },
+  {
+   "n": "DDSMenuGroupContent",
+   "c": "part of DDSMenu",
+   "u": false
+  },
+  {
+   "n": "DDSMenuItemButton",
+   "c": "part of DDSMenu",
+   "u": false
+  },
+  {
+   "n": "DDSMenuItemLink",
+   "c": "part of DDSMenu",
+   "u": false
+  },
+  {
+   "n": "DDSMenuItemOption",
+   "c": "part of DDSMenu",
+   "u": false
+  },
+  {
+   "n": "DDSPagination",
+   "c": "Navigation",
+   "u": false
+  },
+  {
+   "n": "DDSSidenav",
+   "c": "Navigation",
+   "u": false
+  },
+  {
+   "n": "DDSSidenavMenu",
+   "c": "part of DDSSidenav",
+   "u": false
+  },
+  {
+   "n": "DDSSidenavItem",
+   "c": "part of DDSSidenav",
+   "u": false
+  },
+  {
+   "n": "DDSSidenavItemContent",
+   "c": "part of DDSSidenav",
+   "u": false
+  },
+  {
+   "n": "DDSSidenavGroup",
+   "c": "part of DDSSidenav",
+   "u": false
+  },
+  {
+   "n": "DDSSidenavGroupLabel",
+   "c": "part of DDSSidenav",
+   "u": false
+  },
+  {
+   "n": "DDSSidenavGroupContent",
+   "c": "part of DDSSidenav",
+   "u": false
+  },
+  {
+   "n": "DDSTabs",
+   "c": "Navigation",
+   "u": false
+  },
+  {
+   "n": "DDSTabsHeader",
+   "c": "part of DDSTabs",
+   "u": false
+  },
+  {
+   "n": "DDSTabsBody",
+   "c": "part of DDSTabs",
+   "u": false
+  },
+  {
+   "n": "DDSTab",
+   "c": "part of DDSTabs",
+   "u": false
+  },
+  {
+   "n": "DDSTabPanel",
+   "c": "part of DDSTabs",
+   "u": false
+  },
+  {
+   "n": "DDSBadge",
+   "c": "Feedback",
+   "u": false
+  },
+  {
+   "n": "DDSLoadingIndicator",
+   "c": "Feedback",
+   "u": false
+  },
+  {
+   "n": "DDSMessageBar",
+   "c": "Feedback",
+   "u": false
+  },
+  {
+   "n": "DDSProgressBar",
+   "c": "Feedback",
+   "u": false
+  },
+  {
+   "n": "DDSProgressTracker",
+   "c": "Feedback",
+   "u": false
+  },
+  {
+   "n": "DDSProgressTrackerStep",
+   "c": "part of DDSProgressTracker",
+   "u": false
+  },
+  {
+   "n": "DDSTag",
+   "c": "Feedback",
+   "u": false
+  },
+  {
+   "n": "DDSTagDismissible",
+   "c": "part of DDSTag",
+   "u": false
+  },
+  {
+   "n": "DDSTooltip",
+   "c": "Feedback",
+   "u": false
+  },
+  {
+   "n": "DDSActionMenu",
+   "c": "Overlays",
+   "u": false
+  },
+  {
+   "n": "DDSDrawer",
+   "c": "Overlays",
+   "u": false
+  },
+  {
+   "n": "DDSDrawerBody",
+   "c": "part of DDSDrawer",
+   "u": false
+  },
+  {
+   "n": "DDSDrawerFooter",
+   "c": "part of DDSDrawer",
+   "u": false
+  },
+  {
+   "n": "DDSModal",
+   "c": "Overlays",
+   "u": false
+  },
+  {
+   "n": "DDSModalHeader",
+   "c": "part of DDSModal",
+   "u": false
+  },
+  {
+   "n": "DDSModalBody",
+   "c": "part of DDSModal",
+   "u": false
+  },
+  {
+   "n": "DDSModalFooter",
+   "c": "part of DDSModal",
+   "u": false
+  },
+  {
+   "n": "DDSOverlay",
+   "c": "Overlays",
+   "u": false
+  },
+  {
+   "n": "DDSPopover",
+   "c": "Overlays",
+   "u": false
+  },
+  {
+   "n": "DDSPopoverHeader",
+   "c": "part of DDSPopover",
+   "u": false
+  },
+  {
+   "n": "DDSPopoverBody",
+   "c": "part of DDSPopover",
+   "u": false
+  },
+  {
+   "n": "DDSAccordion",
+   "c": "Content Display",
+   "u": false
+  },
+  {
+   "n": "DDSAccordionItem",
+   "c": "part of DDSAccordion",
+   "u": false
+  },
+  {
+   "n": "DDSAccordionHeading",
+   "c": "part of DDSAccordion",
+   "u": false
+  },
+  {
+   "n": "DDSAccordionContent",
+   "c": "part of DDSAccordion",
+   "u": false
+  },
+  {
+   "n": "DDSBlockquote",
+   "c": "Content Display",
+   "u": false
+  },
+  {
+   "n": "DDSCalendar",
+   "c": "Content Display",
+   "u": true
+  },
+  {
+   "n": "DDSCard",
+   "c": "Content Display",
+   "u": false
+  },
+  {
+   "n": "DDSCardClickable",
+   "c": "Content Display",
+   "u": false
+  },
+  {
+   "n": "DDSCarousel",
+   "c": "Content Display",
+   "u": false
+  },
+  {
+   "n": "DDSCarouselItem",
+   "c": "part of DDSCarousel",
+   "u": false
+  },
+  {
+   "n": "DDSCite",
+   "c": "Content Display",
+   "u": false
+  },
+  {
+   "n": "DDSDivider",
+   "c": "Content Display",
+   "u": false
+  },
+  {
+   "n": "DDSFootnote",
+   "c": "Content Display",
+   "u": false
+  },
+  {
+   "n": "DDSList",
+   "c": "Content Display",
+   "u": false
+  },
+  {
+   "n": "DDSIcon",
+   "c": "Icons & Media",
+   "u": false
+  },
+  {
+   "n": "DDSTagDismissible",
+   "c": "Feedback",
+   "u": false
+  },
+  {
+   "n": "DDSNotificationProvider",
+   "c": "Feedback",
+   "u": false
+  },
+  {
+   "n": "DDSNotificationContainer",
+   "c": "Feedback",
+   "u": false
+  },
+  {
+   "n": "DDSTable",
+   "c": "Content Display",
+   "u": false
+  },
+  {
+   "n": "DDSSearch",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSTimePicker",
+   "c": "Form Controls",
+   "u": false
+  },
+  {
+   "n": "DDSViewMoreLess",
+   "c": "Content Display",
+   "u": false
+  }
+ ],
+ "source": "manifests/components.json: exported names only. n = export name, c = category or 'part of <parent>', u = unverified."
+}

@@ -35,6 +35,7 @@
 .case--cockpit  { --accent: #60FFA2; --accent-d: #318D57; }
 .case--task     { --accent: #FD93E2; --accent-d: #8B487A; }
 .case--research2 { --accent: #60E7FF; --accent-d: #348796; }
+.case--makekit  { --accent: #FFB37A; --accent-d: #9A4F1C; }
 
 /* ================= Tokens: Night edition ================= */
 
@@ -305,6 +306,7 @@ html:has(.journal--night) {
 .jtag--pink   { --tag-bg: #FD93E2; --tag-sh: #8B487A; }
 .jtag--blue   { --tag-bg: #60C2FF; --tag-sh: #2157A9; }
 .jtag--cyan   { --tag-bg: #60E7FF; --tag-sh: #348796; }
+.jtag--peach  { --tag-bg: #FFB37A; --tag-sh: #9A4F1C; }
 
 .cover-fig {
   grid-column: 1;
@@ -576,6 +578,7 @@ html:has(.journal--night) {
 .mnote--blue  { --note-bg: #D6EEFF; --note-sh: #2157A9; --note-k: #1D4A8A; }
 .mnote--green { --note-bg: #D4FFE6; --note-sh: #318D57; --note-k: #24704A; }
 .mnote--cyan  { --note-bg: #D2FAFF; --note-sh: #348796; --note-k: #1F6875; }
+.mnote--peach { --note-bg: #FFE3CC; --note-sh: #9A4F1C; --note-k: #7A3D12; }
 
 .journal--night .mnote {
   box-shadow: 4px 4px 0 0 var(--shadow-ink);
@@ -927,6 +930,22 @@ html:has(.journal--night) {
 .specimen--green  { --spec-bg: #60FFA2; --spec-sh: #318D57; }
 .specimen--pink   { --spec-bg: #FD93E2; --spec-sh: #8B487A; }
 .specimen--cyan   { --spec-bg: #60E7FF; --spec-sh: #348796; }
+.specimen--peach  { --spec-bg: #FFB37A; --spec-sh: #9A4F1C; }
+
+/* Specimen with a short paragraph instead of a list */
+.specimen .specimen-text {
+  max-width: none;
+  margin: 0;
+  padding: 14px 18px 16px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* File and folder names keep their case inside the mono labels */
+.specimen dt code {
+  text-transform: none;
+  letter-spacing: 0;
+}
 
 /* Dictionary entry: definitions and nomenclature */
 .defn {
@@ -1036,6 +1055,11 @@ html:has(.journal--night) {
   line-height: 1.45;
 }
 
+/* Four stats read best as a 2 × 2 block */
+.stats--grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .stat--yellow { --sb: #FFF260; --ss: #A9A03E; }
 .stat--cyan   { --sb: #60E7FF; --ss: #348796; }
 .stat--green  { --sb: #60FFA2; --ss: #318D57; }
@@ -1064,6 +1088,16 @@ html:has(.journal--night) {
   margin-top: 12px;
   font: var(--font-mono-label);
   font-style: normal;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* Attributed statement: a pull quote's look for a paraphrase, so no quote marks or blockquote */
+.pull--said figcaption {
+  display: block;
+  margin-top: 12px;
+  font: var(--font-mono-label);
   letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--text-3);
