@@ -266,4 +266,60 @@
       onceInView(right.parentNode, () => setBrief("study"), .3);
     }).catch(() => fail(fig));
   })();
+  /* ================= Fig 06 · Ask the manifest ================= */
+  (() => {
+    const fig = document.getElementById("cf-manifest");
+    if (!fig) return;
+    const input = fig.querySelector(".mk-m-input");
+    const out = fig.querySelector(".mk-m-verdict");
+    const tries = [...fig.querySelectorAll(".mk-m-try button")];
+
+    const lev = (a, b) => {
+      const d = Array.from({ length: a.length + 1 }, (_, i) => [i]);
+      for (let j = 1; j <= b.length; j++) d[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+        }
+      }
+      return d[a.length][b.length];
+    };
+
+    load("manifest.json").then(man => {
+      const exports = man.exports;
+      const names = [...new Set(exports.map(e => e.n))];
+
+      const verdict = (cls, big, ...body) => {
+        out.className = `mk-m-verdict ${cls}`;
+        const p = el("p");
+        p.append(...body);
+        out.replaceChildren(el("span", "big", null, big), p);
+      };
+      const name = n => el("b", null, null, n);
+
+      function check(raw) {
+        const v = raw.trim();
+        if (!v) { verdict("", "?", "Type a component name, e.g. DDSButton."); return; }
+        const hit = exports.find(e => e.n === v);
+        if (hit) {
+          const part = hit.c && hit.c.startsWith("part of");
+          verdict(hit.u ? "v-close" : "v-real", hit.u ? "Unverified" : "Real",
+            name(v), part ? ` is in the manifest, as a composition part (${hit.c}).` : ` is in the manifest · ${hit.c}.`,
+            hit.u ? " Carried over from the first kit and not yet confirmed live: check before using it." : "");
+          return;
+        }
+        // Not an exact name: try the same name in another case, then the closest within 3 edits
+        const low = v.toLowerCase();
+        const near = names.find(n => n.toLowerCase() === low)
+          || names.map(n => [n, lev(n.toLowerCase(), low)]).sort((a, b) => a[1] - b[1]).find(([, d]) => d <= 3)?.[0];
+        if (near) verdict("v-close", "Not real", name(v), " isn't in the manifest, so it doesn't exist. Did you mean ", name(near), "?");
+        else verdict("v-fake", "Not real", name(v), " isn't in the manifest, so it doesn't exist. However plausible it sounds.");
+      }
+
+      input.addEventListener("input", () => check(input.value));
+      tries.forEach(b => b.addEventListener("click", () => { input.value = b.textContent; check(b.textContent); }));
+      check(input.value);
+      live(fig);
+    }).catch(() => fail(fig));
+  })();
 })();

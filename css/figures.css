@@ -2892,3 +2892,106 @@
     border-bottom: 3px solid #0A0A0A;
   }
 }
+
+/* ---------- Fig 06 · Ask the manifest ---------- */
+
+.mk-m-stage {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+}
+
+.mk-m-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 14px;
+  border: 3px solid #0A0A0A;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  box-shadow: 4px 4px 0 0 #0A0A0A;
+  color: #0A0A0A;
+  font: var(--weight-medium) 16px/1 var(--font-mono);
+}
+
+.mk-m-input:focus-visible {
+  outline: 3px solid #2157A9;
+  outline-offset: 3px;
+}
+
+.mk-m-try {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  color: #6E6A66;
+  font: 400 12px/1 var(--font-mono);
+}
+
+.mk-m-try button {
+  padding: 6px 8px;
+  border: 1.5px solid #0A0A0A;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+  font: var(--weight-medium) 12px/1 var(--font-mono);
+  cursor: pointer;
+}
+
+.mk-m-try button:hover {
+  background-color: #FFE3CC;
+}
+
+.mk-m-try button:focus-visible {
+  outline: 3px solid #2157A9;
+  outline-offset: 2px;
+}
+
+.mk-m-verdict {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 3px solid #0A0A0A;
+  border-radius: 12px;
+  background-color: var(--vb, #FFFFFF);
+  box-shadow: 4px 4px 0 0 var(--vs, #0A0A0A);
+  transition: background-color 250ms;
+}
+
+.mk-m-verdict.v-real  { --vb: #D4FFE6; --vs: #318D57; }
+.mk-m-verdict.v-close { --vb: #FFF7B8; --vs: #A9A03E; }
+.mk-m-verdict.v-fake  { --vb: #FFD8F4; --vs: #8B487A; }
+
+.mk-m-verdict .big {
+  font: 400 30px/1 var(--font-display);
+}
+
+.mk-m-verdict p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.mk-m-verdict b {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-medium);
+}
+
+@media (max-width: 560px) {
+  .mk-m-stage {
+    padding: 12px;
+  }
+
+  .mk-m-verdict {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .mk-m-verdict .big {
+    font-size: 26px;
+  }
+}
