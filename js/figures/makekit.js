@@ -110,4 +110,160 @@
     set("fieldset");
     live(fig);
   })();
+  /* ================= Fig 05 · The router at work ================= */
+  (() => {
+    const fig = document.getElementById("cf-router");
+    if (!fig) return;
+    const stage = fig.querySelector(".mk-r-stage");
+    const buttons = [...fig.querySelectorAll("[data-brief]")];
+
+    const BRIEFS = {
+      study: "A request form with a left side navigation and a card. Serial number text field with helper text, a device type dropdown, a description text area, an attachment upload, a priority radio group, a toggle for status updates and a checkbox. Cancel and Submit request buttons. A validation error state with a summary message. A confirmation modal. A status screen with a status indicator, a progress trail of stages and quick actions.",
+      modal: "A confirmation modal: “Submit this request?” with a short summary and Cancel and Submit request buttons.",
+      custom: "A settings page with tabs, a toggle for email notifications, a date picker and a save button.",
+    };
+    const TIERS = [
+      ["ROUTER.md", f => f === "ROUTER.md" || f === "CHANGELOG.md"],
+      ["core/", f => f.startsWith("core/")],
+      ["reference/", f => f.startsWith("reference/")],
+      ["accessibility/", f => f.startsWith("accessibility/")],
+      ["manifests/", f => f.startsWith("manifests/")],
+      ["skills/", f => f.startsWith("skills/")],
+    ];
+    const KB = bytes => bytes / 1000; // decimal KB, as in the article
+    const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    Promise.all([load("kit_sizes.json"), load("router_rules.json")]).then(([kit, routing]) => {
+      const SIZES = kit.files, ALWAYS = kit.always_loaded, TOTAL = kit.total_bytes;
+      const rules = routing.rules.map(r => ({ ...r, res: r.triggers.map(t => new RegExp(`\\b${escRe(t)}`, "gi")) }));
+
+      // ---- Brief side ----
+      const left = el("div", "mk-r-brief");
+      const briefLabel = el("span", "k", null, "The brief");
+      const briefText = el("div", "mk-r-text");
+      const inputId = "mk-r-input";
+      const inputLabel = el("label", "k", null, "Type a brief");
+      inputLabel.htmlFor = inputId;
+      const input = el("textarea", "mk-r-input");
+      input.id = inputId;
+      input.rows = 4;
+      input.placeholder = "e.g. A settings page with tabs, a toggle for notifications and a save button";
+      const inputBox = el("div", "mk-r-inputbox");
+      inputBox.append(inputLabel, input);
+      inputBox.hidden = true;
+
+      const meter = el("div", "mk-r-meter");
+      const kbOut = el("b", null, null, "0");
+      const ofOut = el("span", null, null, "");
+      const num = el("div", "num");
+      const left1 = el("span");
+      left1.append(kbOut, " KB loaded");
+      num.append(left1, ofOut);
+      const bar = el("div", "bar");
+      const fill = el("div", "fill");
+      bar.append(fill);
+      meter.append(num, bar);
+      const summary = el("p", "sr-only");
+      summary.setAttribute("aria-live", "polite");
+      left.append(briefLabel, briefText, inputBox, meter, summary);
+
+      // ---- Kit side ----
+      const right = el("div", "mk-r-kit");
+      right.append(el("span", "k", null, `The kit · ${kit.total_files} files`));
+      const legend = el("div", "mk-r-legend");
+      [["always", "always (core + router)"], ["on", "matched"], ["req", "required dependency"]].forEach(([c, t]) => {
+        const s = el("span");
+        s.append(el("i", c), t);
+        legend.append(s);
+      });
+      right.append(legend);
+      const chips = {};
+      TIERS.forEach(([name, test]) => {
+        const files = Object.keys(SIZES).filter(test).sort();
+        const tier = el("div", "mk-r-tier");
+        const h = el("h5", null, null, name);
+        h.append(el("span", null, null, `${files.length} files · ${KB(files.reduce((a, f) => a + SIZES[f], 0)).toFixed(0)} KB`));
+        const box = el("div", "mk-r-files");
+        files.forEach(f => {
+          const c = el("span", "mk-r-chip", null, f.split("/").pop().replace(/\.(md|json)$/, ""));
+          c.title = `${f} · ${KB(SIZES[f]).toFixed(1)} KB`;
+          box.append(c);
+          chips[f] = c;
+        });
+        tier.append(h, box);
+        right.append(tier);
+      });
+      right.setAttribute("aria-hidden", "true"); // the live summary speaks for the tree
+      stage.append(left, right);
+
+      // ---- Routing: match triggers anywhere in the brief, add one hop of requirements ----
+      function route(text) {
+        const matched = new Set(), req = new Set(), hits = [];
+        rules.forEach(r => {
+          if (!r.res.some(re => { re.lastIndex = 0; return re.test(text); })) return;
+          r.load.forEach(f => matched.add(f));
+          r.requires.forEach(f => req.add(f));
+          r.res.forEach(re => { re.lastIndex = 0; let m; while ((m = re.exec(text))) hits.push([m.index, m.index + m[0].length]); });
+        });
+        matched.forEach(f => req.delete(f));
+        ALWAYS.forEach(f => { matched.delete(f); req.delete(f); });
+        return { matched, req, hits };
+      }
+      function highlight(text, hits) {
+        hits.sort((a, b) => a[0] - b[0]);
+        const merged = [];
+        hits.forEach(h => { const last = merged[merged.length - 1]; if (last && h[0] <= last[1]) last[1] = Math.max(last[1], h[1]); else merged.push([...h]); });
+        const frag = document.createDocumentFragment();
+        let p = 0;
+        merged.forEach(([s, e]) => { frag.append(text.slice(p, s), el("mark", null, null, text.slice(s, e))); p = e; });
+        frag.append(text.slice(p));
+        briefText.replaceChildren(frag);
+      }
+
+      let timers = [];
+      function show(text, animate) {
+        timers.forEach(clearTimeout);
+        timers = [];
+        const { matched, req, hits } = route(text);
+        if (!briefText.hidden) highlight(text, hits);
+        Object.values(chips).forEach(c => c.classList.remove("on", "req", "always"));
+        const seq = [...ALWAYS.map(f => [f, "always"]), ...[...matched].map(f => [f, "on"]), ...[...req].map(f => [f, "req"])];
+        let bytes = 0, n = 0;
+        const apply = ([f, cls]) => {
+          if (chips[f]) chips[f].classList.add(cls);
+          bytes += SIZES[f] || 0;
+          n++;
+          const pct = Math.round(bytes / TOTAL * 100);
+          kbOut.textContent = String(Math.round(KB(bytes)));
+          ofOut.textContent = `of ${Math.round(KB(TOTAL))} KB · ${n} files · ${pct}%`;
+          fill.style.setProperty("--w", `${(bytes / TOTAL * 100).toFixed(1)}%`);
+        };
+        const done = () => { summary.textContent = `This brief loads ${n} files: ${Math.round(KB(bytes))} KB, ${Math.round(bytes / TOTAL * 100)}% of the kit.`; };
+        if (!animate || reduced()) { seq.forEach(apply); done(); return; }
+        seq.forEach((s, i) => timers.push(setTimeout(() => { apply(s); if (i === seq.length - 1) done(); }, 60 * i)));
+      }
+
+      function setBrief(key, animate = true) {
+        buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.brief === key)));
+        const custom = key === "custom";
+        inputBox.hidden = !custom;
+        briefText.hidden = custom;
+        if (custom) {
+          if (!input.value) input.value = BRIEFS.custom;
+          show(input.value, false);
+          input.focus();
+        } else {
+          show(BRIEFS[key], animate);
+        }
+      }
+      buttons.forEach(b => b.addEventListener("click", () => setBrief(b.dataset.brief)));
+      input.addEventListener("input", () => show(input.value, false));
+
+      live(fig);
+      briefText.textContent = BRIEFS.study;
+      if (reduced()) { setBrief("study", false); return; }
+      // Files light up once the figure is in view
+      onceInView(right.parentNode, () => setBrief("study"), .3);
+    }).catch(() => fail(fig));
+  })();
 })();

@@ -1,0 +1,186 @@
+{
+  "source": "Router trigger rules from the kit: the phrases that load a file, and the files it requires (one hop only).",
+  "match": "case-insensitive, at the start of a word",
+  "rules": [
+    {
+      "triggers": ["button", "submit", "cancel", "call to action", "quick actions", "actions"],
+      "load": ["reference/components/button.md"],
+      "requires": ["reference/component-patterns.md"]
+    },
+    {
+      "triggers": ["checkbox"],
+      "load": ["reference/components/checkbox.md"],
+      "requires": ["accessibility/forms-and-inputs.md"]
+    },
+    {
+      "triggers": ["date picker", "choose a date"],
+      "load": ["reference/components/date-picker.md"],
+      "requires": ["accessibility/forms-and-inputs.md", "reference/components/form-field.md"]
+    },
+    {
+      "triggers": ["dropdown", "type-ahead"],
+      "load": ["reference/components/dropdown.md"],
+      "requires": ["accessibility/forms-and-inputs.md", "reference/components/form-field.md"]
+    },
+    {
+      "triggers": ["file upload", "attachment", "upload"],
+      "load": ["reference/components/file-input.md"],
+      "requires": ["accessibility/forms-and-inputs.md", "reference/components/form-field.md"]
+    },
+    {
+      "triggers": ["search"],
+      "load": ["reference/components/search.md"],
+      "requires": ["accessibility/forms-and-inputs.md"]
+    },
+    {
+      "triggers": ["time picker", "choose a time"],
+      "load": ["reference/components/time-picker.md"],
+      "requires": ["accessibility/forms-and-inputs.md"]
+    },
+    {
+      "triggers": ["radio group", "radio", "choose one of"],
+      "load": ["reference/components/radio-button.md"],
+      "requires": ["accessibility/forms-and-inputs.md", "reference/components/fieldset.md"]
+    },
+    {
+      "triggers": ["toggle", "switch"],
+      "load": ["reference/components/switch.md"],
+      "requires": ["accessibility/forms-and-inputs.md", "reference/component-patterns.md"]
+    },
+    {
+      "triggers": ["text area", "multi-line", "description"],
+      "load": ["reference/components/text-area.md"],
+      "requires": ["accessibility/forms-and-inputs.md"]
+    },
+    {
+      "triggers": ["text field", "serial number", "name field", "input"],
+      "load": ["reference/components/text-input.md"],
+      "requires": ["accessibility/forms-and-inputs.md", "reference/components/form-field.md", "reference/component-patterns.md"]
+    },
+    {
+      "triggers": ["form"],
+      "load": ["reference/patterns/form.md"],
+      "requires": ["accessibility/forms-and-inputs.md"]
+    },
+    {
+      "triggers": ["helper text"],
+      "load": ["reference/components/helper-text.md"],
+      "requires": []
+    },
+    {
+      "triggers": ["breadcrumb"],
+      "load": ["reference/components/breadcrumb.md"],
+      "requires": ["accessibility/navigation.md"]
+    },
+    {
+      "triggers": ["link", "learn more"],
+      "load": ["reference/components/link.md"],
+      "requires": ["accessibility/navigation.md"]
+    },
+    {
+      "triggers": ["pagination", "next page"],
+      "load": ["reference/components/pagination.md"],
+      "requires": ["accessibility/navigation.md"]
+    },
+    {
+      "triggers": ["side nav", "side navigation", "sidebar", "navigation rail"],
+      "load": ["reference/components/sidenav.md"],
+      "requires": ["reference/components/sidenav-composition.md", "accessibility/navigation.md", "reference/component-patterns.md"]
+    },
+    {
+      "triggers": ["tabs", "tabbed"],
+      "load": ["reference/components/tabs.md"],
+      "requires": ["accessibility/navigation.md"]
+    },
+    {
+      "triggers": ["badge", "status indicator", "status pill"],
+      "load": ["reference/components/badge.md"],
+      "requires": ["accessibility/feedback-states.md"]
+    },
+    {
+      "triggers": ["loading", "spinner"],
+      "load": ["reference/components/loading-indicator.md"],
+      "requires": ["accessibility/feedback-states.md"]
+    },
+    {
+      "triggers": ["message", "banner", "error", "summary message"],
+      "load": ["reference/components/message-bar.md"],
+      "requires": ["accessibility/feedback-states.md"]
+    },
+    {
+      "triggers": ["progress bar", "percent complete"],
+      "load": ["reference/components/progress-bar.md"],
+      "requires": ["accessibility/feedback-states.md"]
+    },
+    {
+      "triggers": ["progress trail", "progress tracker", "stages", "step 2 of"],
+      "load": ["reference/components/progress-tracker.md"],
+      "requires": ["accessibility/feedback-states.md"]
+    },
+    {
+      "triggers": ["tag", "chip"],
+      "load": ["reference/components/tag.md"],
+      "requires": ["accessibility/feedback-states.md"]
+    },
+    {
+      "triggers": ["tooltip"],
+      "load": ["reference/components/tooltip.md"],
+      "requires": ["accessibility/feedback-states.md"]
+    },
+    {
+      "triggers": ["notification", "toast"],
+      "load": ["reference/components/notification.md"],
+      "requires": ["accessibility/feedback-states.md"]
+    },
+    {
+      "triggers": ["action menu", "kebab"],
+      "load": ["reference/components/action-menu.md"],
+      "requires": ["accessibility/dialogs-and-overlays.md"]
+    },
+    {
+      "triggers": ["drawer", "side sheet"],
+      "load": ["reference/components/drawer.md"],
+      "requires": ["accessibility/dialogs-and-overlays.md"]
+    },
+    {
+      "triggers": ["modal", "dialog", "confirmation", "are you sure"],
+      "load": ["reference/components/modal.md"],
+      "requires": ["reference/components/modal-composition.md", "accessibility/dialogs-and-overlays.md"]
+    },
+    {
+      "triggers": ["popover"],
+      "load": ["reference/components/popover.md"],
+      "requires": ["accessibility/dialogs-and-overlays.md"]
+    },
+    {
+      "triggers": ["accordion", "expand/collapse"],
+      "load": ["reference/components/accordion.md"],
+      "requires": []
+    },
+    {
+      "triggers": ["card"],
+      "load": ["reference/components/card.md"],
+      "requires": ["reference/component-patterns.md"]
+    },
+    {
+      "triggers": ["carousel", "slider"],
+      "load": ["reference/components/carousel.md"],
+      "requires": ["skills/carousel-patterns.md"]
+    },
+    {
+      "triggers": ["table", "rows and columns"],
+      "load": ["reference/components/table.md"],
+      "requires": []
+    },
+    {
+      "triggers": ["label"],
+      "load": ["reference/components/label.md"],
+      "requires": ["accessibility/forms-and-inputs.md"]
+    },
+    {
+      "triggers": ["divider"],
+      "load": ["reference/components/divider.md"],
+      "requires": []
+    }
+  ]
+}
