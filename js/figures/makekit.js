@@ -322,4 +322,74 @@
       live(fig);
     }).catch(() => fail(fig));
   })();
+  /* ================= Fig 07 · Anatomy of button.md ================= */
+  (() => {
+    const fig = document.getElementById("cf-anatomy");
+    if (!fig) return;
+    const stage = fig.querySelector(".mk-a-stage");
+
+    // Excerpts from the kit's reference/components/button.md (fixed content, so set as HTML)
+    const SECTIONS = [
+      ["Description", '<p>The primary interactive trigger for actions — submitting a form, opening a modal, confirming or canceling.</p><p class="mk-a-aside">Includes a correction note: this file previously listed incomplete <code>color</code> and <code>kind</code> values and defaulted <code>size</code> to <code>md</code>. Confirmed live now.</p>'],
+      ["When to use / not", "<ul><li>Trigger an action on a page; complete tasks in forms and modals.</li><li><b>Not</b> for navigation to another page — use <code>DDSLink</code>.</li><li><b>Not</b> for metadata or filtering — use <code>DDSTag</code>.</li></ul>"],
+      ["Props", '<div class="mk-a-table"><table><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">Default</th></tr><tr><td><code>kind</code></td><td>filled | outline | minimal | ghost</td><td>filled</td></tr><tr><td><code>size</code></td><td>xs | sm | md | lg</td><td><b>lg</b> — not md</td></tr><tr><td><code>color</code></td><td>brand | destructive | success | neutral</td><td>brand</td></tr><tr><td><code>iconOnly</code></td><td>boolean — requires aria-label</td><td>false</td></tr><tr><td><code>variant</code></td><td>default | ai</td><td>default</td></tr></table></div>'],
+      ["Usage", '<pre>&lt;DDSButton kind="filled" color="brand" size="md"&gt;Primary action&lt;/DDSButton&gt;\n&lt;DDSButton kind="outline" color="neutral" size="md"&gt;Secondary action&lt;/DDSButton&gt;\n\n{/* Icon-only — requires aria-label, never bare */}\n&lt;DDSButton kind="ghost" size="sm" iconOnly aria-label="Clear search text"&gt;\n  &lt;DDSIcon name="close-x" size="xs" /&gt;\n&lt;/DDSButton&gt;</pre>'],
+      ["Layout", "<ul><li>Inside modals, popovers and cards: right-aligned.</li><li>Maximum 2 visible buttons per content section — group the rest in a <code>DDSActionMenu</code>.</li><li><code>filled</code> for the primary action, <code>outline</code> secondary, <code>minimal</code> tertiary.</li></ul>"],
+      ["States", '<div class="mk-a-table"><table><tr><th scope="col">State</th><th scope="col">Behavior</th></tr><tr><td>Rest</td><td>Starting/ending state</td></tr><tr><td>Hover</td><td>Highlight appears</td></tr><tr><td>Focus</td><td>Visible outline via keyboard navigation</td></tr><tr><td>Inactive</td><td>40% opacity — still needs 3:1 contrast</td></tr></table></div>'],
+      ["Accessibility", "<ul><li>Labels unique and descriptive — never “Click Here”.</li><li><code>iconOnly</code> buttons always carry <code>aria-label</code>.</li><li>Destructive buttons pair with a non-color cue, and irreversible actions need a confirmation step.</li></ul>"],
+      ["Content", "<ul><li>Fewer than 3 words, title case, starting with a verb.</li><li>One action per label — never “Save and Exit”.</li><li>No punctuation.</li></ul>"],
+      ["Not a substitute for", '<div class="mk-a-table"><table><tr><th scope="col">Component</th><th scope="col">Because</th></tr><tr><td><code>DDSLink</code></td><td>Button triggers actions; Link navigates to another page</td></tr><tr><td><code>DDSTag</code></td><td>Button is an action trigger; Tag is metadata/filter display</td></tr></table></div>'],
+    ];
+    const NEW = 8; // "Not a substitute for" is the section the new kit added
+
+    const list = el("div", "mk-a-tabs");
+    list.setAttribute("role", "tablist");
+    list.setAttribute("aria-label", "Sections of button.md");
+    list.setAttribute("aria-orientation", "vertical");
+    const panel = el("div", "mk-a-pane");
+    panel.id = "mk-a-panel";
+    panel.setAttribute("role", "tabpanel");
+    panel.tabIndex = 0;
+
+    const tabs = SECTIONS.map(([title], i) => {
+      const t = el("button", "mk-a-tab");
+      t.type = "button";
+      t.id = `mk-a-tab-${i}`;
+      t.setAttribute("role", "tab");
+      t.setAttribute("aria-controls", panel.id);
+      t.append(el("span", "n", null, String(i + 1)), el("span", "t", null, title));
+      if (i === NEW) t.append(el("span", "new", null, "New"));
+      list.append(t);
+      return t;
+    });
+    stage.append(list, panel);
+
+    function select(i, focus) {
+      tabs.forEach((t, j) => {
+        t.setAttribute("aria-selected", String(j === i));
+        t.tabIndex = j === i ? 0 : -1;
+      });
+      panel.setAttribute("aria-labelledby", tabs[i].id);
+      panel.innerHTML = `<h4>${i + 1} · ${SECTIONS[i][0]}${i === NEW ? ' <span class="new">New</span>' : ""}</h4>${SECTIONS[i][1]}`;
+      if (focus) tabs[i].focus();
+    }
+
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(i));
+      t.addEventListener("keydown", e => {
+        const last = tabs.length - 1;
+        let to = null;
+        if (e.key === "ArrowDown" || e.key === "ArrowRight") to = i === last ? 0 : i + 1;
+        else if (e.key === "ArrowUp" || e.key === "ArrowLeft") to = i === 0 ? last : i - 1;
+        else if (e.key === "Home") to = 0;
+        else if (e.key === "End") to = last;
+        if (to === null) return;
+        e.preventDefault();
+        select(to, true);
+      });
+    });
+
+    select(NEW);
+    live(fig);
+  })();
 })();
