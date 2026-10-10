@@ -43,4 +43,14 @@
     frame.classList.add("is-armed");
     onceInView(fig, run, .4);
   })();
+  /* ================= Fig 03 · Build order ================= */
+  (() => {
+    const fig = document.getElementById("cf-order");
+    if (!fig || reduced()) return;
+    // The chips are visible without JS; with motion they drop in once, build by build
+    const grid = fig.querySelector(".mk-o-grid");
+    [...grid.querySelectorAll(".kit")].forEach((k, i) => k.style.setProperty("--i", i));
+    grid.classList.add("is-waiting");
+    onceInView(grid, () => grid.classList.replace("is-waiting", "is-in"), .5);
+  })();
 })();
