@@ -1367,6 +1367,15 @@ a.case-card:focus-visible .cc-cta i {
   .cc-main .tile-video {
     transition: none;
   }
+
+  /* Cards don't move on hover or press; the deeper shadow still marks the hover */
+  a.case-card:hover,
+  a.case-card:focus-visible,
+  a.case-card:active,
+  a.case-card:hover .cc-cta i,
+  a.case-card:focus-visible .cc-cta i {
+    transform: none;
+  }
 }
 
 /* GovHub pieces are drawn in HTML/SVG from the product's own concepts (no client data) */
