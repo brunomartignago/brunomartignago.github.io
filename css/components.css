@@ -1017,140 +1017,477 @@
   --slide-rot: 3deg;
 }
 
-.project-tile {
+/* ---------- Other Projects: case cards (grid in layout.css) ---------- */
+
+.case-card {
+  --acc: #FFB37A;
+  --acc-d: #9A4F1C;
+  --grid: rgba(10, 10, 10, .07);
+  --lift-shadow: var(--acc-d);
   position: relative;
-  display: block;
-
-  aspect-ratio: 4 / 3;
-  padding: var(--space-md);
-
-  text-decoration: none;
-  color: var(--text-primary);
-
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   border: 3px solid var(--text-primary);
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 #CFA185;
-  --lift-shadow: #CFA185;
-
-  background-image: var(--tile-image);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  overflow: hidden;
-
+  background-color: #FFFFFF;
+  color: var(--text-primary);
+  text-decoration: none;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--acc-d);
   transition:
     transform var(--dur-base) var(--ease-land),
     box-shadow var(--dur-base) var(--ease-land);
 }
 
-/* Hover lift; press on active */
-.project-tile:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 9px 9px 0 0 #CFA185;
+a.case-card:hover,
+a.case-card:focus-visible {
+  transform: translate(-3px, -3px);
+  box-shadow: 10px 10px 0 0 var(--acc-d);
 }
 
-.project-tile:active {
+a.case-card:active {
   transform: translate(var(--shadow-offset), var(--shadow-offset));
-  box-shadow: 0 0 0 0 #CFA185;
+  box-shadow: 0 0 0 0 var(--acc-d);
   transition-duration: var(--dur-fast);
 }
 
-/* Media layers under the overlay: hover video preview, or a Ken Burns copy of the thumbnail */
-.tile-video,
-.tile-pan {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+.case-card:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 5px;
 }
 
-.tile-video {
+/* Media: the case's own artifacts, taped onto grid paper in its accent color */
+.cc-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-bottom: 3px solid var(--text-primary);
+  background-color: var(--acc);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.cc-file {
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  z-index: 3;
+  padding: 5px 8px;
+  border: 2px solid var(--text-primary);
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  box-shadow: 2px 2px 0 0 var(--text-primary);
+  font: var(--weight-medium) 11px/1 var(--font-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.cc-piece {
+  position: absolute;
+  overflow: hidden;
+  border: 3px solid var(--text-primary);
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  box-shadow: 6px 6px 0 0 var(--text-primary);
+  transition:
+    transform 520ms var(--ease-land),
+    box-shadow 520ms var(--ease-land);
+}
+
+.cc-piece img,
+.cc-piece video {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top left;
+}
+
+/* Main piece: big and slightly tilted, with tape */
+.cc-main {
+  left: 9%;
+  top: 17%;
+  width: 66%;
+  aspect-ratio: 16 / 9;
+  transform: rotate(-2deg);
+  overflow: visible;
+}
+
+.cc-main > img,
+.cc-main > video {
+  border-radius: 7px;
+}
+
+.cc-main::before,
+.cc-main::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  z-index: 2;
+  width: 64px;
+  height: 22px;
+  background-color: rgba(255, 255, 255, .62);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .08);
+  pointer-events: none;
+}
+
+.cc-main::before { left: 14px; transform: rotate(-6deg); }
+.cc-main::after { right: 14px; transform: rotate(5deg); }
+
+.cc-main .tile-video {
+  position: absolute;
+  inset: 0;
   opacity: 0;
   transition: opacity 400ms var(--ease-out);
 }
 
-.project-tile.is-playing .tile-video {
+.case-card.is-playing .cc-main .tile-video {
   opacity: 1;
 }
 
-.tile-pan {
-  background-image: var(--tile-image);
-  background-size: cover;
-  background-position: center;
-  transform-origin: 60% 40%;
-  transition: transform 700ms var(--ease-out);
+/* Side piece: a second artifact pinned over the corner */
+.cc-side {
+  right: 6%;
+  bottom: 9%;
+  width: 34%;
+  transform: rotate(3deg);
+  z-index: 2;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .project-tile:hover .tile-pan,
-  .project-tile:focus-visible .tile-pan {
-    transform: scale(1.12) translate(-2%, 1.5%);
-    transition: transform 7s cubic-bezier(.25, .1, .25, 1);
+.cc-side.cc-tall { width: 24%; bottom: 7%; }
+.cc-side.cc-wide { width: 46%; right: 5%; bottom: 8%; background-color: #0A0A0A; }
+
+.cc-main.cc-phones { aspect-ratio: 4 / 3; width: 52%; left: 12%; top: 13%; }
+
+/* Hover: the pieces lift and spread, like picking them up off the desk */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  a.case-card:hover .cc-main,
+  a.case-card:focus-visible .cc-main {
+    transform: rotate(0deg) translate(-6px, -6px);
+    box-shadow: 10px 10px 0 0 var(--text-primary);
+  }
+
+  a.case-card:hover .cc-side,
+  a.case-card:focus-visible .cc-side {
+    transform: rotate(5deg) translate(10px, 6px);
+    box-shadow: 9px 9px 0 0 var(--text-primary);
   }
 }
 
-/* Overlay for text readability */
-.project-tile::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 0.9),
-    rgba(255, 255, 255, 0.25)
-  );
-
-  opacity: 0;
-  transition: opacity 200ms ease;
-
-  z-index: 0;
+/* Make Kit pieces are drawn in HTML, from the case's own figures */
+.cc-router {
+  padding: 14px 16px 10px;
+  aspect-ratio: auto;
+  top: 20%;
+  font-size: 14px;
 }
 
-.project-tile-content {
-  position: relative;
-  z-index: 1;
-
-  height: 100%;
+.cc-router-file {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: var(--space-xs);
-
-  opacity: 0;
-  transform: translateY(8px);
-  transition:
-    opacity 200ms ease,
-    transform 200ms ease;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font: var(--weight-medium) 10px/1 var(--font-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
 }
 
-.project-tile-title {
-  font-size: 20px;
-  font-weight: 600;
+.cc-router-row {
+  display: grid;
+  grid-template-columns: 1fr 18px 1.1fr;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid #ECE6E1;
+  white-space: nowrap;
+}
+
+.cc-router-row mark {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background-color: #FFE3CC;
+  box-shadow: 0 2px 0 0 #9A4F1C;
+  color: inherit;
+}
+
+.cc-router-row i {
+  font-style: normal;
+  color: #9A4F1C;
+}
+
+.cc-router-row code {
+  font: 400 13px/1 var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cc-verdict {
+  display: grid;
+  gap: 6px;
+  width: 31%;
+  padding: 12px 14px 14px;
+  bottom: 10%;
+}
+
+.cc-verdict small {
+  font: var(--weight-medium) 10px/1.35 var(--font-mono);
+  color: var(--text-tertiary);
+}
+
+.cc-verdict small:first-child {
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.cc-verdict b {
+  font: var(--weight-medium) 16px/1.1 var(--font-mono);
+}
+
+.cc-verdict code {
   color: var(--text-primary);
 }
 
-.project-tile-meta {
-  font-size: 14px;
+.cc-stamp {
+  justify-self: start;
+  padding: 3px 8px;
+  border: 2px solid #C0392B;
+  border-radius: 6px;
+  color: #C0392B;
+  font: var(--weight-medium) 11px/1.2 var(--font-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+}
+
+/* Night edition (AI Orchestration's case is the dark journal) */
+.cc-night .cc-file {
+  background-color: #60C2FF;
+}
+
+/* Info block */
+.cc-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px 26px 24px;
+}
+
+.cc-meta {
+  margin: 0;
+  font: var(--weight-medium) 12px/1.4 var(--font-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.cc-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.cc-line {
+  margin: 0 0 6px;
+  font-size: 16px;
+  line-height: 1.5;
   color: var(--text-secondary);
 }
 
-.project-tile:hover::after,
-.project-tile:focus-visible::after {
-  opacity: 1;
+.cc-cta {
+  margin-top: auto;
+  font-size: 16px;
+  font-weight: var(--weight-medium);
 }
 
-.project-tile:hover .project-tile-content,
-.project-tile:focus-visible .project-tile-content {
-  opacity: 1;
-  transform: translateY(0);
+.cc-cta i {
+  display: inline-block;
+  font-style: normal;
+  transition: transform var(--dur-base) var(--ease-land);
 }
 
+a.case-card:hover .cc-cta i,
+a.case-card:focus-visible .cc-cta i {
+  transform: translateX(5px);
+}
 
+/* An odd card out (e.g. a fifth project) spans the row: media left, info right */
+.case-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  flex-direction: row;
+}
+
+.case-card:last-child:nth-child(odd) .cc-media {
+  flex: 0 0 56%;
+  aspect-ratio: 2 / 1;
+  border-bottom: 0;
+  border-right: 3px solid var(--text-primary);
+}
+
+.case-card:last-child:nth-child(odd) .cc-info {
+  justify-content: center;
+  padding: 32px 36px;
+}
+
+@media (max-width: 900px) {
+  .case-card:last-child:nth-child(odd) {
+    flex-direction: column;
+  }
+
+  .case-card:last-child:nth-child(odd) .cc-media {
+    flex: none;
+    border-right: 0;
+    border-bottom: 3px solid var(--text-primary);
+  }
+
+  .case-card:last-child:nth-child(odd) .cc-info {
+    padding: 22px 26px 24px;
+  }
+}
+
+@media (max-width: 520px) {
+  .cc-router { padding: 8px 9px 4px; font-size: 10px; width: 76%; left: 5%; top: 19%; }
+  .cc-router-file { margin-bottom: 4px; font-size: 8px; }
+  .cc-router-row { padding: 4px 0; grid-template-columns: 1fr 12px 1.1fr; }
+  .cc-router-row code { font-size: 10px; }
+  .cc-verdict { width: 40%; padding: 8px 9px 10px; gap: 4px; right: 4%; }
+  .cc-verdict b { font-size: 12px; }
+  .cc-verdict small { font-size: 8px; }
+  .cc-file { font-size: 9px; left: 10px; top: 10px; }
+  .cc-info { padding: 18px 18px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-card,
+  .cc-piece,
+  .cc-cta i,
+  .cc-main .tile-video {
+    transition: none;
+  }
+}
+
+/* GovHub pieces are drawn in HTML/SVG from the product's own concepts (no client data) */
+.cc-hourglass {
+  top: 16%;
+  aspect-ratio: auto;
+  padding: 0 0 8px;
+}
+
+.cc-hg-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-bottom: 2px solid var(--text-primary);
+  background-color: var(--bg-main);
+  border-radius: 7px 7px 0 0;
+  font: var(--weight-medium) 10px/1 var(--font-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.cc-hg {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 6px 8px 0;
+  box-sizing: border-box;
+}
+
+.cc-hg text {
+  font: var(--weight-medium) 9px var(--font-mono);
+  text-anchor: middle;
+  fill: #0A0A0A;
+}
+
+.cc-hg .cc-hg-cap {
+  font-size: 8px;
+  letter-spacing: .1em;
+  fill: #4A4A4A;
+}
+
+.cc-hg-chips rect {
+  fill: #FFFFFF;
+  stroke: #0A0A0A;
+  stroke-width: 1.5;
+}
+
+.cc-hg-waist text {
+  font-size: 10px;
+  letter-spacing: .06em;
+}
+
+.cc-hg .cc-hg-score {
+  font-size: 8.5px;
+  fill: #FFF260;
+}
+
+.cc-chat {
+  display: grid;
+  gap: 8px;
+  width: 33%;
+  padding: 12px 13px 13px;
+  bottom: 9%;
+}
+
+.cc-chat small {
+  font: var(--weight-medium) 10px/1 var(--font-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.cc-chat small b {
+  color: #8B487A;
+}
+
+.cc-chat p {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 10px 10px 10px 3px;
+  background-color: #FFD8F4;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.cc-chat-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.cc-chat-actions span {
+  padding: 4px 8px;
+  border: 1.5px solid var(--text-primary);
+  border-radius: 6px;
+  font: var(--weight-medium) 10px/1 var(--font-mono);
+}
+
+.cc-chat-actions span:first-child {
+  background-color: #60FFA2;
+  box-shadow: 2px 2px 0 0 var(--text-primary);
+}
+
+@media (max-width: 520px) {
+  .cc-hourglass { width: 74%; left: 5%; top: 18%; }
+  .cc-hg-bar { padding: 6px 8px; font-size: 8px; }
+  .cc-chat { width: 42%; padding: 8px 9px; gap: 5px; right: 4%; }
+  .cc-chat p { font-size: 10px; padding: 6px 7px; }
+  .cc-chat small, .cc-chat-actions span { font-size: 8px; }
+}
+
+/* A project without a case page yet: same card, no link, no hover */
+.cc-soon-cta {
+  justify-self: start;
+  align-self: flex-start;
+  padding: 5px 10px;
+  border: 2px dashed var(--text-primary);
+  border-radius: 8px;
+  font: var(--weight-medium) 12px/1 var(--font-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
 
 .about h2 {
   font-size: 28px;

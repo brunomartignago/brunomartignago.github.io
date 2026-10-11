@@ -131,8 +131,6 @@
   .talk .ch,
   .mag,
   .card,
-  .project-tile,
-  .tile-video,
   .viz-chip,
   .ae,
   .ae-box,
@@ -140,12 +138,6 @@
   .gaze-fix,
   .gaze-hint {
     transition: none;
-  }
-
-  /* No Ken Burns pan (JS also skips the video previews) */
-  .project-tile .tile-pan {
-    transform: none !important;
-    transition: none !important;
   }
 }
 
