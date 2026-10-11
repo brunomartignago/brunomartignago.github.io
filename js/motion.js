@@ -145,20 +145,4 @@
     tile.addEventListener("blur", stop);
   });
 
-  /* ---------- Research diagram: draw on view, replay on hover/click ---------- */
-  const diagram = document.getElementById("diagram");
-  const diagramProject = diagram && diagram.closest(".project");
-  if (diagram && diagramProject) {
-    const draw = () => {
-      if (Motion.reduced()) return;
-      diagram.classList.remove("draw");
-      void diagram.getBoundingClientRect(); // restart the CSS animations
-      diagram.classList.add("draw");
-    };
-    diagramProject.addEventListener("motion:in", draw);
-    diagram.addEventListener("mouseenter", () => {
-      if (diagramProject.classList.contains("is-in")) draw();
-    });
-    diagram.addEventListener("click", draw);
-  }
 })();
