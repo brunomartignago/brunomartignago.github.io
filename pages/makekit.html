@@ -53,7 +53,7 @@
       <div class="cover-text">
         <p class="eyebrow rise" style="--d:0ms"><b>Case file 03</b> · Design systems · AI tooling</p>
         <h1 class="case-title rise" style="--d:80ms">A Make Kit that knows what's real, and <mark>reads only what it needs.</mark></h1>
-        <p class="lede rise" style="--d:200ms">How a study on accessibility guidance led me to rebuild the Dell Design System's Figma Make Kit: verified against the live system, organized in tiers, and routed so every session loads only what its brief asks for.</p>
+        <p class="lede rise" style="--d:200ms">Figma Make turns a written prompt into a working prototype. To build with Dell's own design system instead of generic parts, it reads a set of guidelines called a Make Kit. This is how I rebuilt that kit after a study showed where the first version was failing, and how its new structure makes every generation cheaper and more trustworthy.</p>
       </div>
 
       <aside class="index-card" data-reveal="lift" aria-label="Project facts">
@@ -72,7 +72,7 @@
               <span class="jtag jtag--green">Code review</span>
             </span>
           </dd>
-          <dt>Read</dt><dd><span data-read-time>~8 min</span> · 9 entries</dd>
+          <dt>Read</dt><dd><span data-read-time>~9 min</span> · 10 entries</dd>
         </dl>
       </aside>
 
@@ -99,15 +99,16 @@
         <details class="toc" open>
           <summary>Contents</summary>
           <ol>
-            <li><a href="#e1"><span>01</span>Confident, but wrong</a></li>
-            <li><a href="#e2"><span>02</span>The study</a></li>
-            <li><a href="#e3"><span>03</span>What the code said</a></li>
-            <li><a href="#e4"><span>04</span>Back to the source</a></li>
-            <li><a href="#e5"><span>05</span>One kit, five tiers</a></li>
-            <li><a href="#e6"><span>06</span>Load only what's needed</a></li>
-            <li><a href="#e7"><span>07</span>The closed set</a></li>
-            <li><a href="#e8"><span>08</span>Nine sections</a></li>
-            <li><a href="#e9"><span>09</span>What's next</a></li>
+            <li><a href="#e1"><span>01</span>Context</a></li>
+            <li><a href="#e2"><span>02</span>Confident, but wrong</a></li>
+            <li><a href="#e3"><span>03</span>The study</a></li>
+            <li><a href="#e4"><span>04</span>What the code said</a></li>
+            <li><a href="#e5"><span>05</span>Back to the source</a></li>
+            <li><a href="#e6"><span>06</span>One kit, five tiers</a></li>
+            <li><a href="#e7"><span>07</span>Load only what's needed</a></li>
+            <li><a href="#e8"><span>08</span>The closed set</a></li>
+            <li><a href="#e9"><span>09</span>Nine sections</a></li>
+            <li><a href="#e10"><span>10</span>What's next</a></li>
           </ol>
         </details>
       </nav>
@@ -118,15 +119,43 @@
         <section class="entry" id="e1" aria-labelledby="e1-title">
           <div class="row">
             <div class="main">
-              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">01</span><div><small>Entry 01 · The problem</small><h2 id="e1-title">Confident, but wrong</h2></div></header>
-              <p class="rv">A Make Kit is the set of guidelines Figma Make reads before it generates anything with the Dell Design System. It decides which components exist, which props they take and which tokens are allowed. <mark class="hl">When the kit is wrong, Make is wrong with total confidence.</mark></p>
-              <p class="rv">And the first kit was wrong in places. You ask it to build a screen, and it comes back with a <code>DDSModal</code> using a prop that doesn't exist, or a hand-rolled stepper because it couldn't find <code>DDSProgressTracker</code>, which was there the whole time.</p>
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">01</span><div><small>Entry 01 · Context</small><h2 id="e1-title">A design system, an AI builder and the kit between them</h2></div></header>
+              <p class="rv">Dell's product teams design and build with a shared design system called DDS, the Dell Design System. It's the one source for every button, form field, modal and navigation pattern, and for the tokens behind them: the named colors, spacing and type sizes that make Dell's products look and behave like one family. Version 3 is the current one.</p>
+              <p class="rv">Figma Make is Figma's AI builder. You describe a screen in plain language, and it writes a working, clickable prototype in code. On its own, it reaches for generic parts. To build with a specific design system, it needs a Make Kit.</p>
+
+              <article class="defn defn--peach" data-reveal="lift" aria-labelledby="def1">
+                <div class="term"><h3 id="def1">Make Kit</h3><i>noun · Figma Make</i><span class="no">DEF. 01</span></div>
+                <p>A package that teaches Figma Make to build with one design system. It has two halves:</p>
+                <ol>
+                  <li>the system's real code components, the only parts Make is allowed to build with;</li>
+                  <li>written guidelines Make reads before it generates anything: which components exist, which settings (props) they take, which tokens are allowed, and when to use each one.</li>
+                </ol>
+                <p class="see">See also: this case is about the second half.</p>
+              </article>
+
+              <p class="rv">Those guidelines decide whether a prototype only looks like a Dell product or is built like one. When they're right, designers explore ideas with the real components, the real accessibility behavior and the real tokens, and what they make is close to what engineering can ship. When they're wrong, Make doesn't hesitate. It fills the gaps with things that sound right. <mark class="hl">When the kit is wrong, Make is wrong with total confidence.</mark></p>
+            </div>
+            <aside class="mnote mnote--peach rv">
+              <span class="k">Tokens</span>
+              <p>Named values like <code>--dds-*</code> instead of raw hex codes or pixel sizes, so a change in the system reaches every screen at once.</p>
+            </aside>
+          </div>
+        </section>
+
+        <!-- 02 -->
+        <section class="entry" id="e2" aria-labelledby="e2-title">
+          <div class="row">
+            <div class="main">
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">02</span><div><small>Entry 02 · The problem</small><h2 id="e2-title">Confident, but wrong</h2></div></header>
+              <p class="rv">The first DDS Make Kit got designers building with the system in Figma Make. But it had been written partly from memory and from an older reference copy, and over time <mark class="hl">it drifted from what DDS v3 actually ships.</mark> Designers felt it as a pattern: ask for a screen, and Make would come back with a component using a setting that doesn't exist, or a hand-built imitation of a component that was there all along.</p>
+              <p class="rv">Four examples, checked against the live system:</p>
               <ul class="rv">
                 <li><code>DDSButton</code> was missing an entire <code>kind</code> value (<code>minimal</code>) and had the wrong default size.</li>
                 <li><code>DDSModal</code> documented three props that don't exist in v3.</li>
                 <li><code>DDSProgressTracker</code>, a real, fully built component, wasn't documented anywhere.</li>
                 <li><code>DDSSidenav</code> was consistently guessed as <code>DDSSideNav</code>, because the correct casing was never written down.</li>
               </ul>
+              <p class="rv">The structure didn't help either. The first kit was one entry file with a fixed reading list, plus a folder of component pages to open by exact path. There was no map of what existed, and nothing said which guidance belonged with which component.</p>
               <p class="rv">None of this was anyone's fault. It's what happens when documentation gets copied forward instead of re-checked.</p>
             </div>
           </div>
@@ -150,11 +179,11 @@
           </div>
         </section>
 
-        <!-- 02 -->
-        <section class="entry" id="e2" aria-labelledby="e2-title">
+        <!-- 03 -->
+        <section class="entry" id="e3" aria-labelledby="e3-title">
           <div class="row">
             <div class="main">
-              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">02</span><div><small>Entry 02 · Method</small><h2 id="e2-title">The study</h2></div></header>
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">03</span><div><small>Entry 03 · Method</small><h2 id="e3-title">The study</h2></div></header>
               <p class="rv">I designed and ran a study before rewriting anything, because I wanted to know what the guidance was actually doing. So we asked a narrower question: <mark class="hl">does built-in accessibility guidance change what gets built?</mark></p>
 
               <div class="specimen specimen--peach" data-reveal="lift">
@@ -187,11 +216,11 @@
           </div>
         </section>
 
-        <!-- 03 -->
-        <section class="entry" id="e3" aria-labelledby="e3-title">
+        <!-- 04 -->
+        <section class="entry" id="e4" aria-labelledby="e4-title">
           <div class="row">
             <div class="main">
-              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">03</span><div><small>Entry 03 · Finding</small><h2 id="e3-title">What the code said</h2></div></header>
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">04</span><div><small>Entry 04 · Finding</small><h2 id="e4-title">What the code said</h2></div></header>
               <p class="rv">The headline finding was a caution, not a win. Across the accessibility patterns we could check in code (labels, errors linked to their fields, heading structure, dialog semantics), <mark class="hl">the full kit's builds were not more accessible than the reduced kit's.</mark></p>
               <p class="rv">The one difference that held up went the other way. For the two required groups of options on the form, the reduced kit's builds used the real <code>DDSFieldset</code> and <code>DDSLegend</code> components in 3 of 4 builds. The full kit's builds did it in 1 of 4.</p>
               <p class="rv">Feelings and code also diverged. The group felt the full kit was more accessible and consistent. The code mostly didn't agree. Some problems showed up in all eight builds, whichever kit was used:</p>
@@ -242,11 +271,11 @@
           </div>
         </section>
 
-        <!-- 04 -->
-        <section class="entry" id="e4" aria-labelledby="e4-title">
+        <!-- 05 -->
+        <section class="entry" id="e5" aria-labelledby="e5-title">
           <div class="row">
             <div class="main">
-              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">04</span><div><small>Entry 04 · Rebuild</small><h2 id="e4-title">Back to the source</h2></div></header>
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">05</span><div><small>Entry 05 · Rebuild</small><h2 id="e5-title">Back to the source</h2></div></header>
               <p class="rv">We didn't patch a few prop tables. We went back to the live DDS v3 source and checked every component against it: its Storybook entries, its rendered examples, its actual props, before a line of guidance was written.</p>
               <div class="stats stats--grid">
                 <div class="stat stat--peach" data-reveal="lift" style="--i:0"><strong class="rv" data-count="50" data-decimals="0">50</strong><span>components documented, up from 46</span></div>
@@ -263,12 +292,12 @@
           </div>
         </section>
 
-        <!-- 05 -->
-        <section class="entry" id="e5" aria-labelledby="e5-title">
+        <!-- 06 -->
+        <section class="entry" id="e6" aria-labelledby="e6-title">
           <div class="row">
             <div class="main">
-              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">05</span><div><small>Entry 05 · Structure</small><h2 id="e5-title">One kit, five tiers</h2></div></header>
-              <p class="rv">The first kit asked the model to read a long list of files “by exact path”, with no map of what existed. The new kit is organized in tiers, so Figma Make only loads what a task needs:</p>
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">06</span><div><small>Entry 06 · Structure</small><h2 id="e6-title">One kit, five tiers</h2></div></header>
+              <p class="rv">Instead of one fixed reading list, the new kit is organized in tiers, so Figma Make only loads what a task needs:</p>
 
               <div class="specimen specimen--peach" data-reveal="lift">
                 <header><h3>The kit, by tier</h3><span>69 guideline files</span></header>
@@ -291,11 +320,11 @@
           </div>
         </section>
 
-        <!-- 06 -->
-        <section class="entry" id="e6" aria-labelledby="e6-title">
+        <!-- 07 -->
+        <section class="entry" id="e7" aria-labelledby="e7-title">
           <div class="row">
             <div class="main">
-              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">06</span><div><small>Entry 06 · Cheaper</small><h2 id="e6-title">Load only what the brief needs</h2></div></header>
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">07</span><div><small>Entry 07 · Cheaper</small><h2 id="e7-title">Load only what the brief needs</h2></div></header>
               <p class="rv">The router scans the whole brief against a trigger table. A brief that mentions a date picker loads <code>date-picker.md</code>, and also <code>form-field.md</code>, because that's a hard dependency, not optional reading.</p>
               <p class="rv">That's where “cheaper” comes from. The kit grew to 69 guideline files and 474 KB, but no session reads all of it:</p>
               <ul class="rv">
@@ -332,11 +361,11 @@
           </div>
         </section>
 
-        <!-- 07 -->
-        <section class="entry" id="e7" aria-labelledby="e7-title">
+        <!-- 08 -->
+        <section class="entry" id="e8" aria-labelledby="e8-title">
           <div class="row">
             <div class="main">
-              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">07</span><div><small>Entry 07 · Enforcement</small><h2 id="e7-title">If it's not in the manifest, it doesn't exist</h2></div></header>
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">08</span><div><small>Entry 08 · Enforcement</small><h2 id="e8-title">If it's not in the manifest, it doesn't exist</h2></div></header>
               <p class="rv">Documentation alone didn't stop invention. In the study, every build made up plausible <code>--dds-*</code> tokens, even with the full guidance loaded. So the kit now has an enforcement layer.</p>
               <p class="rv"><code>manifests/components.json</code> is a closed set. <mark class="hl">If a <code>DDS*</code> name isn't in there, it does not exist</mark>, no matter how plausible it sounds. The same goes for tokens and icons. An AI code generator can no longer confidently invent a component that merely sounds real.</p>
             </div>
@@ -368,11 +397,11 @@
           </div>
         </section>
 
-        <!-- 08 -->
-        <section class="entry" id="e8" aria-labelledby="e8-title">
+        <!-- 09 -->
+        <section class="entry" id="e9" aria-labelledby="e9-title">
           <div class="row">
             <div class="main">
-              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">08</span><div><small>Entry 08 · Consistency</small><h2 id="e8-title">Same nine sections, every time</h2></div></header>
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">09</span><div><small>Entry 09 · Consistency</small><h2 id="e9-title">Same nine sections, every time</h2></div></header>
               <p class="rv">Every component file now follows the same shape, so you always know where to look: Description · When to use / when not to use · Props · Usage · Layout · States · Accessibility · Content · Not a substitute for.</p>
               <p class="rv">The last section is new, and one of the most useful: <mark class="hl">a quick table saying why this isn't the component you want</mark> if you're tempted to use it for the wrong job. <code>DDSTag</code> is not a substitute for <code>DDSBadge</code>, because Tag is interactive and dismissible, and Badge is a non-interactive status display.</p>
             </div>
@@ -396,11 +425,11 @@
           </div>
         </section>
 
-        <!-- 09 -->
-        <section class="entry" id="e9" aria-labelledby="e9-title">
+        <!-- 10 -->
+        <section class="entry" id="e10" aria-labelledby="e10-title">
           <div class="row">
             <div class="main">
-              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">09</span><div><small>Entry 09</small><h2 id="e9-title">Results and what's next</h2></div></header>
+              <header class="entry-head rv"><span class="entry-num" aria-hidden="true">10</span><div><small>Entry 10</small><h2 id="e10-title">Results and what's next</h2></div></header>
               <p class="rv">The biggest difference you feel with the new kit is confidence: fewer invented props, fewer hand-rolled substitutes for components that already exist, and an explicit signal whenever something is genuinely uncertain, instead of everything sounding equally sure.</p>
               <p class="rv">The kit is now integrated for every designer at Dell, and other design system teams have used it as the base for bringing their own guidance up to the same standard.</p>
               <figure class="pull pull--said rv">

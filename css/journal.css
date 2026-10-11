@@ -991,6 +991,16 @@ html:has(.journal--night) {
   font: var(--weight-medium) 11px/1 var(--font-mono);
 }
 
+/* Dictionary entry in a case's accent (e.g. the Make Kit's peach) */
+.defn--peach {
+  box-shadow: 6px 6px 0 0 #9A4F1C;
+  --lift-shadow: #9A4F1C;
+}
+
+.defn--peach .term .no {
+  background-color: #FFB37A;
+}
+
 .journal--night .defn .term .no {
   border-color: #0A0A0A;
 }
