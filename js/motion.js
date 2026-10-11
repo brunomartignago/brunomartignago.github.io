@@ -117,9 +117,10 @@
     footer.addEventListener("pointerleave", () => mags.forEach(mag => { mag.style.transform = ""; }));
   }
 
-  /* ---------- Other Projects tiles: video preview on hover/focus (desktop only) ---------- */
-  // src is set on first hover (preload="none"); the video fades in once it is actually playing
-  document.querySelectorAll(".project-tile").forEach(tile => {
+  /* ---------- Other Projects case cards: video preview on hover/focus (desktop only) ---------- */
+  // The video sits in the card's main piece (.cc-main); src is set on first hover (preload="none")
+  // and the card gets .is-playing once the video is actually playing
+  document.querySelectorAll("a.case-card").forEach(tile => {
     const video = tile.querySelector(".tile-video");
     if (!video) return;
     let active = false;
@@ -145,20 +146,4 @@
     tile.addEventListener("blur", stop);
   });
 
-  /* ---------- Research diagram: draw on view, replay on hover/click ---------- */
-  const diagram = document.getElementById("diagram");
-  const diagramProject = diagram && diagram.closest(".project");
-  if (diagram && diagramProject) {
-    const draw = () => {
-      if (Motion.reduced()) return;
-      diagram.classList.remove("draw");
-      void diagram.getBoundingClientRect(); // restart the CSS animations
-      diagram.classList.add("draw");
-    };
-    diagramProject.addEventListener("motion:in", draw);
-    diagram.addEventListener("mouseenter", () => {
-      if (diagramProject.classList.contains("is-in")) draw();
-    });
-    diagram.addEventListener("click", draw);
-  }
 })();

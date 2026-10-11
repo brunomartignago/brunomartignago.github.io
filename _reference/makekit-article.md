@@ -2,20 +2,42 @@
 
 This is the approved copy for `pages/makekit.html`, and the source of truth for the page's text. The prototype (`makekit-prototype.html`) uses a condensed version of the same copy. Where they differ, follow this file. Confirmed facts and publishing rules are at the end.
 
-## Entry 01 — Confident, but wrong
+## Cover
 
-A Make Kit is the set of guidelines Figma Make reads before it generates anything with the Dell Design System. It decides which components exist, which props they take and which tokens are allowed. When the kit is wrong, Make is wrong with total confidence.
+Lede: "Figma Make turns a written prompt into a working prototype. To build with Dell's own design system instead of generic parts, it reads a set of guidelines called a Make Kit. This is how I rebuilt that kit after a study showed where the first version was failing, and how its new structure makes every generation cheaper and more trustworthy."
 
-And the old kit was wrong in places. If you've used Figma Make with DDS before, you've probably hit this moment: you ask it to build a screen, and it comes back with a `DDSModal` using a prop that doesn't exist, or a hand-rolled stepper because it couldn't find `DDSProgressTracker`, which was there the whole time.
+Index card adds a System row: "Dell Design System (DDS) v3, in Figma Make". Throughout the page, the earlier kit is called "the first kit", never "the old kit".
+
+## Entry 01 — Context
+
+Page title: "A design system, an AI builder and the kit between them". Contents label: "Context". This entry is written for readers who have never heard of DDS, Figma Make or the first kit.
+
+Dell's product teams design and build with a shared design system called DDS, the Dell Design System. It's the one source for every button, form field, modal and navigation pattern, and for the tokens behind them: the named colors, spacing and type sizes that make Dell's products look and behave like one family. Version 3 is the current one.
+
+Figma Make is Figma's AI builder. You describe a screen in plain language, and it writes a working, clickable prototype in code. On its own, it reaches for generic parts. To build with a specific design system, it needs a Make Kit.
+
+> Dictionary entry (DEF. 01) — **Make Kit**, noun · Figma Make. A package that teaches Figma Make to build with one design system. It has two halves: (1) the system's real code components, the only parts Make is allowed to build with; (2) written guidelines Make reads before it generates anything: which components exist, which settings (props) they take, which tokens are allowed, and when to use each one. See also: this case is about the second half.
+
+Those guidelines decide whether a prototype only looks like a Dell product or is built like one. When they're right, designers explore ideas with the real components, the real accessibility behavior and the real tokens, and what they make is close to what engineering can ship. When they're wrong, Make doesn't hesitate. It fills the gaps with things that sound right. When the kit is wrong, Make is wrong with total confidence.
+
+> Margin note — Tokens: named values like `--dds-*` instead of raw hex codes or pixel sizes, so a change in the system reaches every screen at once.
+
+## Entry 02 — Confident, but wrong
+
+The first DDS Make Kit got designers building with the system in Figma Make. But it had been written partly from memory and from an older reference copy, and over time it drifted from what DDS v3 actually ships. Designers felt it as a pattern: ask for a screen, and Make would come back with a component using a setting that doesn't exist, or a hand-built imitation of a component that was there all along.
+
+Four examples, checked against the live system (shown on the page as Fig. 02):
 
 - `DDSButton` was missing an entire `kind` value (`minimal`) and had the wrong default size.
 - `DDSModal` documented three props that don't exist in v3.
 - `DDSProgressTracker`, a real, fully built component, wasn't documented anywhere.
 - `DDSSidenav` was consistently guessed as `DDSSideNav`, because the correct casing was never written down.
 
+The structure didn't help either. The first kit was one entry file with a fixed reading list, plus a folder of component pages to open by exact path. There was no map of what existed, and nothing said which guidance belonged with which component.
+
 None of this was anyone's fault. It's what happens when documentation gets copied forward instead of re-checked.
 
-## Entry 02 — The study
+## Entry 03 — The study
 
 I designed and ran a study before rewriting anything, because I wanted to know what the guidance was actually doing. So we asked a narrower question: does built-in accessibility guidance change what gets built?
 
@@ -25,7 +47,7 @@ To separate the kit from "people get better on their second try", the order was 
 
 > Margin note — The brief: one screen or state per prompt, stay inside Make, no hand-fixing in Figma Design. Being blocked counted as a finding.
 
-## Entry 03 — What the code said
+## Entry 04 — What the code said
 
 The headline finding was a caution, not a win. Across the accessibility patterns we could check in code (labels, errors linked to their fields, heading structure, dialog semantics), the full kit's builds were not more accessible than the reduced kit's.
 
@@ -41,7 +63,7 @@ That changed the plan. More guidance wasn't the lever. Structure and truth were:
 
 > Margin note — Small sample: 4 designers, 8 builds, static code review. We treated every finding as a lead, not a law.
 
-## Entry 04 — Back to the source
+## Entry 05 — Back to the source
 
 We didn't patch a few prop tables. We went back to the live DDS v3 source and checked every component against it: its Storybook entries, its rendered examples, its actual props, before a line of guidance was written.
 
@@ -56,9 +78,9 @@ Part of the rebuild merged a second, independently written pass at the same docu
 
 > Margin note — New first-class components: `DDSTable`, `DDSSearch`, `DDSTimePicker` and `DDSViewMoreLess`.
 
-## Entry 05 — One kit, five tiers
+## Entry 06 — One kit, five tiers
 
-The old kit asked the model to read a long list of files "by exact path", with no map of what existed. The new kit is organized in tiers, so Figma Make only loads what a task needs:
+Instead of one fixed reading list, the new kit is organized in tiers, so Figma Make only loads what a task needs:
 
 - `ROUTER.md`: the front door, read first in every session.
 - `core/`: always loaded. Hard rules, setup, best practices.
@@ -67,11 +89,11 @@ The old kit asked the model to read a long list of files "by exact path", with n
 - `manifests/`: machine-checkable JSON, the closed set of what's real.
 - `skills/`: rare, situational guidance, like AI mode, dark mode and carousels.
 
-Every file carries a small frontmatter block: its tier, the phrases that should trigger it, and what it requires. The accessibility guidance that sat orphaned in the old kit is now a hard dependency of the components that need it.
+Every file carries a small frontmatter block: its tier, the phrases that should trigger it, and what it requires. The accessibility guidance that sat orphaned in the first kit is now a hard dependency of the components that need it.
 
 > Margin note — One hop only: if A requires B and B requires C, C isn't pulled in. Chasing chains is the unbounded reading this design avoids.
 
-## Entry 06 — Load only what the brief needs
+## Entry 07 — Load only what the brief needs
 
 The router scans the whole brief against a trigger table. A brief that mentions a date picker loads `date-picker.md`, and also `form-field.md`, because that's a hard dependency, not optional reading.
 
@@ -84,13 +106,13 @@ Less to read means fewer tokens per session, and fewer chances for the model to 
 
 > Margin note — Measured from the kit files. Manifests are only opened on demand, e.g. to check whether a token or icon exists.
 
-## Entry 07 — If it's not in the manifest, it doesn't exist
+## Entry 08 — If it's not in the manifest, it doesn't exist
 
 Documentation alone didn't stop invention. In the study, every build made up plausible `--dds-*` tokens, even with the full guidance loaded. So the kit now has an enforcement layer.
 
 `manifests/components.json` is a closed set. If a `DDS*` name isn't in there, it does not exist, no matter how plausible it sounds. The same goes for tokens and icons. An AI code generator can no longer confidently invent a component that merely sounds real.
 
-## Entry 08 — Same nine sections, every time
+## Entry 09 — Same nine sections, every time
 
 Every component file now follows the same shape, so you always know where to look: Description · When to use / when not to use · Props · Usage · Layout · States · Accessibility · Content · Not a substitute for.
 
@@ -98,7 +120,7 @@ The last section is new, and one of the most useful: a quick table saying why th
 
 The study's gaps became files too. The modal and side-nav compositions every build had to guess are now documented, and loaded automatically whenever their parent component is.
 
-## Entry 09 — Results and what's next
+## Entry 10 — Results and what's next
 
 The biggest difference you feel with the new kit is confidence: fewer invented props, fewer hand-rolled substitutes for components that already exist, and an explicit signal whenever something is genuinely uncertain, instead of everything sounding equally sure.
 
@@ -115,6 +137,7 @@ Next: bring the kit and the MCP workflow to more teams, treat every conflict not
 ## Confirmed facts and publishing rules (from Bruno)
 
 - **Publishing:** it's OK to say this is work for Dell, but keep the case about how the project and its output were made. Cite nothing sensitive: no internal URLs, internal package names, internal repos, connectors or tool names. Component names (`DDSButton`, etc.) and the kit's own folder and file names are fine.
+- **No dates:** the page carries no release date or any other date that shows when the project happened.
 - **Participants:** study participants appear only as Designer 1–4. Never attach a real name to study data.
 - **Credits:** Miguel Wermuth and Selina Nie (main user testers and evangelists); Sasha Souza, Karim Merchant, Itee Sharma; the accessibility team; the study participants.
 - **Role:** Bruno designed and ran the study, rebuilt the kit, and wrote the router and manifests. Index card role: "Researcher & designer".

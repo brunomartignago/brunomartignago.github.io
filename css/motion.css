@@ -43,20 +43,6 @@
   }
 }
 
-/* The dasharray only exists while drawing, so the resting SVG never depends on pathLength support */
-@keyframes draw {
-  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
-  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
-}
-
-@keyframes fillIn {
-  from { opacity: 0; }
-}
-
-@keyframes grow {
-  from { transform: scaleY(0); }
-}
-
 @keyframes letterLift {
   from {
     transform: translate(.045em, .045em);
@@ -87,7 +73,7 @@
   }
 }
 
-/* ---------- Featured projects: slide-in, tag slap, diagram draw ---------- */
+/* ---------- Featured projects: slide-in, tag slap ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
   html.js .project:not(.is-in) .project-slide,
@@ -102,21 +88,6 @@
   .project.is-in .tag {
     animation: slap 520ms var(--ease-land) backwards;
     animation-delay: calc(350ms + var(--i, 0) * 120ms);
-  }
-
-  html.js .diagram.draw .d-stroke {
-    animation: draw 900ms var(--ease-out) backwards;
-    animation-delay: var(--d, 0ms);
-  }
-
-  html.js .diagram.draw .d-fill {
-    animation: fillIn 400ms ease backwards;
-    animation-delay: var(--d, 0ms);
-  }
-
-  html.js .diagram.draw .d-block {
-    animation: grow 420ms var(--ease-land) backwards;
-    animation-delay: var(--d, 0ms);
   }
 }
 
@@ -160,8 +131,6 @@
   .talk .ch,
   .mag,
   .card,
-  .project-tile,
-  .tile-video,
   .viz-chip,
   .ae,
   .ae-box,
@@ -169,12 +138,6 @@
   .gaze-fix,
   .gaze-hint {
     transition: none;
-  }
-
-  /* No Ken Burns pan (JS also skips the video previews) */
-  .project-tile .tile-pan {
-    transform: none !important;
-    transition: none !important;
   }
 }
 

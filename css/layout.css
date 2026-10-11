@@ -223,13 +223,22 @@ body {
   background-color: var(--bg-accent);
 }
 
-.other-projects-grid {
+/* Case cards, 2 per row (an odd last card spans the row; see components.css) */
+.cases-grid {
   max-width: 1200px;
   margin: 0 auto;
-
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: var(--space-lg);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px 40px;
+}
+
+@media (max-width: 900px) {
+  .cases-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    /* padding-right gives the box-shadow space to breathe */
+    padding-right: 8px;
+  }
 }
 
 
@@ -322,15 +331,13 @@ body {
     justify-content: center;
   }
 
-  .services-grid,
-  .other-projects-grid {
+  .services-grid {
     gap: var(--space-md);
     /* padding-right gives the 6px box-shadow space to breathe */
     padding-right: 8px;
   }
 
-  .card,
-  .project-tile {
+  .card {
     width: 100%;
     box-sizing: border-box;
   }
